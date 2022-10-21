@@ -1,0 +1,53 @@
+// trying to use just the extend functionality based on next.js official recommendation:
+// "The next configuration already handles setting default values for the parser, plugins and settings properties.
+// There is no need to manually re-declare any of these properties unless you need a different configuration for your use case.
+// If you include any other shareable configurations, you will need to make sure that these properties are not overwritten or modified.
+// Otherwise, we recommend removing any configurations that share behavior with the next configuration
+// or extending directly from the Next.js ESLint plugin as mentioned above."
+// https://nextjs.org/docs/basic-features/eslint#recommended-plugin-ruleset
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "import",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-undef": "error",
+    "import/order": [
+      "warn",
+      {
+        "warnOnUnassignedImports": true,
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ]
+      }
+    ]
+  },
+  "globals": {
+    "React": true,
+    "JSX": true,
+    "document": true,
+    "window": true
+  }
+}
