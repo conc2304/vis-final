@@ -50,6 +50,7 @@
     "JSX": true,
     "document": true,
     "window": true,
+    "require": true,
     "console": true
   }
 }

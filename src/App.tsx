@@ -1,35 +1,46 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as d3 from 'd3';
 import './App.scss';
+import HeatMap from './components/visualizers/HeatMap';
 import LineChart from './components/visualizers/LineChartwBrush';
-// import TimelineBrush from './components/visualizers/TimelineBrush';
 import GlobalTempData from './data/Global_Temp_Data';
+import { StormData } from './data/types';
 
 function App() {
-  const [selectedBrushYears, setSeletedBrushYears] = useState([null, null]);
+  const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
+  const [stormDataCleaned, setStormDataCleaned] = useState<StormData[]>(null);
   const handleOnBrush = ([start, end]) => {
-    setSeletedBrushYears([start, end]);
-    console.log(selectedBrushYears);
+    setSeletedBrushYears(end > start ? [start, end] : [end, start]);
   };
+
+  useEffect(() => {
+    const promises = [d3.json('/data/Storm_Data_Sums.json')];
+
+    Promise.all(promises).then((data) => {
+      setStormDataCleaned(data[0] as StormData[]);
+    });
+  }, []);
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>APP TITLE</h1>
-        <div style={{ width: '80%', border: '2px solid white', height: '15vw' }}>
-          {/* <TimelineBrush
-            data={GlobalTempData}
-            margin={timelineDimensions}
-            title="Global Temperature Anomalies"
-            onBrush={handleOnBrush}
-            lineColor="blue"
-          /> */}
-          {/* 
-          <Brush
-            data={GlobalTempData}
-            margin={timelineDimensions}
-            onBrushUpdateData={handleOnBrush}
-            /> */}
+        <div style={{ width: '80%', border: '2px solid white', height: '500px' }}>
+          <HeatMap
+            yearFilter={selectedBrushYears}
+            stormData={stormDataCleaned}
+            margin={{
+              top: 10,
+              bottom: 30,
+              right: 30,
+              left: 0,
+            }}
+            id="storm-data-heatmap"
+            selectedMetric="EVENT_COUNT"
+          />
+        </div>
 
+        <div style={{ width: '80%', border: '2px solid white', height: '15vw' }}>
           <LineChart
             data={GlobalTempData}
             margin={{
