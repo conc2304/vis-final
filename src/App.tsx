@@ -8,7 +8,7 @@ import { StormData } from './data/types';
 
 function App() {
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
-  const [stormDataCleaned, setStormDataCleaned] = useState<StormData[]>(null);
+  const [stormData, setStormData] = useState<StormData[]>(null);
   const handleOnBrush = ([start, end]) => {
     setSeletedBrushYears(end > start ? [start, end] : [end, start]);
   };
@@ -17,7 +17,7 @@ function App() {
     const promises = [d3.json('/data/Storm_Data_Sums.json')];
 
     Promise.all(promises).then((data) => {
-      setStormDataCleaned(data[0] as StormData[]);
+      setStormData(data[0] as StormData[]);
     });
   }, []);
 
@@ -28,7 +28,7 @@ function App() {
         <div style={{ width: '80%', border: '2px solid white', height: '500px' }}>
           <HeatMap
             yearFilter={selectedBrushYears}
-            stormData={stormDataCleaned}
+            stormData={stormData}
             margin={{
               top: 10,
               bottom: 30,

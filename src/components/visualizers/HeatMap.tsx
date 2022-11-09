@@ -64,7 +64,6 @@ const HeatMap = ({
   };
 
   const wrangleData = () => {
-    if (!stormData) return;
     // first, filter according to selectedTimeRange, init empty array
     let filteredData: StormData[] = [];
 
@@ -93,7 +92,6 @@ const HeatMap = ({
     // merge
 
     stormDataByState.forEach((state) => {
-
       const damagePropertySum = 0;
       const deathsDirectSum = 0;
       const deathsIndirectSum = 0;
@@ -108,6 +106,12 @@ const HeatMap = ({
       const totalStateRows = state.value.length;
       const { key: stateName } = state;
       console.log(state);
+
+      stateData.push({
+        state: stateName,
+        deathsDirectTotal: 0 
+      })
+
     });
 
     // console.log('stormDataByState');
@@ -132,8 +136,9 @@ const HeatMap = ({
   useEffect(() => {
     console.log('DRAW');
     const svg = d3.select(svgRef.current);
-
-    wrangleData();
+    console.log('stormData: ', !!stormData);
+    console.log();
+    if (!!stormData) wrangleData();
 
     // @ts-ignore
     // const colorScale = d3.scaleLinear().range(colorsRange);
@@ -170,7 +175,7 @@ const HeatMap = ({
       .transition()
       .duration(500)
       .attr('d', pathGenerator);
-  }, [yearFilter, selectedMetric, geographies]);
+  }, [yearFilter, selectedMetric, geographies, stormData]);
   // console.lo;
   return (
     <div ref={wrapperRef} style={{ width: '100%', height: '100%' }} className={`${id}-wrapper`}>
