@@ -26,6 +26,7 @@
   "rules": {
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/ban-ts-comment": "warn",
     "no-undef": "error",
     "import/order": [
       "warn",
@@ -48,6 +49,7 @@
     "React": true,
     "JSX": true,
     "document": true,
-    "window": true
+    "window": true,
+    "console": true
   }
 }
