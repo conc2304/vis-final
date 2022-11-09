@@ -16,7 +16,6 @@ import { Margin } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // const uuid = require('react-uuid');
-
 type Props = {
   stormData: StormData[];
   margin: Margin;
@@ -98,8 +97,8 @@ const HeatMap = ({
       ([key, value]) => ({ key, value })
     );
 
-    const stateData = [];
     // merge
+    const stateData: StateData[] = [];
 
     stormDataByState.forEach((state) => {
       const { key: stateName } = state;
@@ -232,3 +231,15 @@ export default HeatMap;
 //  'LAKE ST CLAIR',
 //  'LAKE SUPERIOR',
 //  'ST LAWRENCE R', ]
+
+
+type StateData = {
+  COUNTS_BY_EVENT: Record<StormEventCategoryType, number>,
+  DAMAGE_PROPERTY_EVENT_SUM: number,
+  DEATHS_DIRECT_COUNT: number,
+  DEATHS_INDIRECT_COUNT: number,
+  DEATHS_TOTAL_COUNT: number,
+  INJURIES_DIRECT_COUNT: number,
+  STATE: GeoRegionUS,
+  TOTAL_EVENTS: number,
+};
