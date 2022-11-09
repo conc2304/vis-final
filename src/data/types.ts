@@ -2,15 +2,15 @@ import { StormEventCategory, StormEventRegions, NumericStormMetrics } from './co
 
 // Storm Data Types
 export type StormData = {
-  STATE: string,
-  // STATE: GeoRegionUS,
+  // STATE: string,
+  STATE: GeoRegionUS,
   YEAR: number;
   EVENT_COUNT: number;
   INJURIES_DIRECT_COUNT: number;
   DEATHS_DIRECT_COUNT: number;
   DEATHS_INDIRECT_COUNT: number;
   DAMAGE_PROPERTY_EVENT_SUM: number;
-  EVENT: string;
+  EVENT: StormEventCategoryType;
   // EVENT: StormEventCategoryType;
 };
 

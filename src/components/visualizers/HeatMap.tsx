@@ -5,7 +5,12 @@ import { geoEqualEarth, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import { Feature, FeatureCollection, Geometry } from 'geojson';
 import { path, svg } from 'd3';
-import { GeoRegionUS, NumericStormMetricType, StormData } from '../../data/types';
+import {
+  GeoRegionUS,
+  NumericStormMetricType,
+  StormData,
+  StormEventCategoryType,
+} from '../../data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 
@@ -88,34 +93,60 @@ const HeatMap = ({
       ([key, value]) => ({ key, value })
     );
 
+    const stormDatabyEvent = Array.from(
+      d3.group(filteredData, (d) => d.EVENT),
+      ([key, value]) => ({ key, value })
+    );
+
     const stateData = [];
     // merge
 
     stormDataByState.forEach((state) => {
-      const damagePropertySum = 0;
-      const deathsDirectSum = 0;
-      const deathsIndirectSum = 0;
-      const eventCountsbyType = {};
-      // DEATHS_DIRECT_COUNT: 0;
-      // DEATHS_INDIRECT_COUNT: 0;
-      // EVENT: 'Draught';
-      // EVENT_COUNT: 2;
-      // INJURIES_DIRECT_COUNT: 0;
-      // STATE: 'ALABAMA';
-      // YEAR: 1998;
-      const totalStateRows = state.value.length;
       const { key: stateName } = state;
-      console.log(state);
+
+      let DAMAGE_PROPERTY_EVENT_SUM = 0;
+      let DEATHS_DIRECT_COUNT = 0;
+      let DEATHS_INDIRECT_COUNT = 0;
+      let DEATHS_TOTAL_COUNT = 0;
+      let INJURIES_DIRECT_COUNT = 0;
+      let TOTAL_EVENTS = 0;
+      const COUNTS_BY_EVENT: Record<StormEventCategoryType, number> = {} as Record<
+        StormEventCategoryType,
+        number
+      >;
+
+      // sum up the totals per state
+      state.value.forEach((entry: StormData) => {
+        const eventType = entry.EVENT || 'misc';
+
+        DAMAGE_PROPERTY_EVENT_SUM += entry.DAMAGE_PROPERTY_EVENT_SUM;
+        DEATHS_DIRECT_COUNT += entry.DEATHS_DIRECT_COUNT;
+        DEATHS_INDIRECT_COUNT += entry.DEATHS_INDIRECT_COUNT;
+        DEATHS_TOTAL_COUNT += entry.DEATHS_DIRECT_COUNT + entry.DEATHS_INDIRECT_COUNT;
+        INJURIES_DIRECT_COUNT += entry.INJURIES_DIRECT_COUNT;
+        TOTAL_EVENTS += entry.EVENT_COUNT;
+
+        if (eventType in COUNTS_BY_EVENT) {
+          COUNTS_BY_EVENT[eventType] += entry.EVENT_COUNT;
+        } else {
+          COUNTS_BY_EVENT[eventType] = entry.EVENT_COUNT;
+        }
+      });
 
       stateData.push({
-        state: stateName,
-        deathsDirectTotal: 0 
-      })
+        STATE: stateName,
+        DAMAGE_PROPERTY_EVENT_SUM,
+        DEATHS_DIRECT_COUNT,
+        DEATHS_INDIRECT_COUNT,
+        DEATHS_TOTAL_COUNT,
+        INJURIES_DIRECT_COUNT,
+        TOTAL_EVENTS,
+        COUNTS_BY_EVENT,
+      });
+    }); // end foreach
 
-    });
-
-    // console.log('stormDataByState');
-    // console.log(stormDataByState);
+    console.log('stateData');
+    console.log(stateData);
   };
 
   // load geo data on init
@@ -187,3 +218,17 @@ const HeatMap = ({
 };
 
 export default HeatMap;
+
+// ['ATLANTIC NORTH',
+//  'ATLANTIC SOUTH',
+//  'E PACIFIC',
+//  'GULF OF ALASKA',
+//  'GULF OF MEXICO',
+//  'HAWAII WATERS',
+//  'LAKE ERIE',
+//  'LAKE HURON',
+//  'LAKE MICHIGAN',
+//  'LAKE ONTARIO',
+//  'LAKE ST CLAIR',
+//  'LAKE SUPERIOR',
+//  'ST LAWRENCE R', ]
