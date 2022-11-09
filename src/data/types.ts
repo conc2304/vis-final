@@ -1,31 +1,29 @@
-// STATE,YEAR,EVENT_COUNT,INJURIES_DIRECT_COUNT,DEATHS_DIRECT_COUNT,DEATHS_INDIRECT_COUNT,DAMAGE_PROPERTY_EVENT_SUM,EVENT
+import { StormEventCategory, StormEventRegions, NumericStormMetrics } from './constants';
 
-import { StormEventCategory } from "./constants";
-
-export type StormDataColumns = {
-  STATE: string;
+// Storm Data Types
+export type StormData = {
   YEAR: number;
   EVENT_COUNT: number;
-  INJURIES_DIRECT_COUNT: boolean;
+  INJURIES_DIRECT_COUNT: number;
   DEATHS_DIRECT_COUNT: number;
-  DEATHS_INDIRECT_COUNT: boolean;
+  DEATHS_INDIRECT_COUNT: number;
   DAMAGE_PROPERTY_EVENT_SUM: number;
-  EVENT: string;
+  EVENT: StormEventCategoryType;
 };
 
-export type NumericStormMetrics =
-  | 'EVENT_COUNT'
-  | 'INJURIES_DIRECT_COUNT'
-  | 'DEATHS_DIRECT_COUNT'
-  | 'DEATHS_INDIRECT_COUNT'
-  | 'DAMAGE_PROPERTY_EVENT_SUM';
+export type NumericStormMetricType = typeof NumericStormMetrics[number];
 
 export type StormEventCategoryType = typeof StormEventCategory[number];
 
+export type GeoRegionUS = typeof StormEventRegions[number];
+
+export type StormDataHash = Record<GeoRegionUS, StormData>;
+
+// Temperature Anomaly Data Types
 export type GlobalTempDataType = {
   year: number;
-  no_smooth:number;
+  no_smooth: number;
   smoothed: number;
-}
+};
 
 export type GlobalTempJson = GlobalTempDataType[];

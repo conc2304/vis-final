@@ -1,24 +1,15 @@
+import { useState } from 'react';
 import './App.scss';
-import LineChart from './components/visualizers/LineChart';
+import LineChart from './components/visualizers/LineChartwBrush';
 // import TimelineBrush from './components/visualizers/TimelineBrush';
-import { Margin } from './components/visualizers/types';
 import GlobalTempData from './data/Global_Temp_Data';
 
 function App() {
-  const handleOnBrush = () => {
-    console.log('BRUSH ME');
+  const [selectedBrushYears, setSeletedBrushYears] = useState([null, null]);
+  const handleOnBrush = ([start, end]) => {
+    setSeletedBrushYears([start, end]);
+    console.log(selectedBrushYears);
   };
-
-  handleOnBrush();
-
-  const timelineDimensions: Margin = {
-    top: 10,
-    bottom: 30,
-    right: 30,
-    left: 40,
-  };
-
-  console.log(timelineDimensions);
 
   return (
     <div className="App">
@@ -41,11 +32,16 @@ function App() {
 
           <LineChart
             data={GlobalTempData}
-            margin={timelineDimensions}
-            title="Global Temperature Anomalies"
+            margin={{
+              top: 10,
+              bottom: 30,
+              right: 30,
+              left: 40,
+            }}
             onBrush={handleOnBrush}
             lineColor="blue"
             id="global-temp-chart"
+            title="Global Temperature Anomaly"
           />
         </div>
       </header>
