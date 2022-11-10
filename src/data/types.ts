@@ -1,9 +1,14 @@
-import { StormEventCategory, StormEventRegions, NumericStormMetrics } from './constants';
+import { Feature, Geometry } from 'geojson';
+import {
+  NUMERIC_STORM_DATA_FIELDS,
+  STORM_DISPLAY_DATA_DIMENSIONS,
+  STORM_EVENT_CATEGORIES,
+  STORM_EVENT_REGIONS,
+} from './constants';
 
 // Storm Data Types
-export type StormData = {
-  // STATE: string,
-  STATE: GeoRegionUS,
+export type StormDataType = {
+  STATE: GeoRegionUSType;
   YEAR: number;
   EVENT_COUNT: number;
   INJURIES_DIRECT_COUNT: number;
@@ -11,16 +16,17 @@ export type StormData = {
   DEATHS_INDIRECT_COUNT: number;
   DAMAGE_PROPERTY_EVENT_SUM: number;
   EVENT: StormEventCategoryType;
-  // EVENT: StormEventCategoryType;
 };
 
-export type NumericStormMetricType = typeof NumericStormMetrics[number];
+export type NumericStormMetricType = typeof NUMERIC_STORM_DATA_FIELDS[number];
 
-export type StormEventCategoryType = typeof StormEventCategory[number];
+export type SelectedDimensionsType = typeof STORM_DISPLAY_DATA_DIMENSIONS[number];
 
-export type GeoRegionUS = typeof StormEventRegions[number];
+export type StormEventCategoryType = typeof STORM_EVENT_CATEGORIES[number];
 
-export type StormDataHash = Record<GeoRegionUS, StormData>; // 
+export type GeoRegionUSType = typeof STORM_EVENT_REGIONS[number];
+
+export type StormDataHashType = Record<GeoRegionUSType, StormDataType>; //
 
 // Temperature Anomaly Data Types
 export type GlobalTempDataType = {
@@ -29,4 +35,11 @@ export type GlobalTempDataType = {
   smoothed: number;
 };
 
-export type GlobalTempJson = GlobalTempDataType[];
+export type GlobalTempJsonType = GlobalTempDataType[];
+
+export type GeoJsonFeatureType = Feature<
+  Geometry,
+  {
+    [name: string]: unknown;
+  }
+>;

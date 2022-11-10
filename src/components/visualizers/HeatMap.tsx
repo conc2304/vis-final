@@ -1,14 +1,14 @@
 import * as d3 from 'd3';
-// import { StormData } from '../../data/types';
-import React, { useState, useRef, useEffect } from 'react';
-import { geoEqualEarth, geoPath } from 'd3-geo';
+import { useState, useRef, useEffect } from 'react';
+import { geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import { Feature, FeatureCollection, Geometry } from 'geojson';
-import { path, svg } from 'd3';
 import {
-  GeoRegionUS,
+  GeoJsonFeatureType,
+  GeoRegionUSType,
   NumericStormMetricType,
-  StormData,
+  SelectedDimensionsType,
+  StormDataType,
   StormEventCategoryType,
 } from '../../data/types';
 import useResizeObserver from './useResizeObserver';
@@ -17,12 +17,12 @@ import { Margin } from './types';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // const uuid = require('react-uuid');
 type Props = {
-  stormData: StormData[];
+  stormData: StormDataType[];
   margin: Margin;
   id: string;
   yearFilter: [number, number] | null;
   colorsRange?: string[];
-  selectedMetric: NumericStormMetricType;
+  selectedDimension: SelectedDimensionsType;
 };
 
 const defaultColorRange = [
@@ -41,35 +41,21 @@ const HeatMap = ({
   stormData,
   yearFilter,
   margin,
-  selectedMetric,
+  selectedDimension,
   colorsRange = defaultColorRange,
 }: Props) => {
-  // console.log(stormData);
-  // console.log('yearFilter', yearFilter);
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
 
-  const [selectedState, setSelectedState] = useState<GeoRegionUS>(null);
+  const [selectedState, setSelectedState] = useState<GeoRegionUSType>(null);
 
   const [geographies, setGeographies] = useState<[] | Array<Feature<Geometry | null>>>([]);
-  // const [svgDimensions, setSvgDimension] = useState<[number, number]>([0, 0]);
+  // const [stateData, setStateData] = useState<StateData[]>([]);
 
-  const getFillColor = (
-    d: Feature<
-      Geometry,
-      {
-        [name: string]: any;
-      }
-    >
-  ) => {
-    const { name: stateName } = d.properties;
-    const stateInfo = console.log(d.properties);
-  };
-
-  const wrangleData = () => {
+  const wrangleData = (): StateDataDimensions[] => {
     // first, filter according to selectedTimeRange, init empty array
-    let filteredData: StormData[] = [];
+    let filteredData: StormDataType[] = [];
 
     // if there is a region selected
     if (yearFilter) {
@@ -82,7 +68,6 @@ const HeatMap = ({
       });
     } else {
       console.log('NO FILTER');
-
       filteredData = stormData;
     }
 
@@ -92,13 +77,13 @@ const HeatMap = ({
       ([key, value]) => ({ key, value })
     );
 
-    const stormDatabyEvent = Array.from(
-      d3.group(filteredData, (d) => d.EVENT),
-      ([key, value]) => ({ key, value })
-    );
+    // const stormDatabyEvent = Array.from(
+    //   d3.group(filteredData, (d) => d.EVENT),
+    //   ([key, value]) => ({ key, value })
+    // );
 
     // merge
-    const stateData: StateData[] = [];
+    const stateData: StateDataDimensions[] = [];
 
     stormDataByState.forEach((state) => {
       const { key: stateName } = state;
@@ -115,7 +100,7 @@ const HeatMap = ({
       >;
 
       // sum up the totals per state
-      state.value.forEach((entry: StormData) => {
+      state.value.forEach((entry: StormDataType) => {
         const eventType = entry.EVENT || 'misc';
 
         DAMAGE_PROPERTY_EVENT_SUM += entry.DAMAGE_PROPERTY_EVENT_SUM;
@@ -142,10 +127,13 @@ const HeatMap = ({
         TOTAL_EVENTS,
         COUNTS_BY_EVENT,
       });
+
+      // setStateData(stateData);
     }); // end foreach
 
     console.log('stateData');
     console.log(stateData);
+    return stateData;
   };
 
   // load geo data on init
@@ -166,19 +154,32 @@ const HeatMap = ({
   useEffect(() => {
     console.log('DRAW');
     const svg = d3.select(svgRef.current);
-    console.log('stormData: ', !!stormData);
-    console.log();
-    if (!!stormData) wrangleData();
 
-    // @ts-ignore
-    // const colorScale = d3.scaleLinear().range(colorsRange);
-    // const legendScale = d3.scaleLinear().range([0, vis.legendWidth]);
+    let stateDataDisplay: StateDataDimensions[];
+    if (!!stormData) {
+      stateDataDisplay = wrangleData();
+    } else {
+      return;
+    }
+    console.log(stateDataDisplay);
 
     // use resized dimensions
     // but fall back to getBoundingClientRect, if no dimensions yet.
     const { width: svgWidth, height: svgHeight } =
       dimensions || wrapperRef.current.getBoundingClientRect();
+
     svg.attr('width', svgWidth).attr('height', svgHeight);
+
+    const [min, max] = d3.extent(stateDataDisplay, (d) => d[selectedDimension]);
+    const stepSize = (max - min) / colorsRange.length;
+    const metricsDomain = d3.range(min, max, stepSize);
+
+    const colorScale = d3
+      .scaleLinear()
+      .domain(metricsDomain)
+      // @ts-ignore
+      .range(colorsRange);
+
     const svgContent = svg
       .select('.content')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
@@ -197,16 +198,36 @@ const HeatMap = ({
       .classed('state', true)
       .attr('stroke-width', '0.5px')
       .attr('stroke', 'white')
-      .attr('data', (d) => {
-        // console.log('test');
-        // console.log(d);
-        return 'test';
+      .attr('data', (feature) => {
+        return getFillColor(feature, stateDataDisplay);
       })
       .transition()
       .duration(500)
+      .attr('fill', (feature) => getFillColor(feature, stateDataDisplay))
       .attr('d', pathGenerator);
-  }, [yearFilter, selectedMetric, geographies, stormData]);
-  // console.lo;
+
+    // Internal Functions
+    function getFillColor(d: GeoJsonFeatureType, stateData: StateDataDimensions[]) {
+      const { name } = d.properties;
+      const stateName = name as GeoRegionUSType;
+      const stateInfo = getStateInfoByStateName(stateName, stateData);
+
+      if (stateInfo && stateInfo[selectedDimension])
+        return colorScale(stateInfo[selectedDimension]);
+      return 'grey';
+    }
+
+    function getStateInfoByStateName(
+      stateName: GeoRegionUSType,
+      statedData: StateDataDimensions[]
+    ) {
+      for (const localData of statedData) {
+        if (localData.STATE.toLowerCase() === stateName.toLowerCase()) return localData;
+      }
+      return null;
+    }
+  }, [yearFilter, selectedDimension, stormData]);
+
   return (
     <div ref={wrapperRef} style={{ width: '100%', height: '100%' }} className={`${id}-wrapper`}>
       <svg ref={svgRef}>
@@ -232,14 +253,13 @@ export default HeatMap;
 //  'LAKE SUPERIOR',
 //  'ST LAWRENCE R', ]
 
-
-type StateData = {
-  COUNTS_BY_EVENT: Record<StormEventCategoryType, number>,
-  DAMAGE_PROPERTY_EVENT_SUM: number,
-  DEATHS_DIRECT_COUNT: number,
-  DEATHS_INDIRECT_COUNT: number,
-  DEATHS_TOTAL_COUNT: number,
-  INJURIES_DIRECT_COUNT: number,
-  STATE: GeoRegionUS,
-  TOTAL_EVENTS: number,
+type StateDataDimensions = {
+  COUNTS_BY_EVENT: Record<StormEventCategoryType, number>;
+  DAMAGE_PROPERTY_EVENT_SUM: number;
+  DEATHS_DIRECT_COUNT: number;
+  DEATHS_INDIRECT_COUNT: number;
+  DEATHS_TOTAL_COUNT: number;
+  INJURIES_DIRECT_COUNT: number;
+  STATE: GeoRegionUSType;
+  TOTAL_EVENTS: number;
 };

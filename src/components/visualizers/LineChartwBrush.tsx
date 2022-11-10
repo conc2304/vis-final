@@ -88,8 +88,8 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
     const brush = d3
       .brushX()
       .extent([
-        [0, 0],
-        [innerWidth, innerHeight + 10],
+        [margin.left, 0],
+        [innerWidth + margin.left, innerHeight + 10],
       ])
       .on('brush end', (event) => {
         const {

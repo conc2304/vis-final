@@ -4,11 +4,11 @@ import './App.scss';
 import HeatMap from './components/visualizers/HeatMap';
 import LineChart from './components/visualizers/LineChartwBrush';
 import GlobalTempData from './data/Global_Temp_Data';
-import { StormData } from './data/types';
+import {  StormDataType } from './data/types';
 
 function App() {
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
-  const [stormData, setStormData] = useState<StormData[]>(null);
+  const [stormData, setStormData] = useState<StormDataType[]>(null);
   const handleOnBrush = ([start, end]) => {
     setSeletedBrushYears(end > start ? [start, end] : [end, start]);
   };
@@ -17,7 +17,7 @@ function App() {
     const promises = [d3.json('/data/Storm_Data_Sums.json')];
 
     Promise.all(promises).then((data) => {
-      setStormData(data[0] as StormData[]);
+      setStormData(data[0] as StormDataType[]);
     });
   }, []);
 
@@ -36,7 +36,7 @@ function App() {
               left: 0,
             }}
             id="storm-data-heatmap"
-            selectedMetric="EVENT_COUNT"
+            selectedDimension="TOTAL_EVENTS"
           />
         </div>
 
