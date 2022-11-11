@@ -29,7 +29,7 @@ function App() {
       <header className="App-header">
         <h1>APP TITLE</h1>
         <div style={{ width: '80%', border: '2px solid white', height: '500px' }}>
-          <div style={{ width: '45%', border: '2px solid white', height: '500px', display: "inline-block"}}>
+          {/* <div style={{ width: '45%', border: '2px solid white', height: '500px', display: "inline-block"}}> */}
             {/* <HeatMap
               yearFilter={selectedBrushYears}
               stormData={stormData}
@@ -44,9 +44,9 @@ function App() {
               eventFilter={selectedEventType}
               colorsRange={COLOR_RANGE}
             /> */}
-          </div>
+          {/* </div> */}
 
-          <div style={{ width: '45%', border: '2px solid white', height: '500px', display: "inline-block" }}>
+          <div style={{ width: '100%', border: '2px solid white', height: '500px', display: "inline-block" }}>
             <MultiLineChart
               yearFilter={selectedBrushYears}
               stormData={stormData}
