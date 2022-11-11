@@ -1,4 +1,3 @@
-
 export const stormEventToTypeMap = {
   'Astronomical Low Tide': null,
   'Coastal Flood': 'Flood',
@@ -186,3 +185,14 @@ export const STORM_EVENT_REGIONS = [
   'ST LAWRENCE R',
   'Kentucky',
 ] as const;
+
+export const COLOR_RANGE = [
+  '#010002', // blackish
+  '#7C30FC', // purple
+  '#1233E4', // blue
+  '#22FCE1', // aqua
+  '#17CE26', // green
+  '#EAFF06', // yellow
+  '#FFB508', // orange
+  '#FE2222', // red
+];

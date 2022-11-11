@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import * as d3 from 'd3';
 import './App.scss';
 import HeatMap from './components/visualizers/HeatMap';
-import LineChart from './components/visualizers/LineChartwBrush';
+import LineChart from './components/visualizers/LineChartBrushed';
 import GlobalTempData from './data/Global_Temp_Data';
-import {  StormDataType } from './data/types';
+import { StormDataType, StormEventCategoryType } from './data/types';
+import { COLOR_RANGE } from './data/constants';
+import MultiLineChart from './components/visualizers/MultiLineChart';
 
 function App() {
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
+  const [selectedEventType, setSelectedEventType] = useState<StormEventCategoryType | null>(null);
   const [stormData, setStormData] = useState<StormDataType[]>(null);
   const handleOnBrush = ([start, end]) => {
     setSeletedBrushYears(end > start ? [start, end] : [end, start]);
@@ -26,18 +29,39 @@ function App() {
       <header className="App-header">
         <h1>APP TITLE</h1>
         <div style={{ width: '80%', border: '2px solid white', height: '500px' }}>
-          <HeatMap
-            yearFilter={selectedBrushYears}
-            stormData={stormData}
-            margin={{
-              top: 10,
-              bottom: 30,
-              right: 30,
-              left: 0,
-            }}
-            id="storm-data-heatmap"
-            selectedDimension="TOTAL_EVENTS"
-          />
+          <div style={{ width: '45%', border: '2px solid white', height: '500px', display: "inline-block"}}>
+            {/* <HeatMap
+              yearFilter={selectedBrushYears}
+              stormData={stormData}
+              margin={{
+                top: 10,
+                bottom: 30,
+                right: 30,
+                left: 0,
+              }}
+              id="storm-data-heatmap"
+              selectedDimension="TOTAL_EVENTS"
+              eventFilter={selectedEventType}
+              colorsRange={COLOR_RANGE}
+            /> */}
+          </div>
+
+          <div style={{ width: '45%', border: '2px solid white', height: '500px', display: "inline-block" }}>
+            <MultiLineChart
+              yearFilter={selectedBrushYears}
+              stormData={stormData}
+              margin={{
+                top: 10,
+                bottom: 30,
+                right: 30,
+                left: 0,
+              }}
+              id="storm-data-multi-line"
+              selectedDimension="TOTAL_EVENTS"
+              // eventFilter={selectedEventType}
+              // colorsRange={COLOR_RANGE}
+            />
+          </div>
         </div>
 
         <div style={{ width: '80%', border: '2px solid white', height: '15vw' }}>

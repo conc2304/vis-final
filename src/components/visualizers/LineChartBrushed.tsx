@@ -11,7 +11,7 @@ type Props = {
   title?: string;
   onBrush?: (selectionYears: [number, number]) => unknown;
   lineColor?: string;
-  id: string;
+  id?: string;
 };
 
 const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
@@ -118,6 +118,13 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
           <text>{title}</text>
         </g>
         <g className="brush-group"></g>
+      </svg>
+    </div>
+  );
+};
+
+export default LineChart;
+
 
         {/* <g> // todo maybe make this a pop up
           <text
@@ -129,9 +136,3 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
             anomaly indicates that the observed temperature was cooler than the reference value.
           </text>
         </g> */}
-      </svg>
-    </div>
-  );
-};
-
-export default LineChart;

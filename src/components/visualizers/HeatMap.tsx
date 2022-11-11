@@ -2,12 +2,12 @@ import * as d3 from 'd3';
 import { useState, useRef, useEffect } from 'react';
 import { geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
-import { Feature, FeatureCollection, Geometry } from 'geojson';
+import { Feature,  Geometry } from 'geojson';
 import {
   GeoJsonFeatureType,
   GeoRegionUSType,
-  NumericStormMetricType,
   SelectedDimensionsType,
+  StateDataDimensions,
   StormDataType,
   StormEventCategoryType,
 } from '../../data/types';
@@ -21,6 +21,7 @@ type Props = {
   margin: Margin;
   id: string;
   yearFilter: [number, number] | null;
+  eventFilter: StormEventCategoryType | null;
   colorsRange?: string[];
   selectedDimension: SelectedDimensionsType;
 };
@@ -39,16 +40,17 @@ const defaultColorRange = [
 const HeatMap = ({
   id,
   stormData,
-  yearFilter,
   margin,
   selectedDimension,
   colorsRange = defaultColorRange,
+  yearFilter = null,
+  eventFilter = null,
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
 
-  const [selectedState, setSelectedState] = useState<GeoRegionUSType>(null);
+  // const [selectedState, setSelectedState] = useState<GeoRegionUSType>(null); // TODO
 
   const [geographies, setGeographies] = useState<[] | Array<Feature<Geometry | null>>>([]);
   // const [stateData, setStateData] = useState<StateData[]>([]);
@@ -58,16 +60,21 @@ const HeatMap = ({
     let filteredData: StormDataType[] = [];
 
     // if there is a region selected
-    if (yearFilter) {
-      console.log('FILTER');
+    if (yearFilter || eventFilter) {
+      const doYearFilter = yearFilter !== null;
+      const doEventFilter = eventFilter !== null;
+
       stormData.forEach((row) => {
         const [yearMin, yearMax] = yearFilter;
-        if (yearMin <= row.YEAR && row.YEAR <= yearMax) {
+
+        const eventConditionIsTrue = doEventFilter && row.EVENT === eventFilter;
+        const yearConditionIsTrue = doYearFilter && yearMin <= row.YEAR && row.YEAR <= yearMax;
+
+        if (yearConditionIsTrue || eventConditionIsTrue) {
           filteredData.push(row);
         }
       });
     } else {
-      console.log('NO FILTER');
       filteredData = stormData;
     }
 
@@ -128,7 +135,6 @@ const HeatMap = ({
         COUNTS_BY_EVENT,
       });
 
-      // setStateData(stateData);
     }); // end foreach
 
     console.log('stateData');
@@ -138,6 +144,8 @@ const HeatMap = ({
 
   // load geo data on init
   useEffect(() => {
+    // ONINIT Callback
+    
     // ?? do we want locally or over cdn ??
     // d3.json('/data/states-10m.json').then((geoData: any) => {
     d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then((geoData) => {
@@ -253,13 +261,3 @@ export default HeatMap;
 //  'LAKE SUPERIOR',
 //  'ST LAWRENCE R', ]
 
-type StateDataDimensions = {
-  COUNTS_BY_EVENT: Record<StormEventCategoryType, number>;
-  DAMAGE_PROPERTY_EVENT_SUM: number;
-  DEATHS_DIRECT_COUNT: number;
-  DEATHS_INDIRECT_COUNT: number;
-  DEATHS_TOTAL_COUNT: number;
-  INJURIES_DIRECT_COUNT: number;
-  STATE: GeoRegionUSType;
-  TOTAL_EVENTS: number;
-};
