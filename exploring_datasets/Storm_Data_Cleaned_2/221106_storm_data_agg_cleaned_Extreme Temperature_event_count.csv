@@ -1,0 +1,1075 @@
+STATE,YEAR,EVENT_COUNT,INJURIES_DIRECT_COUNT,DEATHS_DIRECT_COUNT,DEATHS_INDIRECT_COUNT,DAMAGE_PROPERTY_EVENT_SUM,EVENT
+ALABAMA,1996,70,0,1,0,920280,Extreme Temperature
+ALABAMA,1997,13,1,0,0,252500,Extreme Temperature
+ALABAMA,1998,27,0,2,0,305000,Extreme Temperature
+ALABAMA,1999,43,0,3,0,3553030,Extreme Temperature
+ALABAMA,2000,87,0,4,0,51622750,Extreme Temperature
+ALABAMA,2001,24,0,0,0,752500,Extreme Temperature
+ALABAMA,2002,39,0,0,0,550000,Extreme Temperature
+ALABAMA,2003,48,0,1,0,682500,Extreme Temperature
+ALABAMA,2004,8,0,0,0,250000,Extreme Temperature
+ALABAMA,2005,12,0,3,0,302500,Extreme Temperature
+ALABAMA,2006,2,0,0,0,25000,Extreme Temperature
+ALABAMA,2007,149,31,12,1,29067780,Extreme Temperature
+ALABAMA,2008,36,3,0,0,75250,Extreme Temperature
+ALABAMA,2009,31,2,0,0,2855250,Extreme Temperature
+ALABAMA,2010,67,5,1,0,8080000,Extreme Temperature
+ALABAMA,2011,39,2,1,0,352750,Extreme Temperature
+ALABAMA,2012,232,4,7,0,28292590,Extreme Temperature
+ALABAMA,2013,19,0,0,0,5852500,Extreme Temperature
+ALABAMA,2014,28,0,0,0,1527500,Extreme Temperature
+ALABAMA,2015,32,0,0,0,6055000,Extreme Temperature
+ALABAMA,2016,23,1,0,0,77500,Extreme Temperature
+ALABAMA,2017,12,0,0,0,57500,Extreme Temperature
+ALABAMA,2018,92,0,0,0,9325000,Extreme Temperature
+ALABAMA,2019,124,0,0,0,4572500,Extreme Temperature
+ALABAMA,2020,16,0,0,0,302500,Extreme Temperature
+ALABAMA,2021,73,0,0,0,26985030,Extreme Temperature
+ALABAMA,2022,60,0,0,0,310500,Extreme Temperature
+ALASKA,1996,31,0,0,0,2852500,Extreme Temperature
+ALASKA,2000,23,0,3,0,627500,Extreme Temperature
+ALASKA,2001,9,0,0,0,25000,Extreme Temperature
+ALASKA,2003,9,0,0,0,0,Extreme Temperature
+ALASKA,2004,9,0,0,0,27500,Extreme Temperature
+ALASKA,2005,4,0,0,0,2750000,Extreme Temperature
+ALASKA,2006,1,0,0,0,25000,Extreme Temperature
+ALASKA,2007,15,0,0,0,25250,Extreme Temperature
+ALASKA,2008,30,0,0,0,550250,Extreme Temperature
+ALASKA,2009,30,0,0,0,352530,Extreme Temperature
+ALASKA,2010,8,0,0,0,275000,Extreme Temperature
+ALASKA,2011,11,0,0,0,5000,Extreme Temperature
+ALASKA,2012,41,0,0,0,308000,Extreme Temperature
+ALASKA,2013,7,0,0,0,2500,Extreme Temperature
+ALASKA,2014,1,0,0,0,30,Extreme Temperature
+ALASKA,2018,5,0,0,0,0,Extreme Temperature
+ALASKA,2020,1,0,0,0,25000,Extreme Temperature
+ALASKA,2021,3,0,0,0,252500,Extreme Temperature
+ALASKA,2022,4,0,0,0,277500,Extreme Temperature
+AMERICAN SAMOA,2016,1,0,0,0,0,Extreme Temperature
+AMERICAN SAMOA,2022,3,0,0,0,25000,Extreme Temperature
+ARIZONA,2002,1,0,0,0,0,Extreme Temperature
+ARIZONA,2003,1,0,0,0,0,Extreme Temperature
+ARIZONA,2004,3,0,0,0,255000,Extreme Temperature
+ARIZONA,2005,8,0,8,0,250,Extreme Temperature
+ARIZONA,2006,1,0,0,0,0,Extreme Temperature
+ARIZONA,2007,6,0,0,2,25250,Extreme Temperature
+ARIZONA,2008,3,0,1,0,250000,Extreme Temperature
+ARIZONA,2009,3,0,0,1,27500,Extreme Temperature
+ARIZONA,2010,5,0,2,0,2550000,Extreme Temperature
+ARIZONA,2011,35,0,2,0,25627530,Extreme Temperature
+ARIZONA,2012,4,1,4,0,250,Extreme Temperature
+ARIZONA,2013,67,3,4,0,281370250,Extreme Temperature
+ARIZONA,2014,3,0,2,0,25000,Extreme Temperature
+ARIZONA,2015,14,5,1,0,255500,Extreme Temperature
+ARIZONA,2016,22,2,6,0,82530,Extreme Temperature
+ARIZONA,2017,25,0,1,0,2530,Extreme Temperature
+ARIZONA,2018,294,5,94,52,12563620,Extreme Temperature
+ARIZONA,2019,357,2,91,32,1020982090,Extreme Temperature
+ARIZONA,2020,496,0,82,0,47488620,Extreme Temperature
+ARIZONA,2021,69,0,29,1,3735250,Extreme Temperature
+ARIZONA,2022,46,0,21,0,2955030,Extreme Temperature
+ARKANSAS,1998,12,0,1,0,277500,Extreme Temperature
+ARKANSAS,1999,14,0,10,0,605000,Extreme Temperature
+ARKANSAS,2000,4,0,1,0,250250,Extreme Temperature
+ARKANSAS,2001,1,0,1,0,0,Extreme Temperature
+ARKANSAS,2002,1,1,1,0,250,Extreme Temperature
+ARKANSAS,2005,2,0,0,0,25000,Extreme Temperature
+ARKANSAS,2006,22,0,1,0,280000,Extreme Temperature
+ARKANSAS,2007,181,1,1,0,4815060,Extreme Temperature
+ARKANSAS,2008,61,1,0,1,3353030,Extreme Temperature
+ARKANSAS,2009,43,0,1,0,2825000,Extreme Temperature
+ARKANSAS,2010,345,4,7,0,42061280,Extreme Temperature
+ARKANSAS,2011,113,0,1,0,4710280,Extreme Temperature
+ARKANSAS,2012,192,0,4,0,7571870,Extreme Temperature
+ARKANSAS,2013,30,1,0,0,307500,Extreme Temperature
+ARKANSAS,2014,42,0,0,0,2607500,Extreme Temperature
+ARKANSAS,2015,52,1,2,0,307500,Extreme Temperature
+ARKANSAS,2016,104,0,1,0,8630250,Extreme Temperature
+ARKANSAS,2017,80,0,1,0,1327780,Extreme Temperature
+ARKANSAS,2018,165,0,0,0,8940530,Extreme Temperature
+ARKANSAS,2019,158,0,1,0,10263150,Extreme Temperature
+ARKANSAS,2020,64,0,0,0,925250,Extreme Temperature
+ARKANSAS,2021,95,0,0,0,25735500,Extreme Temperature
+ARKANSAS,2022,203,0,0,0,11318250,Extreme Temperature
+CALIFORNIA,1996,1,0,1,0,25000,Extreme Temperature
+CALIFORNIA,1997,17,0,4,0,25000,Extreme Temperature
+CALIFORNIA,1998,14,3,3,0,277500,Extreme Temperature
+CALIFORNIA,1999,23,1,0,0,755500,Extreme Temperature
+CALIFORNIA,2000,100,9,5,0,31383030,Extreme Temperature
+CALIFORNIA,2001,86,5,3,0,61222560,Extreme Temperature
+CALIFORNIA,2002,83,2,6,0,712500,Extreme Temperature
+CALIFORNIA,2003,56,6,4,0,5555000,Extreme Temperature
+CALIFORNIA,2004,63,0,0,0,31527560,Extreme Temperature
+CALIFORNIA,2005,33,0,2,0,627780,Extreme Temperature
+CALIFORNIA,2006,121,6,9,0,51663060,Extreme Temperature
+CALIFORNIA,2007,142,3,6,1,7125530,Extreme Temperature
+CALIFORNIA,2008,119,2,1,3,8268250,Extreme Temperature
+CALIFORNIA,2009,83,4,4,1,917530,Extreme Temperature
+CALIFORNIA,2010,29,0,0,0,575030,Extreme Temperature
+CALIFORNIA,2011,73,0,1,0,30218030,Extreme Temperature
+CALIFORNIA,2012,76,3,3,0,1407560,Extreme Temperature
+CALIFORNIA,2013,133,2,2,2,256795060,Extreme Temperature
+CALIFORNIA,2014,31,1,2,0,582780,Extreme Temperature
+CALIFORNIA,2015,79,1,0,0,51985250,Extreme Temperature
+CALIFORNIA,2016,106,3,3,0,1933030,Extreme Temperature
+CALIFORNIA,2017,129,8,8,1,29463060,Extreme Temperature
+CALIFORNIA,2018,148,2,3,0,36741000,Extreme Temperature
+CALIFORNIA,2019,265,2,2,2,112547060,Extreme Temperature
+CALIFORNIA,2020,420,1,8,1,22978780,Extreme Temperature
+CALIFORNIA,2021,369,3,5,0,25237120,Extreme Temperature
+CALIFORNIA,2022,248,0,2,1,21060840,Extreme Temperature
+COLORADO,1996,2,0,0,0,0,Extreme Temperature
+COLORADO,1997,2,0,0,0,30,Extreme Temperature
+COLORADO,2000,4,0,0,0,2500,Extreme Temperature
+COLORADO,2001,1,0,0,0,0,Extreme Temperature
+COLORADO,2003,21,0,0,0,27750,Extreme Temperature
+COLORADO,2004,16,0,0,0,5000,Extreme Temperature
+COLORADO,2005,13,0,0,0,5000250,Extreme Temperature
+COLORADO,2006,32,0,0,0,53000,Extreme Temperature
+COLORADO,2007,54,0,0,0,3105250,Extreme Temperature
+COLORADO,2008,19,0,0,0,102500,Extreme Temperature
+COLORADO,2009,29,0,0,0,300000,Extreme Temperature
+COLORADO,2010,12,0,0,0,250000,Extreme Temperature
+COLORADO,2011,20,0,0,0,250250,Extreme Temperature
+COLORADO,2012,18,0,0,0,0,Extreme Temperature
+COLORADO,2013,25,0,0,0,2530,Extreme Temperature
+COLORADO,2014,35,0,0,0,310000,Extreme Temperature
+COLORADO,2015,23,0,0,0,302500,Extreme Temperature
+COLORADO,2016,20,0,0,0,0,Extreme Temperature
+COLORADO,2017,25,0,0,0,1030000,Extreme Temperature
+COLORADO,2018,17,0,0,0,77500,Extreme Temperature
+COLORADO,2019,50,0,0,0,5645250,Extreme Temperature
+COLORADO,2020,68,0,0,0,910250,Extreme Temperature
+COLORADO,2021,54,0,0,0,1310030,Extreme Temperature
+COLORADO,2022,29,0,1,0,3277500,Extreme Temperature
+CONNECTICUT,1997,1,0,0,0,0,Extreme Temperature
+CONNECTICUT,1998,8,0,0,0,0,Extreme Temperature
+CONNECTICUT,1999,17,0,0,0,250000,Extreme Temperature
+CONNECTICUT,2000,20,0,0,0,352500,Extreme Temperature
+CONNECTICUT,2001,9,0,0,0,2500,Extreme Temperature
+CONNECTICUT,2002,8,0,1,0,5000,Extreme Temperature
+CONNECTICUT,2003,4,0,0,0,0,Extreme Temperature
+CONNECTICUT,2004,3,0,0,0,25000,Extreme Temperature
+CONNECTICUT,2005,4,0,0,0,0,Extreme Temperature
+CONNECTICUT,2006,4,0,0,0,2500,Extreme Temperature
+CONNECTICUT,2008,4,0,0,0,25000,Extreme Temperature
+CONNECTICUT,2009,2,0,0,0,0,Extreme Temperature
+CONNECTICUT,2010,20,0,0,0,55000,Extreme Temperature
+CONNECTICUT,2011,17,0,0,0,325000,Extreme Temperature
+CONNECTICUT,2012,1,0,0,0,0,Extreme Temperature
+CONNECTICUT,2013,12,0,0,0,52530,Extreme Temperature
+CONNECTICUT,2015,2,0,0,0,0,Extreme Temperature
+CONNECTICUT,2016,10,0,0,0,555000,Extreme Temperature
+CONNECTICUT,2017,1,0,0,0,0,Extreme Temperature
+CONNECTICUT,2018,15,0,0,0,250000,Extreme Temperature
+CONNECTICUT,2019,29,0,0,0,382500,Extreme Temperature
+CONNECTICUT,2020,7,0,0,0,25000,Extreme Temperature
+CONNECTICUT,2021,8,0,0,0,2500000,Extreme Temperature
+CONNECTICUT,2022,4,0,0,0,30,Extreme Temperature
+DELAWARE,1996,5,1,0,0,27500,Extreme Temperature
+DELAWARE,1997,32,1,0,0,132500,Extreme Temperature
+DELAWARE,1998,38,2,1,0,582780,Extreme Temperature
+DELAWARE,1999,21,6,2,0,528250,Extreme Temperature
+DELAWARE,2000,13,0,0,0,328030,Extreme Temperature
+DELAWARE,2001,25,0,0,0,3057500,Extreme Temperature
+DELAWARE,2002,31,0,0,0,252530,Extreme Temperature
+DELAWARE,2003,3,0,0,0,0,Extreme Temperature
+DELAWARE,2005,10,0,0,0,0,Extreme Temperature
+DELAWARE,2006,4,1,1,0,25500,Extreme Temperature
+DELAWARE,2007,25,4,4,0,252500,Extreme Temperature
+DELAWARE,2008,8,0,0,0,0,Extreme Temperature
+DELAWARE,2009,3,0,0,0,275000,Extreme Temperature
+DELAWARE,2010,18,0,0,0,75000,Extreme Temperature
+DELAWARE,2011,8,2,0,0,25000,Extreme Temperature
+DELAWARE,2012,24,0,0,0,2950000,Extreme Temperature
+DELAWARE,2013,9,0,1,0,75002500,Extreme Temperature
+DELAWARE,2014,15,0,1,0,57530,Extreme Temperature
+DELAWARE,2015,7,0,0,0,25250,Extreme Temperature
+DELAWARE,2016,2,2,0,0,0,Extreme Temperature
+DELAWARE,2017,2,0,0,0,0,Extreme Temperature
+DELAWARE,2018,1,0,0,0,0,Extreme Temperature
+DELAWARE,2021,3,0,0,0,2500000,Extreme Temperature
+DISTRICT OF COLUMBIA,1996,1,1,0,0,250000,Extreme Temperature
+DISTRICT OF COLUMBIA,1997,4,2,2,0,250000,Extreme Temperature
+DISTRICT OF COLUMBIA,1998,3,0,0,0,0,Extreme Temperature
+DISTRICT OF COLUMBIA,1999,2,1,1,0,0,Extreme Temperature
+DISTRICT OF COLUMBIA,2000,7,1,0,0,50000,Extreme Temperature
+DISTRICT OF COLUMBIA,2001,3,0,0,0,0,Extreme Temperature
+DISTRICT OF COLUMBIA,2002,6,0,0,0,275000,Extreme Temperature
+DISTRICT OF COLUMBIA,2004,1,0,0,0,0,Extreme Temperature
+DISTRICT OF COLUMBIA,2005,1,0,0,0,0,Extreme Temperature
+DISTRICT OF COLUMBIA,2006,4,0,1,0,0,Extreme Temperature
+DISTRICT OF COLUMBIA,2007,6,0,0,0,27500,Extreme Temperature
+DISTRICT OF COLUMBIA,2011,7,0,0,0,25000,Extreme Temperature
+DISTRICT OF COLUMBIA,2012,7,0,0,0,300000,Extreme Temperature
+DISTRICT OF COLUMBIA,2013,3,0,0,0,0,Extreme Temperature
+DISTRICT OF COLUMBIA,2016,8,0,0,0,25000,Extreme Temperature
+DISTRICT OF COLUMBIA,2017,5,0,0,0,50000,Extreme Temperature
+DISTRICT OF COLUMBIA,2018,4,0,0,0,0,Extreme Temperature
+DISTRICT OF COLUMBIA,2019,4,0,0,0,250000,Extreme Temperature
+DISTRICT OF COLUMBIA,2020,2,0,0,0,0,Extreme Temperature
+DISTRICT OF COLUMBIA,2021,1,0,0,0,0,Extreme Temperature
+FLORIDA,1996,31,0,0,0,5360000,Extreme Temperature
+FLORIDA,1997,14,0,1,0,275030,Extreme Temperature
+FLORIDA,1998,10,1,4,0,25250,Extreme Temperature
+FLORIDA,1999,17,0,0,0,555000,Extreme Temperature
+FLORIDA,2000,111,0,0,0,4825250,Extreme Temperature
+FLORIDA,2001,121,1,1,0,4243240,Extreme Temperature
+FLORIDA,2002,89,0,0,0,3583590,Extreme Temperature
+FLORIDA,2003,105,0,2,0,26530250,Extreme Temperature
+FLORIDA,2004,25,0,0,0,52500,Extreme Temperature
+FLORIDA,2005,29,0,0,0,3038060,Extreme Temperature
+FLORIDA,2006,11,0,1,0,5310,Extreme Temperature
+FLORIDA,2007,41,0,0,0,3280310,Extreme Temperature
+FLORIDA,2008,41,0,0,0,11107530,Extreme Temperature
+FLORIDA,2009,114,0,3,0,30145840,Extreme Temperature
+FLORIDA,2010,136,0,1,2,3558530,Extreme Temperature
+FLORIDA,2011,2,2,0,0,0,Extreme Temperature
+FLORIDA,2012,84,1,0,0,8232500,Extreme Temperature
+FLORIDA,2013,24,0,0,0,325250,Extreme Temperature
+FLORIDA,2014,1,0,0,0,0,Extreme Temperature
+FLORIDA,2017,3,3,0,0,25000,Extreme Temperature
+FLORIDA,2018,10,0,0,0,27530,Extreme Temperature
+FLORIDA,2021,4,0,0,0,25000,Extreme Temperature
+FLORIDA,2022,18,0,1,0,25102500,Extreme Temperature
+GEORGIA,1996,23,0,0,0,2802500,Extreme Temperature
+GEORGIA,1997,7,0,0,0,2502500,Extreme Temperature
+GEORGIA,1998,19,0,0,0,3025000,Extreme Temperature
+GEORGIA,1999,224,1,4,0,11828370,Extreme Temperature
+GEORGIA,2000,394,0,0,0,44483960,Extreme Temperature
+GEORGIA,2001,388,0,0,0,21571120,Extreme Temperature
+GEORGIA,2002,583,0,0,0,23582360,Extreme Temperature
+GEORGIA,2003,194,0,0,0,31471590,Extreme Temperature
+GEORGIA,2004,4,0,0,0,0,Extreme Temperature
+GEORGIA,2005,16,0,0,0,25000,Extreme Temperature
+GEORGIA,2006,21,0,1,0,302500,Extreme Temperature
+GEORGIA,2007,222,0,3,0,32617840,Extreme Temperature
+GEORGIA,2010,17,0,2,0,250250,Extreme Temperature
+GEORGIA,2011,3,0,0,0,25000,Extreme Temperature
+GEORGIA,2012,216,0,0,0,60321500,Extreme Temperature
+GEORGIA,2015,2,0,1,0,2500,Extreme Temperature
+GEORGIA,2016,3,0,3,0,2530,Extreme Temperature
+GEORGIA,2017,26,0,0,0,308030,Extreme Temperature
+GEORGIA,2019,1,0,1,0,2500,Extreme Temperature
+GEORGIA,2022,1,0,1,0,0,Extreme Temperature
+IDAHO,2001,3,0,0,0,0,Extreme Temperature
+IDAHO,2002,22,0,0,0,605250,Extreme Temperature
+IDAHO,2003,9,0,0,0,250030,Extreme Temperature
+IDAHO,2006,3,0,0,0,0,Extreme Temperature
+IDAHO,2007,7,0,0,0,25000,Extreme Temperature
+IDAHO,2008,6,0,0,0,2500,Extreme Temperature
+IDAHO,2009,4,0,0,0,7500,Extreme Temperature
+IDAHO,2010,4,0,0,0,0,Extreme Temperature
+IDAHO,2011,9,0,0,0,25000,Extreme Temperature
+IDAHO,2012,1,0,0,0,0,Extreme Temperature
+IDAHO,2013,23,0,1,1,55250,Extreme Temperature
+IDAHO,2014,15,0,0,0,530000,Extreme Temperature
+IDAHO,2016,2,0,0,0,0,Extreme Temperature
+IDAHO,2017,8,0,0,0,2500,Extreme Temperature
+IDAHO,2018,3,0,0,0,0,Extreme Temperature
+IDAHO,2019,3,0,0,0,27500,Extreme Temperature
+IDAHO,2020,6,0,0,0,250000,Extreme Temperature
+IDAHO,2021,13,0,0,0,2552780,Extreme Temperature
+IDAHO,2022,6,0,1,0,50000,Extreme Temperature
+ILLINOIS,1996,2,0,2,0,27500,Extreme Temperature
+ILLINOIS,1997,109,2,7,0,12395810,Extreme Temperature
+ILLINOIS,1998,101,6,6,0,4035810,Extreme Temperature
+ILLINOIS,1999,137,5,19,0,54576810,Extreme Temperature
+ILLINOIS,2000,123,0,2,0,6390250,Extreme Temperature
+ILLINOIS,2001,166,0,8,0,14005620,Extreme Temperature
+ILLINOIS,2002,89,3,8,0,3465250,Extreme Temperature
+ILLINOIS,2003,61,0,3,0,1238000,Extreme Temperature
+ILLINOIS,2004,31,0,0,0,307750,Extreme Temperature
+ILLINOIS,2005,143,9,6,0,51390750,Extreme Temperature
+ILLINOIS,2006,207,3,9,0,6090590,Extreme Temperature
+ILLINOIS,2007,293,4,9,0,282583250,Extreme Temperature
+ILLINOIS,2008,145,0,3,0,8361310,Extreme Temperature
+ILLINOIS,2009,196,0,14,0,5644310,Extreme Temperature
+ILLINOIS,2010,292,3,5,0,18633840,Extreme Temperature
+ILLINOIS,2011,313,3,13,0,287677870,Extreme Temperature
+ILLINOIS,2012,320,0,7,1,199931060,Extreme Temperature
+ILLINOIS,2013,120,0,5,0,4368000,Extreme Temperature
+ILLINOIS,2014,206,0,4,0,19123060,Extreme Temperature
+ILLINOIS,2015,145,0,1,0,4062780,Extreme Temperature
+ILLINOIS,2016,118,1,1,0,51390250,Extreme Temperature
+ILLINOIS,2017,101,1,2,0,890280,Extreme Temperature
+ILLINOIS,2018,228,0,0,0,108912870,Extreme Temperature
+ILLINOIS,2019,168,0,4,0,31068090,Extreme Temperature
+ILLINOIS,2020,114,0,0,0,8760750,Extreme Temperature
+ILLINOIS,2021,126,0,0,0,8310780,Extreme Temperature
+ILLINOIS,2022,125,0,1,0,2943000,Extreme Temperature
+INDIANA,1997,59,0,0,0,4342530,Extreme Temperature
+INDIANA,1998,12,0,0,0,2500,Extreme Temperature
+INDIANA,1999,14,0,0,0,3055250,Extreme Temperature
+INDIANA,2000,13,0,1,0,2500,Extreme Temperature
+INDIANA,2001,12,0,0,0,30250,Extreme Temperature
+INDIANA,2003,6,0,0,0,25030,Extreme Temperature
+INDIANA,2004,4,0,0,0,0,Extreme Temperature
+INDIANA,2005,24,1,0,0,302500,Extreme Temperature
+INDIANA,2006,20,0,0,0,2757530,Extreme Temperature
+INDIANA,2007,73,0,0,0,2947500,Extreme Temperature
+INDIANA,2008,25,0,0,0,2780000,Extreme Temperature
+INDIANA,2009,39,0,0,0,1000250,Extreme Temperature
+INDIANA,2010,35,1,0,0,1280250,Extreme Temperature
+INDIANA,2011,53,0,0,1,3130030,Extreme Temperature
+INDIANA,2012,53,0,1,0,6010250,Extreme Temperature
+INDIANA,2013,24,0,0,0,55000,Extreme Temperature
+INDIANA,2014,48,0,0,0,1055030,Extreme Temperature
+INDIANA,2015,53,1,0,1,387780,Extreme Temperature
+INDIANA,2016,61,0,0,0,2558000,Extreme Temperature
+INDIANA,2017,18,0,0,0,52530,Extreme Temperature
+INDIANA,2018,53,0,0,0,1712750,Extreme Temperature
+INDIANA,2019,81,0,0,0,11883090,Extreme Temperature
+INDIANA,2020,39,0,0,0,332500,Extreme Temperature
+INDIANA,2021,36,0,0,0,3030000,Extreme Temperature
+INDIANA,2022,43,0,0,0,3850250,Extreme Temperature
+IOWA,1996,39,0,0,0,80000,Extreme Temperature
+IOWA,1997,73,1,0,0,25457780,Extreme Temperature
+IOWA,1999,65,1,0,0,5447750,Extreme Temperature
+IOWA,2000,91,0,1,0,1630000,Extreme Temperature
+IOWA,2001,82,0,2,0,3677500,Extreme Temperature
+IOWA,2003,11,0,0,0,27500,Extreme Temperature
+IOWA,2005,29,0,0,0,52500,Extreme Temperature
+IOWA,2006,10,0,1,0,500000,Extreme Temperature
+IOWA,2007,46,0,0,0,3387500,Extreme Temperature
+IOWA,2008,69,0,0,0,11405500,Extreme Temperature
+IOWA,2009,91,0,1,0,1437560,Extreme Temperature
+IOWA,2010,53,0,0,0,585280,Extreme Temperature
+IOWA,2011,126,1,0,0,280518280,Extreme Temperature
+IOWA,2012,215,2,0,0,60400870,Extreme Temperature
+IOWA,2013,26,0,0,0,25000,Extreme Temperature
+IOWA,2014,141,0,0,0,6120650,Extreme Temperature
+IOWA,2015,31,0,0,0,585000,Extreme Temperature
+IOWA,2016,191,0,0,1,13040810,Extreme Temperature
+IOWA,2017,121,0,0,0,1635750,Extreme Temperature
+IOWA,2018,184,0,0,0,43083840,Extreme Temperature
+IOWA,2019,289,0,3,0,12056710,Extreme Temperature
+IOWA,2020,47,0,0,0,5393030,Extreme Temperature
+IOWA,2021,43,0,0,0,152780,Extreme Temperature
+IOWA,2022,46,0,0,0,3980310,Extreme Temperature
+KANSAS,1996,1,0,0,0,250000,Extreme Temperature
+KANSAS,1997,5,0,0,0,2530,Extreme Temperature
+KANSAS,1998,4,0,2,0,0,Extreme Temperature
+KANSAS,1999,33,0,2,0,407500,Extreme Temperature
+KANSAS,2000,167,3,1,0,4972780,Extreme Temperature
+KANSAS,2001,54,0,0,0,101485030,Extreme Temperature
+KANSAS,2002,23,0,0,0,525500,Extreme Temperature
+KANSAS,2003,17,0,0,0,2525060,Extreme Temperature
+KANSAS,2004,10,0,0,0,0,Extreme Temperature
+KANSAS,2005,11,0,1,0,25000,Extreme Temperature
+KANSAS,2006,139,2,3,0,7182500,Extreme Temperature
+KANSAS,2007,95,0,0,0,3957530,Extreme Temperature
+KANSAS,2009,13,0,0,0,27530,Extreme Temperature
+KANSAS,2010,239,0,0,0,15793250,Extreme Temperature
+KANSAS,2011,198,1,4,0,3645000,Extreme Temperature
+KANSAS,2012,59,0,0,0,3380030,Extreme Temperature
+KANSAS,2013,6,0,0,0,5250,Extreme Temperature
+KANSAS,2014,43,0,1,0,1052750,Extreme Temperature
+KANSAS,2015,1,0,1,0,0,Extreme Temperature
+KANSAS,2016,15,1,1,0,450000,Extreme Temperature
+KANSAS,2017,6,0,0,0,0,Extreme Temperature
+KANSAS,2018,3,0,0,0,2500,Extreme Temperature
+KANSAS,2019,11,0,0,0,30250,Extreme Temperature
+KANSAS,2021,82,0,2,0,9062560,Extreme Temperature
+KANSAS,2022,5,0,0,0,5000,Extreme Temperature
+KENTUCKY,1997,52,0,0,0,4083750,Extreme Temperature
+KENTUCKY,1998,78,0,1,0,31365750,Extreme Temperature
+KENTUCKY,1999,42,0,2,0,880280,Extreme Temperature
+KENTUCKY,2000,69,1,0,0,3890000,Extreme Temperature
+KENTUCKY,2001,74,0,0,0,6137500,Extreme Temperature
+KENTUCKY,2002,16,0,0,0,5250,Extreme Temperature
+KENTUCKY,2003,30,1,0,0,662750,Extreme Temperature
+KENTUCKY,2004,6,0,0,0,2500,Extreme Temperature
+KENTUCKY,2005,74,10,0,0,470000,Extreme Temperature
+KENTUCKY,2006,91,1,0,0,51880090,Extreme Temperature
+KENTUCKY,2007,261,2,1,0,8626280,Extreme Temperature
+KENTUCKY,2008,177,0,0,1,7625560,Extreme Temperature
+KENTUCKY,2009,92,0,0,0,5967750,Extreme Temperature
+KENTUCKY,2010,579,5,1,0,43912140,Extreme Temperature
+KENTUCKY,2011,183,4,1,0,3490560,Extreme Temperature
+KENTUCKY,2012,138,0,1,0,875060,Extreme Temperature
+KENTUCKY,2013,83,0,0,0,1210280,Extreme Temperature
+KENTUCKY,2014,96,0,0,0,31127750,Extreme Temperature
+KENTUCKY,2015,128,0,2,0,26341000,Extreme Temperature
+KENTUCKY,2016,290,0,0,0,9032780,Extreme Temperature
+KENTUCKY,2017,67,0,0,1,635030,Extreme Temperature
+KENTUCKY,2018,194,0,0,0,14920750,Extreme Temperature
+KENTUCKY,2019,159,0,2,0,16608500,Extreme Temperature
+KENTUCKY,2020,166,0,0,0,2523280,Extreme Temperature
+KENTUCKY,2021,132,0,0,0,11516060,Extreme Temperature
+KENTUCKY,2022,118,1,0,0,8287780,Extreme Temperature
+LOUISIANA,1996,1,0,1,0,0,Extreme Temperature
+LOUISIANA,1997,1,0,0,0,25000,Extreme Temperature
+LOUISIANA,1998,8,0,7,0,252500,Extreme Temperature
+LOUISIANA,1999,3,1,2,0,0,Extreme Temperature
+LOUISIANA,2000,41,0,7,0,80000,Extreme Temperature
+LOUISIANA,2001,1,0,1,0,0,Extreme Temperature
+LOUISIANA,2002,2,0,2,0,0,Extreme Temperature
+LOUISIANA,2005,11,0,2,0,5000,Extreme Temperature
+LOUISIANA,2006,11,0,2,0,27500,Extreme Temperature
+LOUISIANA,2007,9,0,0,0,2775000,Extreme Temperature
+LOUISIANA,2008,2,0,2,0,0,Extreme Temperature
+LOUISIANA,2010,16,0,6,0,5027500,Extreme Temperature
+LOUISIANA,2011,94,1,7,0,3662840,Extreme Temperature
+LOUISIANA,2012,2,1,2,0,0,Extreme Temperature
+LOUISIANA,2014,2,0,2,0,25000,Extreme Temperature
+LOUISIANA,2015,34,0,0,0,30000,Extreme Temperature
+LOUISIANA,2016,119,0,0,0,975000,Extreme Temperature
+LOUISIANA,2017,51,0,0,0,3105000,Extreme Temperature
+LOUISIANA,2018,60,1,2,0,30077780,Extreme Temperature
+LOUISIANA,2019,127,0,0,0,58395030,Extreme Temperature
+LOUISIANA,2020,121,0,1,0,3855250,Extreme Temperature
+LOUISIANA,2021,114,0,0,0,1112530,Extreme Temperature
+LOUISIANA,2022,157,0,2,0,6565560,Extreme Temperature
+MAINE,1998,54,0,0,0,1232750,Extreme Temperature
+MAINE,2000,98,0,0,0,32358810,Extreme Temperature
+MAINE,2001,59,0,0,0,28390280,Extreme Temperature
+MAINE,2002,4,0,0,0,0,Extreme Temperature
+MAINE,2007,23,0,0,0,105250,Extreme Temperature
+MAINE,2009,21,0,0,0,800000,Extreme Temperature
+MAINE,2012,3,0,0,0,25250,Extreme Temperature
+MAINE,2013,36,0,0,0,2780250,Extreme Temperature
+MAINE,2014,21,0,0,0,252500,Extreme Temperature
+MAINE,2015,15,0,0,0,50250,Extreme Temperature
+MAINE,2016,15,0,0,0,5000,Extreme Temperature
+MAINE,2017,10,0,0,0,25000,Extreme Temperature
+MAINE,2018,34,0,0,0,835250,Extreme Temperature
+MAINE,2019,10,0,0,0,0,Extreme Temperature
+MAINE,2020,17,0,0,0,2550250,Extreme Temperature
+MAINE,2021,44,0,0,0,3860000,Extreme Temperature
+MAINE,2022,14,0,0,0,27560,Extreme Temperature
+MARYLAND,1996,23,1,0,0,580280,Extreme Temperature
+MARYLAND,1997,77,7,2,0,3840280,Extreme Temperature
+MARYLAND,1998,89,1,1,0,76215780,Extreme Temperature
+MARYLAND,1999,58,16,1,0,488250,Extreme Temperature
+MARYLAND,2000,135,1,0,0,58635960,Extreme Temperature
+MARYLAND,2001,95,0,3,0,3480030,Extreme Temperature
+MARYLAND,2002,135,0,21,0,1425250,Extreme Temperature
+MARYLAND,2003,10,0,0,0,275000,Extreme Temperature
+MARYLAND,2004,4,0,0,0,0,Extreme Temperature
+MARYLAND,2005,40,0,0,0,27625000,Extreme Temperature
+MARYLAND,2006,62,2,6,0,7605000,Extreme Temperature
+MARYLAND,2007,100,0,1,0,10480530,Extreme Temperature
+MARYLAND,2008,15,0,2,0,250000,Extreme Temperature
+MARYLAND,2009,6,0,0,0,77500,Extreme Temperature
+MARYLAND,2010,31,2,5,0,3252500,Extreme Temperature
+MARYLAND,2011,88,1,2,0,6082810,Extreme Temperature
+MARYLAND,2012,164,0,2,1,4322560,Extreme Temperature
+MARYLAND,2013,75,0,2,0,2970530,Extreme Temperature
+MARYLAND,2014,47,0,0,0,180000,Extreme Temperature
+MARYLAND,2015,35,0,0,1,838530,Extreme Temperature
+MARYLAND,2016,148,0,0,0,14100250,Extreme Temperature
+MARYLAND,2017,47,0,0,0,300060,Extreme Temperature
+MARYLAND,2018,111,0,12,0,26095280,Extreme Temperature
+MARYLAND,2019,92,0,2,0,3765000,Extreme Temperature
+MARYLAND,2020,98,0,0,0,32858280,Extreme Temperature
+MARYLAND,2021,55,0,0,0,615280,Extreme Temperature
+MASSACHUSETTS,1996,3,0,0,0,25000,Extreme Temperature
+MASSACHUSETTS,1997,1,0,0,0,0,Extreme Temperature
+MASSACHUSETTS,1998,16,0,0,0,25052500,Extreme Temperature
+MASSACHUSETTS,1999,19,0,1,0,575030,Extreme Temperature
+MASSACHUSETTS,2000,6,0,0,0,2527500,Extreme Temperature
+MASSACHUSETTS,2001,8,0,0,0,300000,Extreme Temperature
+MASSACHUSETTS,2002,3,0,0,0,2500,Extreme Temperature
+MASSACHUSETTS,2003,4,0,0,0,0,Extreme Temperature
+MASSACHUSETTS,2004,2,0,0,0,2500000,Extreme Temperature
+MASSACHUSETTS,2005,2,0,0,0,0,Extreme Temperature
+MASSACHUSETTS,2007,2,0,1,0,0,Extreme Temperature
+MASSACHUSETTS,2008,1,0,0,0,0,Extreme Temperature
+MASSACHUSETTS,2009,5,0,0,0,0,Extreme Temperature
+MASSACHUSETTS,2010,26,0,0,0,580250,Extreme Temperature
+MASSACHUSETTS,2011,12,0,0,0,25000,Extreme Temperature
+MASSACHUSETTS,2013,3,0,1,0,0,Extreme Temperature
+MASSACHUSETTS,2015,19,0,0,0,5552750,Extreme Temperature
+MASSACHUSETTS,2016,18,0,0,0,2527590,Extreme Temperature
+MASSACHUSETTS,2017,2,0,0,0,2500,Extreme Temperature
+MASSACHUSETTS,2018,21,0,0,0,325000,Extreme Temperature
+MASSACHUSETTS,2019,10,0,0,0,250030,Extreme Temperature
+MASSACHUSETTS,2020,4,0,0,0,0,Extreme Temperature
+MASSACHUSETTS,2021,8,0,0,0,2500,Extreme Temperature
+MASSACHUSETTS,2022,2,0,0,0,2500,Extreme Temperature
+MICHIGAN,1999,35,3,0,0,385250,Extreme Temperature
+MICHIGAN,2000,34,0,0,0,105060,Extreme Temperature
+MICHIGAN,2001,43,7,2,0,282500,Extreme Temperature
+MICHIGAN,2002,7,3,4,0,25030,Extreme Temperature
+MICHIGAN,2003,3,0,3,0,250,Extreme Temperature
+MICHIGAN,2006,107,19,0,0,282737530,Extreme Temperature
+MICHIGAN,2007,47,0,0,0,858000,Extreme Temperature
+MICHIGAN,2008,11,0,1,0,0,Extreme Temperature
+MICHIGAN,2009,44,0,0,0,80280,Extreme Temperature
+MICHIGAN,2010,16,0,2,0,52500,Extreme Temperature
+MICHIGAN,2011,17,0,2,0,300250,Extreme Temperature
+MICHIGAN,2012,69,11,0,0,957500,Extreme Temperature
+MICHIGAN,2013,49,6,0,1,4745000,Extreme Temperature
+MICHIGAN,2014,48,0,0,0,26157560,Extreme Temperature
+MICHIGAN,2015,73,0,0,0,14177530,Extreme Temperature
+MICHIGAN,2017,1,0,0,0,0,Extreme Temperature
+MICHIGAN,2018,62,0,0,0,5860030,Extreme Temperature
+MICHIGAN,2019,14,0,0,0,2500,Extreme Temperature
+MICHIGAN,2021,3,0,0,0,60,Extreme Temperature
+MICHIGAN,2022,25,0,0,0,282500,Extreme Temperature
+MINNESOTA,1999,105,0,2,0,34765750,Extreme Temperature
+MINNESOTA,2001,162,0,3,0,78465530,Extreme Temperature
+MINNESOTA,2004,14,0,0,0,2750,Extreme Temperature
+MINNESOTA,2005,1,0,0,0,0,Extreme Temperature
+MINNESOTA,2006,44,0,0,0,25082500,Extreme Temperature
+MINNESOTA,2007,33,0,1,0,610280,Extreme Temperature
+MINNESOTA,2008,223,0,2,0,33005530,Extreme Temperature
+MINNESOTA,2009,49,0,2,0,9380000,Extreme Temperature
+MINNESOTA,2010,43,0,0,0,2875500,Extreme Temperature
+MINNESOTA,2011,162,0,1,0,10342870,Extreme Temperature
+MINNESOTA,2012,114,0,1,0,13588280,Extreme Temperature
+MINNESOTA,2013,173,2,1,0,35270030,Extreme Temperature
+MINNESOTA,2014,440,0,2,0,39766960,Extreme Temperature
+MINNESOTA,2015,180,0,0,0,3375780,Extreme Temperature
+MINNESOTA,2016,247,2,2,0,10774620,Extreme Temperature
+MINNESOTA,2017,114,1,0,0,6727530,Extreme Temperature
+MINNESOTA,2018,170,1,1,0,4911400,Extreme Temperature
+MINNESOTA,2019,269,0,2,0,25690620,Extreme Temperature
+MINNESOTA,2020,113,0,0,0,275983500,Extreme Temperature
+MINNESOTA,2021,248,0,1,0,339999370,Extreme Temperature
+MINNESOTA,2022,299,0,0,0,30307120,Extreme Temperature
+MISSISSIPPI,2000,23,0,17,0,2550000,Extreme Temperature
+MISSISSIPPI,2001,2,1,1,0,25000,Extreme Temperature
+MISSISSIPPI,2005,87,0,2,0,30705250,Extreme Temperature
+MISSISSIPPI,2006,48,0,1,0,6102500,Extreme Temperature
+MISSISSIPPI,2007,97,0,2,0,9663060,Extreme Temperature
+MISSISSIPPI,2008,1,0,1,0,2500,Extreme Temperature
+MISSISSIPPI,2010,297,1,9,0,7427780,Extreme Temperature
+MISSISSIPPI,2011,61,0,0,1,3055000,Extreme Temperature
+MISSISSIPPI,2012,23,0,1,0,3300250,Extreme Temperature
+MISSISSIPPI,2016,19,0,0,0,5002530,Extreme Temperature
+MISSISSIPPI,2017,26,0,1,0,500000,Extreme Temperature
+MISSISSIPPI,2018,135,0,1,0,85040250,Extreme Temperature
+MISSISSIPPI,2019,115,0,0,1,51982500,Extreme Temperature
+MISSISSIPPI,2020,29,0,0,0,275000,Extreme Temperature
+MISSISSIPPI,2021,93,0,0,0,29382560,Extreme Temperature
+MISSISSIPPI,2022,193,0,1,0,7742810,Extreme Temperature
+MISSOURI,1996,8,3,2,0,252500,Extreme Temperature
+MISSOURI,1997,28,4,3,0,75278000,Extreme Temperature
+MISSOURI,1998,63,18,3,0,1007780,Extreme Temperature
+MISSOURI,1999,150,13,17,0,59390340,Extreme Temperature
+MISSOURI,2000,333,15,13,0,90588310,Extreme Temperature
+MISSOURI,2001,485,11,21,0,314707400,Extreme Temperature
+MISSOURI,2002,131,38,12,0,29600250,Extreme Temperature
+MISSOURI,2003,120,19,9,0,15223780,Extreme Temperature
+MISSOURI,2004,38,7,1,0,1102500,Extreme Temperature
+MISSOURI,2005,113,7,5,0,4222500,Extreme Temperature
+MISSOURI,2006,239,11,8,0,9347780,Extreme Temperature
+MISSOURI,2007,276,8,5,0,32543340,Extreme Temperature
+MISSOURI,2008,77,2,0,0,1080060,Extreme Temperature
+MISSOURI,2009,92,3,1,0,2235280,Extreme Temperature
+MISSOURI,2010,291,12,5,0,31343280,Extreme Temperature
+MISSOURI,2011,313,20,8,2,45548590,Extreme Temperature
+MISSOURI,2012,365,13,11,0,70810780,Extreme Temperature
+MISSOURI,2013,87,2,2,0,4113180,Extreme Temperature
+MISSOURI,2014,105,3,0,0,4748280,Extreme Temperature
+MISSOURI,2015,161,3,1,0,27278250,Extreme Temperature
+MISSOURI,2016,138,4,4,0,2168750,Extreme Temperature
+MISSOURI,2017,86,3,2,0,50965280,Extreme Temperature
+MISSOURI,2018,139,15,1,0,29415560,Extreme Temperature
+MISSOURI,2019,89,2,0,0,1913560,Extreme Temperature
+MISSOURI,2020,77,0,0,0,85280,Extreme Temperature
+MISSOURI,2021,259,2,0,0,33928310,Extreme Temperature
+MISSOURI,2022,89,0,1,0,26110280,Extreme Temperature
+MONTANA,1997,1,0,0,0,0,Extreme Temperature
+MONTANA,2000,14,0,0,0,0,Extreme Temperature
+MONTANA,2002,8,0,0,0,2502500,Extreme Temperature
+MONTANA,2003,16,0,0,0,127750,Extreme Temperature
+MONTANA,2007,35,0,0,0,280000,Extreme Temperature
+MONTANA,2008,78,0,0,0,585030,Extreme Temperature
+MONTANA,2009,11,0,1,0,555000,Extreme Temperature
+MONTANA,2010,2,0,0,0,0,Extreme Temperature
+MONTANA,2011,64,0,0,1,3402750,Extreme Temperature
+MONTANA,2012,6,0,0,0,2500,Extreme Temperature
+MONTANA,2013,30,0,0,0,52500,Extreme Temperature
+MONTANA,2014,44,0,0,0,900000,Extreme Temperature
+MONTANA,2016,27,0,0,0,102500,Extreme Temperature
+MONTANA,2017,35,0,0,0,5625500,Extreme Temperature
+MONTANA,2018,39,0,1,0,357500,Extreme Temperature
+MONTANA,2019,44,0,0,0,600030,Extreme Temperature
+MONTANA,2020,7,0,0,0,0,Extreme Temperature
+MONTANA,2021,31,0,0,0,3027750,Extreme Temperature
+MONTANA,2022,20,0,0,0,1077750,Extreme Temperature
+NEBRASKA,1999,32,0,2,0,810500,Extreme Temperature
+NEBRASKA,2000,84,0,0,0,5955750,Extreme Temperature
+NEBRASKA,2001,35,0,1,0,28035000,Extreme Temperature
+NEBRASKA,2003,30,0,1,0,302750,Extreme Temperature
+NEBRASKA,2005,30,0,0,0,3032500,Extreme Temperature
+NEBRASKA,2006,24,0,0,0,55000,Extreme Temperature
+NEBRASKA,2007,24,0,0,0,782500,Extreme Temperature
+NEBRASKA,2008,55,0,0,0,1360500,Extreme Temperature
+NEBRASKA,2009,27,0,0,0,300000,Extreme Temperature
+NEBRASKA,2010,142,0,0,0,3548030,Extreme Temperature
+NEBRASKA,2011,227,0,0,0,42165590,Extreme Temperature
+NEBRASKA,2012,90,1,1,0,1462810,Extreme Temperature
+NEBRASKA,2013,40,0,0,0,2852780,Extreme Temperature
+NEBRASKA,2014,80,0,0,0,3385500,Extreme Temperature
+NEBRASKA,2016,37,0,0,0,903000,Extreme Temperature
+NEBRASKA,2017,44,0,0,0,302500,Extreme Temperature
+NEBRASKA,2018,18,0,0,0,277500,Extreme Temperature
+NEBRASKA,2019,65,0,0,0,9330310,Extreme Temperature
+NEBRASKA,2020,24,0,0,0,87530,Extreme Temperature
+NEBRASKA,2021,93,0,0,0,4413590,Extreme Temperature
+NEBRASKA,2022,33,0,0,0,25852840,Extreme Temperature
+NEVADA,2001,1,0,1,0,0,Extreme Temperature
+NEVADA,2003,2,0,2,0,0,Extreme Temperature
+NEVADA,2004,1,0,0,0,0,Extreme Temperature
+NEVADA,2006,3,0,0,0,275000,Extreme Temperature
+NEVADA,2007,14,0,11,1,255000,Extreme Temperature
+NEVADA,2008,16,0,11,0,5525000,Extreme Temperature
+NEVADA,2009,6,0,6,0,2500,Extreme Temperature
+NEVADA,2010,13,0,8,0,25250,Extreme Temperature
+NEVADA,2011,6,0,3,0,275000,Extreme Temperature
+NEVADA,2012,6,0,4,0,0,Extreme Temperature
+NEVADA,2013,16,4,10,5,500000000,Extreme Temperature
+NEVADA,2014,11,0,9,0,250000,Extreme Temperature
+NEVADA,2015,15,3,11,9,530000,Extreme Temperature
+NEVADA,2016,13,1,11,9,555250,Extreme Temperature
+NEVADA,2017,19,0,19,11,525000,Extreme Temperature
+NEVADA,2018,24,0,22,16,2577500,Extreme Temperature
+NEVADA,2019,40,0,11,10,812750,Extreme Temperature
+NEVADA,2020,46,0,1,0,5080000,Extreme Temperature
+NEVADA,2021,40,0,4,1,25560560,Extreme Temperature
+NEVADA,2022,20,0,9,7,2850250,Extreme Temperature
+NEW HAMPSHIRE,1998,24,0,0,0,130030,Extreme Temperature
+NEW HAMPSHIRE,2000,60,0,0,0,7240750,Extreme Temperature
+NEW HAMPSHIRE,2001,20,0,0,0,627530,Extreme Temperature
+NEW HAMPSHIRE,2007,2,0,0,0,275000,Extreme Temperature
+NEW HAMPSHIRE,2010,2,0,0,0,252500,Extreme Temperature
+NEW HAMPSHIRE,2011,1,0,0,0,250000,Extreme Temperature
+NEW JERSEY,1996,20,0,0,0,503030,Extreme Temperature
+NEW JERSEY,1997,152,3,0,0,2408590,Extreme Temperature
+NEW JERSEY,1998,199,3,0,0,7763060,Extreme Temperature
+NEW JERSEY,1999,117,3,11,0,255892810,Extreme Temperature
+NEW JERSEY,2000,78,0,0,0,27642750,Extreme Temperature
+NEW JERSEY,2001,152,0,2,0,6525500,Extreme Temperature
+NEW JERSEY,2002,154,0,2,0,6046090,Extreme Temperature
+NEW JERSEY,2003,27,0,0,0,80000,Extreme Temperature
+NEW JERSEY,2005,74,0,1,0,8902750,Extreme Temperature
+NEW JERSEY,2006,26,4,1,0,102500,Extreme Temperature
+NEW JERSEY,2007,147,0,2,0,29055250,Extreme Temperature
+NEW JERSEY,2008,39,8,0,1,1102780,Extreme Temperature
+NEW JERSEY,2009,20,3,0,0,0,Extreme Temperature
+NEW JERSEY,2010,80,0,1,0,860000,Extreme Temperature
+NEW JERSEY,2011,55,16,2,0,8552530,Extreme Temperature
+NEW JERSEY,2012,120,1,1,0,57287810,Extreme Temperature
+NEW JERSEY,2013,75,0,0,0,5967750,Extreme Temperature
+NEW JERSEY,2014,26,0,0,0,300000,Extreme Temperature
+NEW JERSEY,2015,33,1,0,0,8125030,Extreme Temperature
+NEW JERSEY,2016,12,2,0,0,0,Extreme Temperature
+NEW JERSEY,2017,3,0,0,0,0,Extreme Temperature
+NEW JERSEY,2018,10,0,0,0,525000,Extreme Temperature
+NEW JERSEY,2019,11,0,0,0,250250,Extreme Temperature
+NEW JERSEY,2021,21,0,0,0,300000,Extreme Temperature
+NEW MEXICO,1997,1,0,0,0,0,Extreme Temperature
+NEW MEXICO,1998,22,0,1,0,50000,Extreme Temperature
+NEW MEXICO,2000,44,0,0,0,302500,Extreme Temperature
+NEW MEXICO,2009,1,0,1,0,25000,Extreme Temperature
+NEW MEXICO,2010,2,0,1,1,0,Extreme Temperature
+NEW MEXICO,2011,46,0,0,0,805030,Extreme Temperature
+NEW MEXICO,2012,1,0,1,0,0,Extreme Temperature
+NEW MEXICO,2013,1,0,0,0,0,Extreme Temperature
+NEW MEXICO,2017,16,1,1,0,0,Extreme Temperature
+NEW MEXICO,2019,1,0,0,0,25000,Extreme Temperature
+NEW MEXICO,2021,6,0,0,0,2500,Extreme Temperature
+NEW MEXICO,2022,11,0,0,0,52560,Extreme Temperature
+NEW YORK,1996,4,0,0,0,0,Extreme Temperature
+NEW YORK,1997,2,0,0,0,0,Extreme Temperature
+NEW YORK,1998,50,0,0,0,6055500,Extreme Temperature
+NEW YORK,1999,63,0,5,0,4170280,Extreme Temperature
+NEW YORK,2000,102,0,2,0,4333000,Extreme Temperature
+NEW YORK,2001,47,1,2,0,780000,Extreme Temperature
+NEW YORK,2002,105,0,0,0,4240000,Extreme Temperature
+NEW YORK,2003,35,0,0,0,312530,Extreme Temperature
+NEW YORK,2004,33,0,0,0,352500,Extreme Temperature
+NEW YORK,2005,55,0,0,0,4885000,Extreme Temperature
+NEW YORK,2006,43,0,6,0,310560,Extreme Temperature
+NEW YORK,2007,34,0,5,0,2777500,Extreme Temperature
+NEW YORK,2008,100,0,0,0,10668000,Extreme Temperature
+NEW YORK,2009,100,0,0,0,29617750,Extreme Temperature
+NEW YORK,2010,188,0,4,0,3593280,Extreme Temperature
+NEW YORK,2011,109,0,5,0,11712840,Extreme Temperature
+NEW YORK,2012,232,0,1,0,61198870,Extreme Temperature
+NEW YORK,2013,111,0,7,0,757560,Extreme Temperature
+NEW YORK,2014,22,0,0,0,5785250,Extreme Temperature
+NEW YORK,2015,56,0,0,0,54455000,Extreme Temperature
+NEW YORK,2016,82,0,0,0,3608060,Extreme Temperature
+NEW YORK,2017,16,0,0,0,300000,Extreme Temperature
+NEW YORK,2018,202,0,3,0,15556150,Extreme Temperature
+NEW YORK,2019,172,0,1,0,6375900,Extreme Temperature
+NEW YORK,2020,184,0,0,0,34998280,Extreme Temperature
+NEW YORK,2021,115,0,0,0,6365500,Extreme Temperature
+NEW YORK,2022,108,0,0,0,4582650,Extreme Temperature
+NORTH CAROLINA,1996,10,0,0,0,2500,Extreme Temperature
+NORTH CAROLINA,1997,1,0,1,0,0,Extreme Temperature
+NORTH CAROLINA,1998,32,0,1,0,32780000,Extreme Temperature
+NORTH CAROLINA,1999,5,2,4,0,2500,Extreme Temperature
+NORTH CAROLINA,2000,30,0,0,0,2650000,Extreme Temperature
+NORTH CAROLINA,2001,4,0,1,0,252500,Extreme Temperature
+NORTH CAROLINA,2002,10,0,1,0,0,Extreme Temperature
+NORTH CAROLINA,2003,9,0,0,0,277750,Extreme Temperature
+NORTH CAROLINA,2004,39,0,0,0,28030000,Extreme Temperature
+NORTH CAROLINA,2005,4,0,2,0,0,Extreme Temperature
+NORTH CAROLINA,2006,3,0,0,0,0,Extreme Temperature
+NORTH CAROLINA,2007,62,1,1,0,30930000,Extreme Temperature
+NORTH CAROLINA,2008,3,0,3,0,30,Extreme Temperature
+NORTH CAROLINA,2011,19,0,0,0,2527500,Extreme Temperature
+NORTH CAROLINA,2012,56,0,0,0,555000,Extreme Temperature
+NORTH CAROLINA,2014,18,0,0,0,2805500,Extreme Temperature
+NORTH CAROLINA,2015,34,0,0,0,1607500,Extreme Temperature
+NORTH CAROLINA,2016,16,0,1,0,255250,Extreme Temperature
+NORTH CAROLINA,2017,12,0,1,0,25000,Extreme Temperature
+NORTH CAROLINA,2018,1,0,0,0,0,Extreme Temperature
+NORTH CAROLINA,2019,7,0,0,0,1000000,Extreme Temperature
+NORTH CAROLINA,2020,13,0,0,0,50000,Extreme Temperature
+NORTH DAKOTA,1997,1,1,1,0,0,Extreme Temperature
+NORTH DAKOTA,2000,1,0,1,0,0,Extreme Temperature
+NORTH DAKOTA,2001,27,0,0,0,27750,Extreme Temperature
+NORTH DAKOTA,2007,39,0,0,0,7562060,Extreme Temperature
+NORTH DAKOTA,2008,274,0,0,1,13724150,Extreme Temperature
+NORTH DAKOTA,2009,57,0,0,0,1085430,Extreme Temperature
+NORTH DAKOTA,2010,54,0,0,0,2780030,Extreme Temperature
+NORTH DAKOTA,2011,213,0,1,0,64507590,Extreme Temperature
+NORTH DAKOTA,2012,87,0,0,0,10683250,Extreme Temperature
+NORTH DAKOTA,2013,228,0,0,0,127379280,Extreme Temperature
+NORTH DAKOTA,2014,215,0,0,1,29160810,Extreme Temperature
+NORTH DAKOTA,2015,93,0,0,0,2492840,Extreme Temperature
+NORTH DAKOTA,2016,44,0,0,0,3455030,Extreme Temperature
+NORTH DAKOTA,2017,51,0,0,0,5152750,Extreme Temperature
+NORTH DAKOTA,2018,70,0,0,0,185590,Extreme Temperature
+NORTH DAKOTA,2019,118,0,0,0,2310780,Extreme Temperature
+NORTH DAKOTA,2020,38,0,0,0,2781000,Extreme Temperature
+NORTH DAKOTA,2021,106,0,0,0,762840,Extreme Temperature
+NORTH DAKOTA,2022,98,0,0,0,1720000,Extreme Temperature
+OHIO,1997,18,0,0,0,25000,Extreme Temperature
+OHIO,1998,27,0,0,0,15000,Extreme Temperature
+OHIO,1999,109,0,1,0,4090280,Extreme Temperature
+OHIO,2000,63,0,0,0,27708250,Extreme Temperature
+OHIO,2001,19,0,0,0,330000,Extreme Temperature
+OHIO,2002,38,0,0,0,3610030,Extreme Temperature
+OHIO,2003,13,0,0,0,0,Extreme Temperature
+OHIO,2004,18,0,0,0,502750,Extreme Temperature
+OHIO,2007,47,0,0,0,403000,Extreme Temperature
+OHIO,2008,1,0,1,0,25000,Extreme Temperature
+OHIO,2009,37,0,2,0,855250,Extreme Temperature
+OHIO,2011,20,0,0,0,0,Extreme Temperature
+OHIO,2012,103,0,1,0,1392590,Extreme Temperature
+OHIO,2014,97,0,0,0,9520560,Extreme Temperature
+OHIO,2015,74,0,0,0,11871340,Extreme Temperature
+OHIO,2018,1,0,0,0,0,Extreme Temperature
+OHIO,2019,136,0,2,0,19609780,Extreme Temperature
+OKLAHOMA,1996,17,0,5,0,32500,Extreme Temperature
+OKLAHOMA,1998,52,2,19,0,3665590,Extreme Temperature
+OKLAHOMA,1999,17,1,3,0,505250,Extreme Temperature
+OKLAHOMA,2000,5,0,5,0,302500,Extreme Temperature
+OKLAHOMA,2001,53,0,4,0,4416060,Extreme Temperature
+OKLAHOMA,2003,3,0,3,0,0,Extreme Temperature
+OKLAHOMA,2005,1,0,1,0,0,Extreme Temperature
+OKLAHOMA,2006,199,1,14,0,31670750,Extreme Temperature
+OKLAHOMA,2007,22,1,2,0,550000,Extreme Temperature
+OKLAHOMA,2008,4,2,2,0,25000,Extreme Temperature
+OKLAHOMA,2009,25,0,1,0,402500,Extreme Temperature
+OKLAHOMA,2010,84,6,1,0,31483280,Extreme Temperature
+OKLAHOMA,2011,104,3,7,0,26787840,Extreme Temperature
+OKLAHOMA,2012,47,5,0,0,26685250,Extreme Temperature
+OKLAHOMA,2013,31,2,0,0,305530,Extreme Temperature
+OKLAHOMA,2014,6,2,0,0,0,Extreme Temperature
+OKLAHOMA,2015,67,8,0,0,4410000,Extreme Temperature
+OKLAHOMA,2016,61,8,5,0,25662500,Extreme Temperature
+OKLAHOMA,2017,31,1,0,0,30527500,Extreme Temperature
+OKLAHOMA,2018,33,3,0,0,500000,Extreme Temperature
+OKLAHOMA,2019,86,1,0,0,29145500,Extreme Temperature
+OKLAHOMA,2020,61,0,2,0,6035000,Extreme Temperature
+OKLAHOMA,2021,64,1,0,0,705000,Extreme Temperature
+OKLAHOMA,2022,114,4,0,0,735560,Extreme Temperature
+OREGON,1998,1,0,1,0,0,Extreme Temperature
+OREGON,2000,44,0,0,0,3382750,Extreme Temperature
+OREGON,2001,44,0,0,0,6132810,Extreme Temperature
+OREGON,2002,65,0,0,0,100678000,Extreme Temperature
+OREGON,2003,29,0,0,0,3540000,Extreme Temperature
+OREGON,2004,3,0,0,0,0,Extreme Temperature
+OREGON,2006,103,0,0,0,917750,Extreme Temperature
+OREGON,2007,33,0,0,0,50000,Extreme Temperature
+OREGON,2008,70,0,0,2,1630590,Extreme Temperature
+OREGON,2009,37,0,1,0,5905250,Extreme Temperature
+OREGON,2010,60,0,0,0,6235030,Extreme Temperature
+OREGON,2011,72,0,0,0,253790310,Extreme Temperature
+OREGON,2012,39,0,0,0,855250,Extreme Temperature
+OREGON,2013,98,0,0,0,59735310,Extreme Temperature
+OREGON,2014,47,0,0,2,427780,Extreme Temperature
+OREGON,2015,41,1,1,3,5332560,Extreme Temperature
+OREGON,2016,27,1,0,4,80000,Extreme Temperature
+OREGON,2017,48,0,0,4,5427810,Extreme Temperature
+OREGON,2018,32,0,0,2,32827500,Extreme Temperature
+OREGON,2019,42,0,0,0,8503000,Extreme Temperature
+OREGON,2020,45,0,0,2,28027500,Extreme Temperature
+OREGON,2021,95,0,7,6,310780,Extreme Temperature
+OREGON,2022,45,0,2,1,685250,Extreme Temperature
+PENNSYLVANIA,1996,10,2,1,0,50000,Extreme Temperature
+PENNSYLVANIA,1997,71,3,7,0,1238280,Extreme Temperature
+PENNSYLVANIA,1998,90,1,5,0,4147560,Extreme Temperature
+PENNSYLVANIA,1999,72,4,13,0,10902530,Extreme Temperature
+PENNSYLVANIA,2000,44,0,7,0,5713000,Extreme Temperature
+PENNSYLVANIA,2001,83,0,7,0,2833000,Extreme Temperature
+PENNSYLVANIA,2002,72,0,11,0,26450280,Extreme Temperature
+PENNSYLVANIA,2003,10,0,3,0,27530,Extreme Temperature
+PENNSYLVANIA,2004,1,0,1,0,0,Extreme Temperature
+PENNSYLVANIA,2005,37,0,10,0,607500,Extreme Temperature
+PENNSYLVANIA,2006,83,1,6,0,6682750,Extreme Temperature
+PENNSYLVANIA,2007,180,0,4,0,5775840,Extreme Temperature
+PENNSYLVANIA,2008,74,5,5,3,35235250,Extreme Temperature
+PENNSYLVANIA,2009,60,1,2,0,5358250,Extreme Temperature
+PENNSYLVANIA,2010,38,0,9,0,605000,Extreme Temperature
+PENNSYLVANIA,2011,55,4,9,0,3382500,Extreme Temperature
+PENNSYLVANIA,2012,69,0,10,0,1367750,Extreme Temperature
+PENNSYLVANIA,2013,43,1,2,0,58000,Extreme Temperature
+PENNSYLVANIA,2014,90,0,0,0,2465840,Extreme Temperature
+PENNSYLVANIA,2015,145,0,3,0,8880810,Extreme Temperature
+PENNSYLVANIA,2016,23,0,2,1,575060,Extreme Temperature
+PENNSYLVANIA,2017,2,1,0,0,2500000,Extreme Temperature
+PENNSYLVANIA,2018,30,0,2,0,2505060,Extreme Temperature
+PENNSYLVANIA,2019,41,0,0,0,5860000,Extreme Temperature
+PENNSYLVANIA,2021,17,0,0,0,55000,Extreme Temperature
+PENNSYLVANIA,2022,8,0,1,0,82500,Extreme Temperature
+PUERTO RICO,2000,7,0,0,0,50030,Extreme Temperature
+RHODE ISLAND,1998,8,0,0,0,280000,Extreme Temperature
+RHODE ISLAND,1999,9,0,0,0,25000,Extreme Temperature
+RHODE ISLAND,2000,1,0,0,0,0,Extreme Temperature
+RHODE ISLAND,2001,3,0,0,0,0,Extreme Temperature
+RHODE ISLAND,2008,1,0,1,0,2500,Extreme Temperature
+RHODE ISLAND,2010,8,0,0,0,0,Extreme Temperature
+RHODE ISLAND,2011,3,0,0,0,0,Extreme Temperature
+RHODE ISLAND,2013,1,0,1,0,0,Extreme Temperature
+RHODE ISLAND,2015,4,0,0,0,0,Extreme Temperature
+RHODE ISLAND,2016,4,0,0,0,250000,Extreme Temperature
+SOUTH CAROLINA,1996,12,0,3,0,2500,Extreme Temperature
+SOUTH CAROLINA,1998,10,0,2,0,25000,Extreme Temperature
+SOUTH CAROLINA,1999,22,1,15,0,580030,Extreme Temperature
+SOUTH CAROLINA,2000,16,0,1,0,0,Extreme Temperature
+SOUTH CAROLINA,2001,2,0,0,0,25000,Extreme Temperature
+SOUTH CAROLINA,2002,2,0,1,0,0,Extreme Temperature
+SOUTH CAROLINA,2004,12,0,0,0,250000,Extreme Temperature
+SOUTH CAROLINA,2005,10,1,0,0,250000,Extreme Temperature
+SOUTH CAROLINA,2006,20,0,0,0,775250,Extreme Temperature
+SOUTH CAROLINA,2007,27,0,1,0,25827530,Extreme Temperature
+SOUTH CAROLINA,2009,1,0,1,0,0,Extreme Temperature
+SOUTH CAROLINA,2010,19,0,0,0,280,Extreme Temperature
+SOUTH CAROLINA,2011,22,1,1,0,52530,Extreme Temperature
+SOUTH CAROLINA,2012,47,0,1,0,932500,Extreme Temperature
+SOUTH CAROLINA,2014,1,0,1,0,0,Extreme Temperature
+SOUTH CAROLINA,2015,11,0,0,0,510000,Extreme Temperature
+SOUTH CAROLINA,2017,2,0,0,0,0,Extreme Temperature
+SOUTH CAROLINA,2019,1,0,1,0,0,Extreme Temperature
+SOUTH CAROLINA,2021,3,0,0,0,25000,Extreme Temperature
+SOUTH CAROLINA,2022,1,1,0,0,0,Extreme Temperature
+SOUTH DAKOTA,2006,68,0,1,0,262500,Extreme Temperature
+SOUTH DAKOTA,2007,4,0,0,0,300000,Extreme Temperature
+SOUTH DAKOTA,2008,103,0,0,0,4180530,Extreme Temperature
+SOUTH DAKOTA,2009,29,0,0,0,2880000,Extreme Temperature
+SOUTH DAKOTA,2010,50,0,0,0,25852500,Extreme Temperature
+SOUTH DAKOTA,2011,118,0,0,0,7432750,Extreme Temperature
+SOUTH DAKOTA,2012,121,1,0,0,9120620,Extreme Temperature
+SOUTH DAKOTA,2013,93,0,0,0,885250,Extreme Temperature
+SOUTH DAKOTA,2014,77,0,0,0,5638060,Extreme Temperature
+SOUTH DAKOTA,2015,8,0,0,0,25000,Extreme Temperature
+SOUTH DAKOTA,2016,158,0,0,0,47446370,Extreme Temperature
+SOUTH DAKOTA,2017,81,0,2,0,3282500,Extreme Temperature
+SOUTH DAKOTA,2018,119,0,1,0,9090370,Extreme Temperature
+SOUTH DAKOTA,2019,141,0,1,0,4248030,Extreme Temperature
+SOUTH DAKOTA,2020,29,0,0,0,77500,Extreme Temperature
+SOUTH DAKOTA,2021,72,0,0,0,3335250,Extreme Temperature
+SOUTH DAKOTA,2022,133,0,0,0,11635900,Extreme Temperature
+TENNESSEE,1998,2,0,2,0,25000,Extreme Temperature
+TENNESSEE,2000,1,0,1,0,25000,Extreme Temperature
+TENNESSEE,2004,1,0,1,0,0,Extreme Temperature
+TENNESSEE,2006,2,0,2,0,0,Extreme Temperature
+TENNESSEE,2007,74,2,3,0,3350500,Extreme Temperature
+TENNESSEE,2008,10,0,0,0,0,Extreme Temperature
+TENNESSEE,2009,7,0,2,0,50030,Extreme Temperature
+TENNESSEE,2010,249,3,10,2,2765560,Extreme Temperature
+TENNESSEE,2011,47,0,6,0,28030,Extreme Temperature
+TENNESSEE,2012,55,0,4,0,160280,Extreme Temperature
+TENNESSEE,2013,3,0,0,0,0,Extreme Temperature
+TENNESSEE,2014,18,0,0,0,27750,Extreme Temperature
+TENNESSEE,2015,17,0,1,0,5255250,Extreme Temperature
+TENNESSEE,2016,27,0,4,1,2575000,Extreme Temperature
+TENNESSEE,2017,50,0,0,0,2802500,Extreme Temperature
+TENNESSEE,2018,158,0,2,0,10121000,Extreme Temperature
+TENNESSEE,2019,120,0,2,0,4733000,Extreme Temperature
+TENNESSEE,2020,38,0,0,0,7500,Extreme Temperature
+TENNESSEE,2021,104,0,0,0,3732530,Extreme Temperature
+TENNESSEE,2022,245,1,0,0,3070810,Extreme Temperature
+TEXAS,1996,4,0,4,0,250000,Extreme Temperature
+TEXAS,1997,4,0,1,0,250000,Extreme Temperature
+TEXAS,1998,73,1,30,0,1155000,Extreme Temperature
+TEXAS,1999,103,0,12,0,26547560,Extreme Temperature
+TEXAS,2000,252,0,33,0,514991250,Extreme Temperature
+TEXAS,2001,20,0,20,0,552750,Extreme Temperature
+TEXAS,2002,3,0,2,0,0,Extreme Temperature
+TEXAS,2004,3,0,3,0,0,Extreme Temperature
+TEXAS,2005,4,0,4,0,0,Extreme Temperature
+TEXAS,2006,27,1,2,0,25255000,Extreme Temperature
+TEXAS,2007,4,3,2,0,250000,Extreme Temperature
+TEXAS,2008,39,0,3,0,80530,Extreme Temperature
+TEXAS,2009,96,0,5,2,3618090,Extreme Temperature
+TEXAS,2010,99,0,4,5,7545530,Extreme Temperature
+TEXAS,2011,298,7,26,7,157071560,Extreme Temperature
+TEXAS,2012,12,1,3,0,2500,Extreme Temperature
+TEXAS,2013,6,0,2,0,250000,Extreme Temperature
+TEXAS,2014,65,0,0,0,3452500,Extreme Temperature
+TEXAS,2015,52,1,5,3,75310,Extreme Temperature
+TEXAS,2016,150,2,6,2,3895840,Extreme Temperature
+TEXAS,2017,131,0,4,2,55662780,Extreme Temperature
+TEXAS,2018,140,0,8,2,4494120,Extreme Temperature
+TEXAS,2019,427,4,4,1,318067060,Extreme Temperature
+TEXAS,2020,476,1,2,0,43741400,Extreme Temperature
+TEXAS,2021,476,0,19,14,38032340,Extreme Temperature
+TEXAS,2022,575,2,2,0,47897400,Extreme Temperature
+UTAH,2003,8,0,0,0,252750,Extreme Temperature
+UTAH,2004,6,0,0,0,0,Extreme Temperature
+UTAH,2005,13,0,1,0,75000,Extreme Temperature
+UTAH,2006,6,0,0,0,250,Extreme Temperature
+UTAH,2007,9,0,0,0,250000,Extreme Temperature
+UTAH,2008,7,0,0,0,250000,Extreme Temperature
+UTAH,2009,6,0,0,0,25000,Extreme Temperature
+UTAH,2010,2,0,0,0,0,Extreme Temperature
+UTAH,2011,6,0,0,0,25000,Extreme Temperature
+UTAH,2012,4,0,0,0,0,Extreme Temperature
+UTAH,2013,15,0,3,0,75000,Extreme Temperature
+UTAH,2014,4,0,0,0,0,Extreme Temperature
+UTAH,2015,12,0,0,0,50000,Extreme Temperature
+UTAH,2016,4,0,0,0,5000000,Extreme Temperature
+UTAH,2017,3,0,0,0,275000,Extreme Temperature
+UTAH,2018,8,0,0,0,2750000,Extreme Temperature
+UTAH,2019,10,0,1,0,350000,Extreme Temperature
+UTAH,2020,8,0,0,0,250000,Extreme Temperature
+UTAH,2021,35,0,1,0,107500,Extreme Temperature
+UTAH,2022,16,0,1,0,2533280,Extreme Temperature
+VERMONT,1996,5,0,0,0,0,Extreme Temperature
+VERMONT,1998,8,0,0,0,32500,Extreme Temperature
+VERMONT,1999,4,0,0,0,2500,Extreme Temperature
+VERMONT,2000,4,0,0,0,25000,Extreme Temperature
+VERMONT,2002,6,0,0,0,2500000,Extreme Temperature
+VERMONT,2003,7,0,0,0,0,Extreme Temperature
+VERMONT,2004,3,0,0,0,0,Extreme Temperature
+VERMONT,2005,19,0,0,0,525000,Extreme Temperature
+VERMONT,2006,23,0,0,0,5532500,Extreme Temperature
+VERMONT,2007,48,0,0,0,477500,Extreme Temperature
+VERMONT,2008,2,0,0,0,0,Extreme Temperature
+VERMONT,2009,25,0,0,0,30250,Extreme Temperature
+VERMONT,2010,13,0,0,0,25000,Extreme Temperature
+VERMONT,2011,15,0,1,0,800000,Extreme Temperature
+VERMONT,2012,32,0,0,0,2880000,Extreme Temperature
+VERMONT,2013,1,0,0,0,0,Extreme Temperature
+VERMONT,2015,23,0,0,0,3057500,Extreme Temperature
+VERMONT,2016,3,0,0,0,25000,Extreme Temperature
+VERMONT,2017,2,0,0,0,2500000,Extreme Temperature
+VERMONT,2018,31,0,2,0,2805000,Extreme Temperature
+VERMONT,2019,10,0,0,0,2500000,Extreme Temperature
+VERMONT,2020,20,0,0,0,2552530,Extreme Temperature
+VERMONT,2021,6,0,0,0,2500250,Extreme Temperature
+VERMONT,2022,31,0,0,0,582750,Extreme Temperature
+VIRGIN ISLANDS,2000,3,0,0,0,2500,Extreme Temperature
+VIRGINIA,1996,62,0,0,0,462500,Extreme Temperature
+VIRGINIA,1997,64,4,0,0,3615030,Extreme Temperature
+VIRGINIA,1998,73,0,0,0,28430280,Extreme Temperature
+VIRGINIA,1999,51,9,1,0,1310250,Extreme Temperature
+VIRGINIA,2000,217,0,1,0,14471870,Extreme Temperature
+VIRGINIA,2001,93,0,0,0,685810,Extreme Temperature
+VIRGINIA,2002,146,0,0,0,258693090,Extreme Temperature
+VIRGINIA,2003,44,0,1,0,5610250,Extreme Temperature
+VIRGINIA,2004,14,0,0,0,5030,Extreme Temperature
+VIRGINIA,2005,32,0,1,0,335000,Extreme Temperature
+VIRGINIA,2006,86,0,0,0,1180280,Extreme Temperature
+VIRGINIA,2007,197,0,0,0,2653030,Extreme Temperature
+VIRGINIA,2008,10,0,1,0,0,Extreme Temperature
+VIRGINIA,2010,1,0,0,0,25000,Extreme Temperature
+VIRGINIA,2011,150,0,0,1,9651060,Extreme Temperature
+VIRGINIA,2012,267,0,0,1,321001560,Extreme Temperature
+VIRGINIA,2013,72,0,0,0,808000,Extreme Temperature
+VIRGINIA,2014,58,0,0,1,5590000,Extreme Temperature
+VIRGINIA,2015,49,0,0,0,2213030,Extreme Temperature
+VIRGINIA,2016,274,0,0,0,64148500,Extreme Temperature
+VIRGINIA,2017,64,0,0,0,480000,Extreme Temperature
+VIRGINIA,2018,157,0,0,1,14558250,Extreme Temperature
+VIRGINIA,2019,116,0,0,0,3505810,Extreme Temperature
+VIRGINIA,2020,169,0,0,0,2671400,Extreme Temperature
+VIRGINIA,2021,78,0,0,0,81445280,Extreme Temperature
+WASHINGTON,2002,23,0,0,0,25277500,Extreme Temperature
+WASHINGTON,2003,1,0,0,0,0,Extreme Temperature
+WASHINGTON,2005,3,0,1,0,0,Extreme Temperature
+WASHINGTON,2006,18,0,0,0,5050250,Extreme Temperature
+WASHINGTON,2008,13,0,0,1,550000,Extreme Temperature
+WASHINGTON,2009,6,0,2,0,0,Extreme Temperature
+WASHINGTON,2010,13,0,1,0,50075000,Extreme Temperature
+WASHINGTON,2013,7,0,0,0,50250,Extreme Temperature
+WASHINGTON,2014,6,0,0,1,0,Extreme Temperature
+WASHINGTON,2015,3,0,0,2,0,Extreme Temperature
+WASHINGTON,2016,2,0,0,2,0,Extreme Temperature
+WASHINGTON,2017,2,1,0,1,0,Extreme Temperature
+WASHINGTON,2020,5,0,0,0,25000,Extreme Temperature
+WASHINGTON,2021,60,1,5,1,380500,Extreme Temperature
+WASHINGTON,2022,27,0,0,0,300000,Extreme Temperature
+WEST VIRGINIA,1996,34,0,0,0,1005560,Extreme Temperature
+WEST VIRGINIA,1997,80,0,0,0,1485280,Extreme Temperature
+WEST VIRGINIA,1998,118,0,0,0,32125060,Extreme Temperature
+WEST VIRGINIA,1999,93,2,0,0,4135560,Extreme Temperature
+WEST VIRGINIA,2000,296,0,0,0,33261930,Extreme Temperature
+WEST VIRGINIA,2001,102,0,0,0,4015590,Extreme Temperature
+WEST VIRGINIA,2002,182,0,0,0,27540370,Extreme Temperature
+WEST VIRGINIA,2003,34,0,0,0,435250,Extreme Temperature
+WEST VIRGINIA,2004,62,0,0,0,6500250,Extreme Temperature
+WEST VIRGINIA,2005,7,0,0,0,0,Extreme Temperature
+WEST VIRGINIA,2006,32,0,0,0,357500,Extreme Temperature
+WEST VIRGINIA,2007,90,0,0,0,110280,Extreme Temperature
+WEST VIRGINIA,2009,4,0,0,0,2750,Extreme Temperature
+WEST VIRGINIA,2010,2,0,0,0,0,Extreme Temperature
+WEST VIRGINIA,2011,99,0,0,0,2066090,Extreme Temperature
+WEST VIRGINIA,2012,111,0,0,0,11553060,Extreme Temperature
+WEST VIRGINIA,2013,28,0,0,0,30480250,Extreme Temperature
+WEST VIRGINIA,2014,123,0,0,0,780250,Extreme Temperature
+WEST VIRGINIA,2015,76,0,0,1,30478120,Extreme Temperature
+WEST VIRGINIA,2016,30,0,0,0,527500,Extreme Temperature
+WEST VIRGINIA,2017,24,0,0,0,55500,Extreme Temperature
+WEST VIRGINIA,2018,46,0,0,0,607500,Extreme Temperature
+WEST VIRGINIA,2019,47,0,0,1,1355340,Extreme Temperature
+WEST VIRGINIA,2020,65,0,0,0,615000,Extreme Temperature
+WEST VIRGINIA,2021,21,0,0,0,60030,Extreme Temperature
+WISCONSIN,1996,1,1,0,0,0,Extreme Temperature
+WISCONSIN,1997,8,0,1,0,0,Extreme Temperature
+WISCONSIN,1998,71,3,0,0,1712500,Extreme Temperature
+WISCONSIN,1999,180,0,9,0,33330530,Extreme Temperature
+WISCONSIN,2000,45,0,0,0,988310,Extreme Temperature
+WISCONSIN,2001,103,0,7,0,3285030,Extreme Temperature
+WISCONSIN,2002,111,0,3,0,5710750,Extreme Temperature
+WISCONSIN,2004,4,0,0,0,25030,Extreme Temperature
+WISCONSIN,2005,7,0,0,0,5252500,Extreme Temperature
+WISCONSIN,2006,56,2,1,0,852530,Extreme Temperature
+WISCONSIN,2007,14,0,0,0,3005000,Extreme Temperature
+WISCONSIN,2008,113,0,1,0,495030,Extreme Temperature
+WISCONSIN,2009,55,1,3,0,1432500,Extreme Temperature
+WISCONSIN,2010,19,0,0,0,250000,Extreme Temperature
+WISCONSIN,2011,79,2,5,0,3080000,Extreme Temperature
+WISCONSIN,2012,144,2,9,5,11988030,Extreme Temperature
+WISCONSIN,2013,37,0,2,0,827530,Extreme Temperature
+WISCONSIN,2014,162,0,1,0,4873370,Extreme Temperature
+WISCONSIN,2015,21,0,0,0,600000,Extreme Temperature
+WISCONSIN,2016,62,1,1,0,1132530,Extreme Temperature
+WISCONSIN,2017,3,0,0,0,0,Extreme Temperature
+WISCONSIN,2018,75,1,1,0,7095280,Extreme Temperature
+WISCONSIN,2019,82,2,1,1,3132590,Extreme Temperature
+WISCONSIN,2020,1,0,0,0,0,Extreme Temperature
+WISCONSIN,2021,38,0,0,0,307750,Extreme Temperature
+WISCONSIN,2022,43,0,1,0,25250,Extreme Temperature
+WYOMING,2008,10,0,0,0,327750,Extreme Temperature
+WYOMING,2009,3,0,0,0,2500,Extreme Temperature
+WYOMING,2010,5,0,0,0,25000,Extreme Temperature
+WYOMING,2013,5,0,0,0,25000,Extreme Temperature
+WYOMING,2014,20,0,0,0,252750,Extreme Temperature
+WYOMING,2016,32,0,1,0,285030,Extreme Temperature
+WYOMING,2017,20,0,0,0,30030,Extreme Temperature
+WYOMING,2019,55,0,0,0,27105000,Extreme Temperature
+WYOMING,2020,21,0,0,0,0,Extreme Temperature
+WYOMING,2021,56,0,0,0,528060,Extreme Temperature
+WYOMING,2022,39,0,0,0,5360280,Extreme Temperature
