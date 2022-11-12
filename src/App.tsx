@@ -3,9 +3,9 @@ import * as d3 from 'd3';
 import './App.scss';
 import HeatMap from './components/visualizers/HeatMap';
 import LineChart from './components/visualizers/LineChartBrushed';
-import GlobalTempData from './data/Global_Temp_Data';
-import { StormDataType, StormEventCategoryType } from './data/types';
-import { COLOR_RANGE } from './data/constants';
+import GlobalTempData from './components/visualizers/data/Global_Temp_Data';
+import { StormDataType, StormEventCategoryType } from './components/visualizers/data/types';
+import { COLOR_RANGE } from './components/visualizers/data/constants';
 import MultiLineChart from './components/visualizers/MultiLineChart';
 
 function App() {

@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import { useState, useRef, useEffect } from 'react';
 import { geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
-import { Feature,  Geometry } from 'geojson';
+import { Feature, Geometry, FeatureCollection } from 'geojson';
 import {
   GeoJsonFeatureType,
   GeoRegionUSType,
@@ -10,7 +10,7 @@ import {
   StateDataDimensions,
   StormDataType,
   StormEventCategoryType,
-} from '../../data/types';
+} from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 
@@ -24,6 +24,7 @@ type Props = {
   eventFilter: StormEventCategoryType | null;
   colorsRange?: string[];
   selectedDimension: SelectedDimensionsType;
+  hexGrid?: boolean;
 };
 
 const defaultColorRange = [
@@ -45,14 +46,15 @@ const HeatMap = ({
   colorsRange = defaultColorRange,
   yearFilter = null,
   eventFilter = null,
+  hexGrid = true,
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
 
   // const [selectedState, setSelectedState] = useState<GeoRegionUSType>(null); // TODO
-
-  const [geographies, setGeographies] = useState<[] | Array<Feature<Geometry | null>>>([]);
+ type MyGeometry = Array<Feature<Geometry | null>> | Array<FeatureCollection> | [];
+  const [geographies, setGeographies] = useState<MyGeometry>([]);
   // const [stateData, setStateData] = useState<StateData[]>([]);
 
   const wrangleData = (): StateDataDimensions[] => {
@@ -134,7 +136,6 @@ const HeatMap = ({
         TOTAL_EVENTS,
         COUNTS_BY_EVENT,
       });
-
     }); // end foreach
 
     console.log('stateData');
@@ -144,20 +145,27 @@ const HeatMap = ({
 
   // load geo data on init
   useEffect(() => {
+    const geoDataURL = hexGrid
+      ? 'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/us_states_hexgrid.geojson.json'
+      : 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json';
+
     // ONINIT Callback
-    
-    // ?? do we want locally or over cdn ??
-    // d3.json('/data/states-10m.json').then((geoData: any) => {
-    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then((geoData) => {
-      const usaGeoFeatures: Array<Feature<Geometry | null>> = feature(
-        // @ts-ignore
-        geoData,
-        // @ts-ignore
-        geoData.objects.states
-      )['features'];
+    d3.json(geoDataURL).then((geoData) => {
+      console.log('geoData');
+      console.log(geoData)
+
+      console.log('features', geoData['features'])
+      const usaGeoFeatures: MyGeometry = geoData['features'];
+      // const usaGeoFeatures: Array<Feature<Geometry | null>> = feature(
+      //   // @ts-ignore
+      //   geoData,
+      //   // @ts-ignore
+      //   geoData.objects.states
+      // )['features'];
+
       setGeographies(usaGeoFeatures);
     });
-  }, []);
+  }, [hexGrid]);
 
   useEffect(() => {
     console.log('DRAW');
@@ -192,21 +200,24 @@ const HeatMap = ({
       .select('.content')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const projection = d3
-      .geoAlbersUsa()
-      .translate([svgWidth / 2 + 20, svgHeight / 2])
-      .scale(600);
+    const projectionFn = hexGrid ? d3.geoMercator : d3.geoAlbersUsa;
+    const projection = projectionFn()
+      // .translate([svgWidth / 2 + 20, svgHeight / 2])
+      .translate([920 ,svgHeight])
+      .scale(hexGrid ? 350 : 600);
 
     const pathGenerator = geoPath().projection(projection);
 
     svgContent
       .selectAll('.state')
+      // @ts-ignore
       .data(geographies)
       .join('path')
       .classed('state', true)
       .attr('stroke-width', '0.5px')
       .attr('stroke', 'white')
       .attr('data', (feature) => {
+        // console.log(feature.properties.google_name)
         return getFillColor(feature, stateDataDisplay);
       })
       .transition()
@@ -216,8 +227,12 @@ const HeatMap = ({
 
     // Internal Functions
     function getFillColor(d: GeoJsonFeatureType, stateData: StateDataDimensions[]) {
-      const { name } = d.properties;
-      const stateName = name as GeoRegionUSType;
+
+      const stateVar = hexGrid ? 'google_name' : 'name';
+      // const regex = /\(United States\)/i
+      const { [stateVar]: name  }  = d.properties;
+      const cleanedName =  (name as string).replace("(United States)", "").trim();
+      const stateName = cleanedName as GeoRegionUSType;
       const stateInfo = getStateInfoByStateName(stateName, stateData);
 
       if (stateInfo && stateInfo[selectedDimension])
@@ -260,4 +275,3 @@ export default HeatMap;
 //  'LAKE ST CLAIR',
 //  'LAKE SUPERIOR',
 //  'ST LAWRENCE R', ]
-

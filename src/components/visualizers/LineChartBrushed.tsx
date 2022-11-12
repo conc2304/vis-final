@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { GlobalTempDataType } from '../../data/types';
+import { GlobalTempDataType } from './data/types';
 import { Margin } from './types';
 import useResizeObserver from './useResizeObserver';
 

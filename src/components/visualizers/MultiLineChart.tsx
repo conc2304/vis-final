@@ -6,7 +6,7 @@ import {
   StateDataDimensions,
   StormDataType,
   StormEventCategoryType,
-} from '../../data/types';
+} from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 
@@ -58,16 +58,13 @@ const MultiLineChart = ({
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // xScale for Years
-    console.log(yearFilter);
     const xScale = d3
       .scaleLinear()
       .domain([yearFilter ? yearFilter[0] : 1950, yearFilter ? yearFilter[1] : 2022])
       .range([0, innerWidth]);
 
-    console.log(xScale.domain());
 
     // yscale for density of metric
-
     let dimensionMax = 0;
     let dimensionMin = Infinity;
     displayData.forEach((eventData) => {
