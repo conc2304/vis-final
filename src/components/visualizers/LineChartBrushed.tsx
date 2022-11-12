@@ -73,7 +73,6 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .attr('d', lineGenerator);
 
     // Axis
-    // const;
     const xAxis = d3.axisBottom(xScale).tickFormat((d) => d.toString());
     const yAxis = d3.axisLeft(yScale).tickFormat(d3.format('.1f'));
 

@@ -55,7 +55,10 @@ const MultiLineChart = ({
     svg.attr('width', svgWidth).attr('height', svgHeight);
     const svgContent = svg
       .select('.content')
-      .attr('transform', `translate(${0}, ${-margin.bottom - margin.top})`);
+      .attr(
+        'transform',
+        `translate(${margin.left}, ${margin.top})`
+      );
 
     // xScale for Years
     const xScale = d3
@@ -83,7 +86,7 @@ const MultiLineChart = ({
 
     const stormEventCategories = displayData.map((d) => d.key);
 
-    const yScale = d3.scaleLinear().range([svgHeight, 0]).domain([dimensionMin, dimensionMax]); // height of the individual lines
+    const yScale = d3.scaleLinear().range([innerHeight, 0]).domain([dimensionMin, dimensionMax]); // height of the individual lines
 
     // Y Axis for categories
     const yCategory = d3
@@ -99,7 +102,6 @@ const MultiLineChart = ({
       // @ts-ignore
       .y((d: StateDataDimensions) => yScale(d[selectedDimension]))
       .curve(d3.curveBasis);
-    // .y0(innerHeight);
 
     console.log('HERE');
     console.log(displayData);
@@ -108,9 +110,8 @@ const MultiLineChart = ({
     svgContent
       .selectAll('.area-path')
       .data(displayData)
-      // .enter()
       .join('path')
-      .attr('transform', (d) => `translate(${margin.left}, ${margin.top})`)
+      // .attr('transform', (d) => `translate(${margin.left}, ${margin.top})`)
       .attr('class', (d) => `area-path path-for-${d.key}`)
       // @ts-ignore
       .datum((d: DisplayData) => d.values)
@@ -130,18 +131,18 @@ const MultiLineChart = ({
       .tickFormat((d) => d.toString());
 
     const yAxis = d3.axisLeft(yScale).tickFormat(d3.format('.1f'));
-    
-    svg
-    .select('.x-axis')
-    .attr('transform', `translate(${margin.left}, ${innerHeight + margin.top})`)
-    // @ts-ignore
-    .call(xAxis);
 
     svg
-    .select('.y-axis')
-    // @ts-ignore
-    .call(yAxis)
-    .attr('transform', `translate(${margin.left}, ${margin.top})`);
+      .select('.x-axis')
+      .attr('transform', `translate(${margin.left}, ${innerHeight + margin.top})`)
+      // @ts-ignore
+      .call(xAxis);
+
+    svg
+      .select('.y-axis')
+      // @ts-ignore
+      .call(yAxis)
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // done
   }, [stormData, yearFilter]);
@@ -249,12 +250,7 @@ const MultiLineChart = ({
   return (
     <div ref={wrapperRef} style={{ width: '100%', height: '100%' }} className={`${id}-wrapper`}>
       <svg ref={svgRef}>
-        <g className="content">
-          {/* {displayData.map((d, i) => {
-            console.log(d, i);
-            return <path className="areas"></path>;
-          })} */}
-        </g>
+        <g className="content"></g>
         <g className="x-axis axis" />
         <g className="y-axis axis" />
       </svg>

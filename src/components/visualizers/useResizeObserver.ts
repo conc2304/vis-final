@@ -10,6 +10,7 @@ import ResizeObserver from "resize-observer-polyfill";
 const useResizeObserver = ref => {
   const [dimensions, setDimensions] = useState(null);
   useEffect(() => {
+    console.log("FIRE")
     const observeTarget = ref.current;
     const resizeObserver = new ResizeObserver(entries => {
       entries.forEach(entry => {

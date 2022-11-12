@@ -29,8 +29,15 @@ function App() {
       <header className="App-header">
         <h1>APP TITLE</h1>
         <div style={{ width: '80%', border: '2px solid white', height: '500px' }}>
-          {/* <div style={{ width: '45%', border: '2px solid white', height: '500px', display: "inline-block"}}> */}
-            {/* <HeatMap
+          <div
+            style={{
+              width: '49%',
+              border: '2px solid white',
+              height: '500px',
+              display: 'inline-block',
+            }}
+          >
+            <HeatMap
               yearFilter={selectedBrushYears}
               stormData={stormData}
               margin={{
@@ -43,10 +50,17 @@ function App() {
               selectedDimension="TOTAL_EVENTS"
               eventFilter={selectedEventType}
               colorsRange={COLOR_RANGE}
-            /> */}
-          {/* </div> */}
+            />
+          </div>
 
-          <div style={{ width: '100%', border: '2px solid white', height: '500px', display: "inline-block" }}>
+          <div
+            style={{
+              width: '49%',
+              border: '2px solid white',
+              height: '500px',
+              display: 'inline-block',
+            }}
+          >
             <MultiLineChart
               yearFilter={selectedBrushYears}
               stormData={stormData}
@@ -54,7 +68,7 @@ function App() {
                 top: 10,
                 bottom: 30,
                 right: 30,
-                left: 0,
+                left: 60,
               }}
               id="storm-data-multi-line"
               selectedDimension="TOTAL_EVENTS"
@@ -64,7 +78,7 @@ function App() {
           </div>
         </div>
 
-        <div style={{ width: '80%', border: '2px solid white', height: '15vw' }}>
+        <div style={{ width: '80%', border: '2px solid white', height: '8vw' }}>
           <LineChart
             data={GlobalTempData}
             margin={{

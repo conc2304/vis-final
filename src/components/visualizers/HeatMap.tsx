@@ -195,7 +195,7 @@ const HeatMap = ({
     const projection = d3
       .geoAlbersUsa()
       .translate([svgWidth / 2 + 20, svgHeight / 2])
-      .scale(750);
+      .scale(600);
 
     const pathGenerator = geoPath().projection(projection);
 
