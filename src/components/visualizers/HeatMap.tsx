@@ -271,15 +271,19 @@ const HeatMap = ({
   };
 
   return (
-    <div ref={wrapperRef} style={{ width: '100%', height: '100%' }} className={`${id}-wrapper`}>
-      <FormControlLabel
-        label={`Switch To ${isHexGrid ? 'Map' : 'Hex Grid'} View`}
-        control={<Switch checked={isHexGrid} onChange={handleOnMapViewToggle} size="small" />}
-      />
-
+    <div
+      ref={wrapperRef}
+      style={{ width: '100%', height: '100%', position: 'relative' }}
+      className={`${id}-wrapper`}
+    >
       <svg ref={svgRef}>
         <g className="content"></g>
       </svg>
+      <FormControlLabel
+        style={{ position: 'absolute', bottom: 20, left: "50%", transform: "translateX(-50%)"  }}
+        label={`Switch To ${isHexGrid ? 'Map' : 'Hex Grid'} View`}
+        control={<Switch checked={isHexGrid} onChange={handleOnMapViewToggle} size="small" />}
+      />
     </div>
   );
 };
