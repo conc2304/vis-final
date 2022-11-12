@@ -1,0 +1,12 @@
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  & > header, & > footer {
+    flex-grow: 0;
+  }
+  & > main {
+    flex-grow: 1;
+  }
+}
