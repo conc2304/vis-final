@@ -82,7 +82,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       // @ts-ignore
       .call(xAxis);
 
-      svg
+    svg
       .select('.y-axis')
       // @ts-ignore
       .call(yAxis)
@@ -93,8 +93,8 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
     const brush = d3
       .brushX()
       .extent([
-        [margin.left, 0],
-        [innerWidth + margin.left, innerHeight + 10],
+        [0, 0],
+        [innerWidth, innerHeight],
       ])
       .on('brush end', (event) => {
         const {
@@ -116,13 +116,13 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         </defs>
         <g className="content">
           <path className="line-path"></path>
+          <g className="brush-group"></g>
         </g>
         <g className="x-axis axis" />
         <g className="y-axis axis" />
         <g className="title">
           <text>{title}</text>
         </g>
-        <g className="brush-group"></g>
       </svg>
     </div>
   );

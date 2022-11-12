@@ -13,6 +13,8 @@ function App() {
   const [selectedEventType, setSelectedEventType] = useState<StormEventCategoryType | null>(null);
   const [stormData, setStormData] = useState<StormDataType[]>(null);
   const handleOnBrush = ([start, end]) => {
+    console.log('start, end')
+    console.log(start, end)
     setSeletedBrushYears(end > start ? [start, end] : [end, start]);
   };
 

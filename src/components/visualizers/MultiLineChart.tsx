@@ -58,6 +58,7 @@ const MultiLineChart = ({
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // xScale for Years
+    console.log(yearFilter);
     const xScale = d3
       .scaleLinear()
       .domain([yearFilter ? yearFilter[0] : 1950, yearFilter ? yearFilter[1] : 2022])
@@ -100,10 +101,7 @@ const MultiLineChart = ({
       .y((d: StateDataDimensions) => yScale(d[selectedDimension]))
       .curve(d3.curveBasis);
 
-    console.log('HERE');
-    console.log(displayData);
     // Render the Area Paths for each of the storm events
-
     svgContent
       .selectAll('.area-path')
       .data(displayData)
@@ -191,7 +189,7 @@ const MultiLineChart = ({
         ([year, value]) => ({ year, value })
       );
 
-      console.log('eventsByYear', eventCategory, eventsByYear);
+      // console.log('eventsByYear', eventCategory, eventsByYear);
 
       const yearData: StateDataDimensions[] = [];
 
@@ -226,19 +224,12 @@ const MultiLineChart = ({
         });
       }); // end event by year Loop
 
-      console.log('yearData');
-      console.log(yearData);
       // fill in missing values with 0's
       const [minYear, maxYear] = d3.extent(yearData, (d) => d.YEAR);
-      const filledData = fillMissingYears(yearData, minYear, maxYear)
+      const filledData = fillMissingYears(yearData, minYear, maxYear);
 
+      const sortedData = [...filledData].sort((a, b) => b.YEAR - a.YEAR);
 
-      const sortedData = [...filledData].sort((a, b) => {
-        // console.log(b.YEAR, a.YEAR);
-        return b.YEAR - a.YEAR;
-      }).reverse();
-
-      console.log('SORTED yearData', eventCategory, sortedData);
 
       displayData.push({
         key: eventCategory,
@@ -250,7 +241,7 @@ const MultiLineChart = ({
     return displayData;
   }
 
-  function fillMissingYears(yearData: StateDataDimensions[], minYear:number, maxYear:number) {
+  function fillMissingYears(yearData: StateDataDimensions[], minYear: number, maxYear: number) {
     for (let year = 1950; year < minYear; year++) {
       yearData.push({
         YEAR: year,
