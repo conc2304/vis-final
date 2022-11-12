@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import { Feature, Geometry, FeatureCollection } from 'geojson';
+import { FormControlLabel, Switch } from '@mui/material';
 import {
   GeoJsonFeatureType,
   GeoRegionUSType,
@@ -24,7 +25,6 @@ type Props = {
   eventFilter: StormEventCategoryType | null;
   colorsRange?: string[];
   selectedDimension: SelectedDimensionsType;
-  hexGrid?: boolean;
 };
 
 const defaultColorRange = [
@@ -46,15 +46,15 @@ const HeatMap = ({
   colorsRange = defaultColorRange,
   yearFilter = null,
   eventFilter = null,
-  hexGrid = true,
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
 
   // const [selectedState, setSelectedState] = useState<GeoRegionUSType>(null); // TODO
- type MyGeometry = Array<Feature<Geometry | null>> | Array<FeatureCollection> | [];
+  type MyGeometry = Array<Feature<Geometry | null>> | Array<FeatureCollection> | [];
   const [geographies, setGeographies] = useState<MyGeometry>([]);
+  const [isHexGrid, setIsHexGrid] = useState(true);
   // const [stateData, setStateData] = useState<StateData[]>([]);
 
   const wrangleData = (): StateDataDimensions[] => {
@@ -145,17 +145,27 @@ const HeatMap = ({
 
   // load geo data on init
   useEffect(() => {
-    const geoDataURL = hexGrid
+    const geoDataURL = isHexGrid
       ? 'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/us_states_hexgrid.geojson.json'
       : 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json';
 
     // ONINIT Callback
     d3.json(geoDataURL).then((geoData) => {
       console.log('geoData');
-      console.log(geoData)
+      console.log(geoData);
 
-      console.log('features', geoData['features'])
-      const usaGeoFeatures: MyGeometry = geoData['features'];
+      console.log('features', geoData['features']);
+      let usaGeoFeatures;
+      if (isHexGrid) {
+        usaGeoFeatures = geoData['features'];
+      } else {
+        usaGeoFeatures = feature(
+          // @ts-ignore
+          geoData,
+          // @ts-ignore
+          geoData.objects.states
+        )['features'];
+      }
       // const usaGeoFeatures: Array<Feature<Geometry | null>> = feature(
       //   // @ts-ignore
       //   geoData,
@@ -165,7 +175,7 @@ const HeatMap = ({
 
       setGeographies(usaGeoFeatures);
     });
-  }, [hexGrid]);
+  }, [isHexGrid]);
 
   useEffect(() => {
     console.log('DRAW');
@@ -177,6 +187,7 @@ const HeatMap = ({
     } else {
       return;
     }
+    if (!geographies) return;
     console.log(stateDataDisplay);
 
     // use resized dimensions
@@ -200,11 +211,15 @@ const HeatMap = ({
       .select('.content')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const projectionFn = hexGrid ? d3.geoMercator : d3.geoAlbersUsa;
+    const translationValues: [number, number] = isHexGrid
+      ? [920, svgHeight]
+      : [svgWidth / 2 + 20, svgHeight / 2];
+    const projectionFn = isHexGrid ? d3.geoMercator : d3.geoAlbersUsa;
     const projection = projectionFn()
       // .translate([svgWidth / 2 + 20, svgHeight / 2])
-      .translate([920 ,svgHeight])
-      .scale(hexGrid ? 350 : 600);
+      .translate([920, svgHeight])
+      .translate(translationValues)
+      .scale(isHexGrid ? 350 : 600);
 
     const pathGenerator = geoPath().projection(projection);
 
@@ -227,11 +242,10 @@ const HeatMap = ({
 
     // Internal Functions
     function getFillColor(d: GeoJsonFeatureType, stateData: StateDataDimensions[]) {
-
-      const stateVar = hexGrid ? 'google_name' : 'name';
-      // const regex = /\(United States\)/i
-      const { [stateVar]: name  }  = d.properties;
-      const cleanedName =  (name as string).replace("(United States)", "").trim();
+      const stateVar = isHexGrid ? 'google_name' : 'name';
+      const { [stateVar]: name } = d.properties;
+      console.log(name);
+      const cleanedName = (name as string).replace('(United States)', '').trim();
       const stateName = cleanedName as GeoRegionUSType;
       const stateInfo = getStateInfoByStateName(stateName, stateData);
 
@@ -249,10 +263,20 @@ const HeatMap = ({
       }
       return null;
     }
-  }, [yearFilter, selectedDimension, stormData]);
+  }, [yearFilter, selectedDimension, stormData, geographies]);
+
+  const handleOnMapViewToggle = () => {
+    console.log(isHexGrid);
+    setIsHexGrid(!isHexGrid);
+  };
 
   return (
     <div ref={wrapperRef} style={{ width: '100%', height: '100%' }} className={`${id}-wrapper`}>
+      <FormControlLabel
+        label={`Switch To ${isHexGrid ? 'Map' : 'Hex Grid'} View`}
+        control={<Switch checked={isHexGrid} onChange={handleOnMapViewToggle} size="small" />}
+      />
+
       <svg ref={svgRef}>
         <g className="content"></g>
       </svg>
