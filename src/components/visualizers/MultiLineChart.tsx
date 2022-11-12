@@ -55,10 +55,7 @@ const MultiLineChart = ({
     svg.attr('width', svgWidth).attr('height', svgHeight);
     const svgContent = svg
       .select('.content')
-      .attr(
-        'transform',
-        `translate(${margin.left}, ${margin.top})`
-      );
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // xScale for Years
     const xScale = d3
@@ -231,20 +228,53 @@ const MultiLineChart = ({
 
       console.log('yearData');
       console.log(yearData);
-      const sortedData = [...yearData].sort((a, b) => {
+      // fill in missing values with 0's
+      const [minYear, maxYear] = d3.extent(yearData, (d) => d.YEAR);
+      const filledData = fillMissingYears(yearData, minYear, maxYear)
+
+
+      const sortedData = [...filledData].sort((a, b) => {
         // console.log(b.YEAR, a.YEAR);
         return b.YEAR - a.YEAR;
-      });
+      }).reverse();
+
       console.log('SORTED yearData', eventCategory, sortedData);
 
       displayData.push({
         key: eventCategory,
-        values: yearData,
+        values: sortedData,
       });
     }); // end events by category loop
 
     // console.log('displayData', displayData);
     return displayData;
+  }
+
+  function fillMissingYears(yearData: StateDataDimensions[], minYear:number, maxYear:number) {
+    for (let year = 1950; year < minYear; year++) {
+      yearData.push({
+        YEAR: year,
+        DAMAGE_PROPERTY_EVENT_SUM: 0,
+        DEATHS_DIRECT_COUNT: 0,
+        DEATHS_INDIRECT_COUNT: 0,
+        DEATHS_TOTAL_COUNT: 0,
+        INJURIES_DIRECT_COUNT: 0,
+        TOTAL_EVENTS: 0,
+      });
+    }
+
+    for (let year = maxYear; year < 2022; year++) {
+      yearData.push({
+        YEAR: year,
+        DAMAGE_PROPERTY_EVENT_SUM: 0,
+        DEATHS_DIRECT_COUNT: 0,
+        DEATHS_INDIRECT_COUNT: 0,
+        DEATHS_TOTAL_COUNT: 0,
+        INJURIES_DIRECT_COUNT: 0,
+        TOTAL_EVENTS: 0,
+      });
+    }
+    return yearData;
   }
 
   return (
