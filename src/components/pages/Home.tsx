@@ -66,7 +66,7 @@ const HomePage = () => {
           </Col>
           <Col md={4}>
             {/* @TODO - introduction copy */}
-            <h2>Header Text</h2>
+            <h2 className="pb-2">Header Text</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at imperdiet arcu.
               Proin ut lacus mauris. Fusce et nisi iaculis, tincidunt mauris non, mollis nunc. Donec

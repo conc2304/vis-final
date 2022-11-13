@@ -16,7 +16,7 @@ const HurricanePage = () => {
       <main className="flex-grow-1 p-4 d-flex flex-column">
         <Row className="flex-grow-1">
           <Col md={4}>
-            <h2>Hurricanes in the USA</h2>
+            <h2 className="pb-2">Hurricanes in the USA</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at imperdiet arcu.
               Proin ut lacus mauris. Fusce et nisi iaculis, tincidunt mauris non, mollis nunc. Donec
