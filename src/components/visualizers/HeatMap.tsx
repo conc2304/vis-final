@@ -14,6 +14,7 @@ import {
 } from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
+import { COLOR_RANGE } from './data/constants';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // const uuid = require('react-uuid');
@@ -27,23 +28,13 @@ type Props = {
   selectedDimension: SelectedDimensionsType;
 };
 
-const defaultColorRange = [
-  /* "#2c7bb6",  "#00a6ca", */ '#a3bacc',
-  '#00ccbc',
-  '#90eb9d',
-  '#ffff8c',
-  '#f9d057',
-  '#f29e2e',
-  '#e76818',
-  '#d7191c',
-];
 
 const HeatMap = ({
   id,
   stormData,
   margin,
   selectedDimension,
-  colorsRange = defaultColorRange,
+  colorsRange = COLOR_RANGE,
   yearFilter = null,
   eventFilter = null,
 }: Props) => {
@@ -54,7 +45,7 @@ const HeatMap = ({
   // const [selectedState, setSelectedState] = useState<GeoRegionUSType>(null); // TODO
   type MyGeometry = Array<Feature<Geometry | null>> | Array<FeatureCollection> | [];
   const [geographies, setGeographies] = useState<MyGeometry>([]);
-  const [isHexGrid, setIsHexGrid] = useState(true);
+  const [isHexGrid, setIsHexGrid] = useState(false);
   // const [stateData, setStateData] = useState<StateData[]>([]);
 
   const wrangleData = (): StateDataDimensions[] => {

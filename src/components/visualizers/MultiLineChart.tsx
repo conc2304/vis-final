@@ -11,7 +11,6 @@ import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 
 type Props = {
-  // data: StormDataColumns;
   stormData: StormDataType[];
   margin: Margin;
   title?: string;
