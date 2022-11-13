@@ -13,6 +13,7 @@ import HeatMap from './components/visualizers/HeatMap';
 import LineChart from './components/visualizers/LineChartBrushed';
 import GlobalTempData from './components/visualizers/data/Global_Temp_Data';
 import {
+  GeoRegionUSType,
   SelectedDimensionsType,
   StormDataType,
   StormEventCategoryType,
@@ -22,12 +23,14 @@ import {
   STORM_EVENT_CATEGORIES,
   STORM_UI_SELECT_VALUES,
 } from './components/visualizers/data/constants';
-import MultiLineChart from './components/visualizers/MultiLineChart';
+import StormsTypesOverTimeSeries from './components/visualizers/MultiLineChart';
 import TopStatesOverTimeMultiLineChart from './components/visualizers/MultiLineChartTop';
 
 function App() {
+  // Event and State Handlers
+  const [selectedGeoRegion, setSelectedGeoRegion] = useState<GeoRegionUSType | 'ALL'>('ALL');
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
-  const [selectedStormType, setSelectedStormType] = useState<StormEventCategoryType | null>(null);
+  const [selectedStormType, setSelectedStormType] = useState<StormEventCategoryType | 'ALL'>('ALL');
   const [selectedDimensionTitle, setSelectedDimensionTitle] = useState(
     STORM_UI_SELECT_VALUES[0].label
   );
@@ -41,6 +44,10 @@ function App() {
     const dimensionLabel = STORM_UI_SELECT_VALUES.find((elem) => elem.value === newDimension).label;
     setSelectedDimension(event.target.value as SelectedDimensionsType);
     setSelectedDimensionTitle(dimensionLabel as any);
+  };
+
+  const handleOnStateHover = (regionOnHover: GeoRegionUSType | 'ALL') => {
+    setSelectedGeoRegion(regionOnHover);
   };
 
   const onEventTypeChanged = (event: SelectChangeEvent) => {
@@ -59,7 +66,6 @@ function App() {
       setStormData(data[0] as StormDataType[]);
     });
   }, []);
-
 
   return (
     <div className="App">
@@ -142,6 +148,7 @@ function App() {
             <HeatMap
               yearFilter={selectedBrushYears}
               stormData={stormData}
+              regionSelected={selectedGeoRegion}
               margin={{
                 top: 10,
                 bottom: 30,
@@ -152,6 +159,7 @@ function App() {
               selectedDimension={selectedDimension}
               eventFilter={selectedStormType}
               colorsRange={COLOR_RANGE}
+              handleOnStateHover={handleOnStateHover}
             />
           </div>
 
@@ -192,7 +200,7 @@ function App() {
                 display: 'inline-block',
               }}
             >
-              <MultiLineChart
+              <StormsTypesOverTimeSeries
                 id="storm-data-events-by-selection"
                 yearFilter={selectedBrushYears}
                 stormData={stormData}
@@ -204,6 +212,7 @@ function App() {
                 }}
                 title={selectedDimensionTitle}
                 selectedDimension={selectedDimension}
+                regionSelected={selectedGeoRegion}
               />
             </div>
           </div>

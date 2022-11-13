@@ -133,7 +133,7 @@ export const STORM_EVENT_CATEGORIES = [
   'Landslide',
   'Thunderstorm',
   'Tornado',
-  'Tropical Storm',
+  // 'Tropical Storm', // no data on map ??
   // 'Volcanic Event', // no data on  map
   'Wildfire',
   'Winter Storm',

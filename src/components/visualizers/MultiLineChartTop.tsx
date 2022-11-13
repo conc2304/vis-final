@@ -23,6 +23,7 @@ type Props = {
   numberOfTopStates?: number;
   colorsRange?: string[]
   eventFilter?: StormEventCategoryType | 'ALL';
+  regionSelected?: GeoRegionUSType | "ALL" 
 };
 
 const TopStatesOverTimeMultiLineChart = ({

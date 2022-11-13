@@ -19,14 +19,14 @@ type Props = {
   id: string;
   selectedDimension: SelectedDimensionsType;
   yearFilter: [number, number] | null;
-  stateFilter?: GeoRegionUSType | null;
+  regionSelected?: GeoRegionUSType | 'ALL';
 };
 
 const MultiLineChart = ({
   stormData,
   margin,
   yearFilter = null,
-  stateFilter = null,
+  regionSelected = 'ALL',
   selectedDimension = null,
   title = '',
   id,
@@ -79,16 +79,7 @@ const MultiLineChart = ({
       if (eventMin < dimensionMin) dimensionMin = eventMin;
     });
 
-    const stormEventCategories = displayData.map((d) => d.key);
-
     const yScale = d3.scaleLinear().range([innerHeight, 0]).domain([dimensionMin, dimensionMax]); // height of the individual lines
-
-    // Y Axis for categories
-    const yCategory = d3
-      .scaleBand()
-      .domain(stormEventCategories)
-      .range([0, innerHeight])
-      .paddingInner(1);
 
     const generator = d3
       .line()
@@ -139,7 +130,7 @@ const MultiLineChart = ({
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // done
-  }, [stormData, yearFilter, selectedDimension]);
+  }, [stormData, yearFilter, selectedDimension, regionSelected]);
 
   /**
    * Get the sum of the counts for each event and aggregate them per year
@@ -149,17 +140,20 @@ const MultiLineChart = ({
     let filteredData = [];
 
     // Filter
-    if (yearFilter || stateFilter) {
-      const doYearFilter = yearFilter !== null;
-      const doStateFilter = stateFilter !== null;
-
+    if (yearFilter || regionSelected) {
       stormData.forEach((row) => {
-        const [yearMin, yearMax] = yearFilter;
+        const [yearMin, yearMax] = !!yearFilter ? yearFilter : [1950, 2022];
+
+        // if 'ALL' then the condition is true ef not then check to see if we match
 
         // const stateConditionIsTrue = doStateFilter && row.STATE === stateFilter;
-        const yearConditionIsTrue = doYearFilter && yearMin <= row.YEAR && row.YEAR <= yearMax;
+        const regionConditionIsTrue =
+          regionSelected === 'ALL'
+            ? true
+            : row.STATE.toLowerCase() === regionSelected.toLowerCase();
+        const yearConditionIsTrue = yearMin <= row.YEAR && row.YEAR <= yearMax;
 
-        if (yearConditionIsTrue) {
+        if (yearConditionIsTrue && regionConditionIsTrue) {
           filteredData.push(row);
         }
       });
@@ -247,9 +241,15 @@ const MultiLineChart = ({
       <p style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: '12px' }}>
         {title}
         <br /> by type of Storm
+        <br />{' '}
+        <small>
+          {regionSelected === 'ALL'
+            ? 'USA'
+            : (regionSelected as string).replace('(United States)', '').trim()}
+        </small>
       </p>
       <svg ref={svgRef}>
-      <defs>
+        <defs>
           <clipPath id={id}>
             <rect x="0" y="0" width="100%" height="100%" />
           </clipPath>

@@ -23,9 +23,11 @@ type Props = {
   margin: Margin;
   id: string;
   yearFilter: [number, number] | null;
-  eventFilter: StormEventCategoryType | 'ALL' ;
+  eventFilter: StormEventCategoryType | 'ALL';
   colorsRange?: string[];
   selectedDimension: SelectedDimensionsType;
+  handleOnStateHover?: (selectedRegion: GeoRegionUSType | 'ALL') => void;
+  regionSelected: GeoRegionUSType | 'ALL';
 };
 
 const HeatMap = ({
@@ -36,12 +38,13 @@ const HeatMap = ({
   colorsRange = COLOR_RANGE,
   yearFilter = null,
   eventFilter = null,
+  regionSelected = 'ALL',
+  handleOnStateHover,
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
 
-  // const [selectedState, setSelectedState] = useState<GeoRegionUSType>(null); // TODO
   type MyGeometry = Array<Feature<Geometry | null>> | Array<FeatureCollection> | [];
   const [geographies, setGeographies] = useState<MyGeometry>([]);
   const [isHexGrid, setIsHexGrid] = useState(false);
@@ -51,14 +54,13 @@ const HeatMap = ({
     let filteredData: StormDataType[] = [];
 
     // if there is a region or year selected
-    if (yearFilter || eventFilter) {
-
+    if (yearFilter || eventFilter || regionSelected) {
       stormData.forEach((row) => {
         // if none is set default to our data's range
         const [yearMin, yearMax] = !!yearFilter ? yearFilter : [1950, 2022];
 
         // if 'ALL' then the condition is true ef not then check to see if we match
-        const eventConditionIsTrue = eventFilter=== 'ALL' ? true : row.EVENT === eventFilter
+        const eventConditionIsTrue = eventFilter === 'ALL' ? true : row.EVENT === eventFilter;
         const yearConditionIsTrue = yearMin <= row.YEAR && row.YEAR <= yearMax;
 
         if (yearConditionIsTrue && eventConditionIsTrue) {
@@ -122,8 +124,8 @@ const HeatMap = ({
       });
     }); // end foreach
 
-    console.log('stateData');
-    console.log(stateData);
+    // console.log('stateData');
+    // console.log(stateData);
     return stateData;
   };
 
@@ -150,12 +152,6 @@ const HeatMap = ({
           geoData.objects.states
         )['features'];
       }
-      // const usaGeoFeatures: Array<Feature<Geometry | null>> = feature(
-      //   // @ts-ignore
-      //   geoData,
-      //   // @ts-ignore
-      //   geoData.objects.states
-      // )['features'];
 
       setGeographies(usaGeoFeatures);
     });
@@ -206,7 +202,7 @@ const HeatMap = ({
 
     const pathGenerator = geoPath().projection(projection);
 
-    svgContent
+    const statePaths = svgContent
       .selectAll('.state')
       // @ts-ignore
       .data(geographies)
@@ -214,13 +210,18 @@ const HeatMap = ({
       .classed('state', true)
       .attr('stroke-width', '0.5px')
       .attr('stroke', 'white')
-      .attr('data', (feature) => {
-        return getFillColor(feature, stateDataDisplay);
-      })
+      .attr('data', (feature) => getFillColor(feature, stateDataDisplay));
+
+    statePaths
       .transition()
       .duration(500)
       .attr('fill', (feature) => getFillColor(feature, stateDataDisplay))
       .attr('d', pathGenerator);
+
+    statePaths.on('mouseover', onStateHover);
+    statePaths.on('mouseout', () => {
+      handleOnStateHover('ALL');
+    });
 
     // Internal Functions
     function getFillColor(d: GeoJsonFeatureType, stateData: StateDataDimensions[]) {
@@ -244,12 +245,20 @@ const HeatMap = ({
       }
       return null;
     }
-  }, [yearFilter, eventFilter, selectedDimension, stormData, geographies]);
+  }, [yearFilter, eventFilter, selectedDimension, regionSelected, stormData, geographies]);
 
   const handleOnMapViewToggle = () => {
-    console.log(isHexGrid);
     setIsHexGrid(!isHexGrid);
   };
+
+  function onStateHover(e: MouseEvent, d: GeoJsonFeatureType) {
+    const stateVar = isHexGrid ? 'google_name' : 'name';
+    const { [stateVar]: name } = d.properties;
+    const cleanedName = (name as string).replace('(United States)', '').trim();
+    const stateName = cleanedName as GeoRegionUSType;
+    handleOnStateHover(stateName);
+    // show tooltip // TODO
+  }
 
   return (
     <div
