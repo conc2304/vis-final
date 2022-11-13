@@ -85,14 +85,39 @@ export const NUMERIC_STORM_DATA_FIELDS = [
 ] as const;
 
 export const STORM_DISPLAY_DATA_DIMENSIONS = [
-  // 'COUNTS_BY_EVENT',
   'DAMAGE_PROPERTY_EVENT_SUM',
   'DEATHS_DIRECT_COUNT',
   'DEATHS_INDIRECT_COUNT',
   'DEATHS_TOTAL_COUNT',
   'INJURIES_DIRECT_COUNT',
-  // 'STATE',
   'TOTAL_EVENTS',
+] as const;
+
+export const STORM_UI_SELECT_VALUES = [
+  {
+    label: "Total Property Damage",
+    value:'DAMAGE_PROPERTY_EVENT_SUM'
+  },
+  {
+    label: "Direct Deaths Total",
+    value:'DEATHS_DIRECT_COUNT'
+  },
+  {
+    label: "Indirect Deaths Total",
+    value:'DEATHS_INDIRECT_COUNT'
+  },
+  {
+    label: "All Deaths Total",
+    value:'DEATHS_TOTAL_COUNT'
+  },
+  {
+    label: "Injuries Total",
+    value:'INJURIES_DIRECT_COUNT'
+  },
+  {
+    label: "Number of Events Total",
+    value:'TOTAL_EVENTS'
+  },
 ] as const;
 
 export const EVENT_CATEGORIES = Object.values(stormEventToTypeMap).filter(getUniqueValues).sort();

@@ -63,7 +63,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .data([data])
       .join('path')
       .classed('line-path', true)
-      .transition() // TODO - not working
+      .transition()
       .duration(500)
       .ease(d3.easeSinInOut)
       .attr('stroke', 'red')
@@ -74,7 +74,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
 
     // Axis
     const xAxis = d3.axisBottom(xScale).tickFormat((d) => d.toString());
-    const yAxis = d3.axisLeft(yScale).tickFormat(d3.format('.1f'));
+    const yAxis = d3.axisLeft(yScale).tickFormat(d3.format('.1f')).ticks(5);
 
     svg
       .select('.x-axis')

@@ -136,7 +136,7 @@ const MultiLineChart = ({
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // done
-  }, [stormData, yearFilter]);
+  }, [stormData, yearFilter, selectedDimension]);
 
   /**
    * Get the sum of the counts for each event and aggregate them per year
