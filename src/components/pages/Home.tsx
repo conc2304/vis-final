@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Layout from '../ui/Layout';
 import HeatMap from '../visualizers/HeatMap';
 import { StormDataType } from '../../data/types';
+import { Routes } from '../../router/router';
 
 const HomePage = () => {
   const [stormData, setStormData] = useState<StormDataType[]>(null);
@@ -50,7 +51,7 @@ const HomePage = () => {
             dapibus. Vestibulum sed congue turpis. Nullam aliquam leo odio, nec congue lacus
             placerat eget. Phasellus ut tincidunt libero.
           </p>
-          <Link to="/storms" className="btn btn-primary">
+          <Link to={Routes.storms} className="btn btn-primary">
             Explore
           </Link>
         </Col>

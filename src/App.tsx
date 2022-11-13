@@ -1,24 +1,11 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import Home from './components/pages/Home';
-import Storms from './components/pages/Storms';
-
 import './App.scss';
 
-function App() {
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <Home />,
-    },
-    {
-      path: '/storms',
-      element: <Storms />,
-    },
-  ]);
+import router from './router/router';
 
+function App() {
   return <RouterProvider router={router} />;
 }
 

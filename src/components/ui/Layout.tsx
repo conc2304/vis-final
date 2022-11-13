@@ -1,12 +1,12 @@
 import { PropsWithChildren } from 'react';
 import Stack from 'react-bootstrap/Stack';
-import { Link } from 'react-router-dom';
 
 interface Props {
   title: string;
+  footer?: JSX.Element;
 }
 
-const Layout = ({ title, children }: PropsWithChildren<Props>): JSX.Element => {
+const Layout = ({ title, footer, children }: PropsWithChildren<Props>): JSX.Element => {
   return (
     <Stack className="d-flex h-100 flex-column">
       <header>
@@ -15,9 +15,7 @@ const Layout = ({ title, children }: PropsWithChildren<Props>): JSX.Element => {
       <main className="flex-grow-1 d-flex flex-column">
         <div className="h-100 container-fluid d-flex flex-column">{children}</div>
       </main>
-      <footer>
-        <Link to="/">Home</Link>
-      </footer>
+      {!footer && <footer>{footer}</footer>}
     </Stack>
   );
 };
