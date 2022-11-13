@@ -175,7 +175,6 @@ const TopStatesOverTimeMultiLineChart = ({
       ([key, value]) => ({ key, value })
     );
 
-    console.log(stormDataByState);
     // filtered for time and for top X States by cumulative storm dimension (event count, property damage ...)
     const topStatesTotalValues = getTopNthStatesByDimension(stormDataByState);
     const topStatesNameArr = topStatesTotalValues.map((stateData) => stateData.STATE);
@@ -183,8 +182,8 @@ const TopStatesOverTimeMultiLineChart = ({
     // get the yearly values for each state in our time period
 
     const topStatesData = getStormDataPerStatePerYear(stormDataByState, topStatesNameArr);
-    console.log('topStatesData');
-    console.log(topStatesData);
+    // console.log('topStatesData');
+    // console.log(topStatesData);
 
     return topStatesData;
   };

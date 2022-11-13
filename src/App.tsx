@@ -1,24 +1,33 @@
 import { useEffect, useState } from 'react';
 import * as d3 from 'd3';
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import {
+  FormControl,
+  FormGroup,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 import './App.scss';
 import HeatMap from './components/visualizers/HeatMap';
 import LineChart from './components/visualizers/LineChartBrushed';
 import GlobalTempData from './components/visualizers/data/Global_Temp_Data';
 import {
-  GeoRegionUSType,
-  NumericStormMetricType,
   SelectedDimensionsType,
   StormDataType,
   StormEventCategoryType,
 } from './components/visualizers/data/types';
-import { COLOR_RANGE, STORM_UI_SELECT_VALUES } from './components/visualizers/data/constants';
+import {
+  COLOR_RANGE,
+  STORM_EVENT_CATEGORIES,
+  STORM_UI_SELECT_VALUES,
+} from './components/visualizers/data/constants';
 import MultiLineChart from './components/visualizers/MultiLineChart';
 import TopStatesOverTimeMultiLineChart from './components/visualizers/MultiLineChartTop';
 
 function App() {
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
-  const [selectedEventType, setSelectedEventType] = useState<StormEventCategoryType | null>(null);
+  const [selectedStormType, setSelectedStormType] = useState<StormEventCategoryType | null>(null);
   const [selectedDimensionTitle, setSelectedDimensionTitle] = useState(
     STORM_UI_SELECT_VALUES[0].label
   );
@@ -34,9 +43,12 @@ function App() {
     setSelectedDimensionTitle(dimensionLabel as any);
   };
 
+  const onEventTypeChanged = (event: SelectChangeEvent) => {
+    const stormType = event.target.value as StormEventCategoryType;
+    setSelectedStormType(stormType);
+  };
+
   const handleOnBrush = ([start, end]) => {
-    console.log('start, end');
-    console.log(start, end);
     setSeletedBrushYears(end > start ? [start, end] : [end, start]);
   };
 
@@ -48,37 +60,54 @@ function App() {
     });
   }, []);
 
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>APP TITLE</h1>
-        <div style={{ width: '80%', height: '15vh' }}>
-          <div
-            style={{
-              width: '49%',
-              height: '100%',
-              display: 'inline-block',
-            }}
-          >
-            <FormControl fullWidth>
-              <InputLabel id="label-for-dimension-select">Data to view...</InputLabel>
-              <Select
-                labelId="label-for-dimension-select"
-                placeholder="Data to view"
-                label="Data to view..."
-                color="primary"
-                value={selectedDimension}
-                onChange={onDataDimensionChange}
-              >
-                {STORM_UI_SELECT_VALUES.map((uiValue) => {
-                  return (
-                    <MenuItem value={uiValue.value} key={uiValue.value}>
-                      {uiValue.label}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
+        <div style={{ width: '80%', height: '15vh', display: 'flex' }}>
+          <div className="ui-form-container">
+            <FormGroup className="form-group">
+              <FormControl className="ui-select">
+                <InputLabel id="label-for-dimension-select">Data to view...</InputLabel>
+                <Select
+                  labelId="label-for-dimension-select"
+                  placeholder="Data to view"
+                  label="Data to view..."
+                  value={selectedDimension}
+                  onChange={onDataDimensionChange}
+                >
+                  {STORM_UI_SELECT_VALUES.map((uiValue) => {
+                    return (
+                      <MenuItem value={uiValue.value} key={uiValue.value}>
+                        {uiValue.label}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              <FormControl className="ui-select">
+                <InputLabel id="label-for-event-select">Severe Weather Type</InputLabel>
+                <Select
+                  labelId="label-for-event-select"
+                  placeholder="Dat"
+                  label="Severe Weather Type"
+                  value={selectedStormType}
+                  onChange={onEventTypeChanged}
+                >
+                  <MenuItem value={'ALL'} key={0}>
+                    All Severe Weather
+                  </MenuItem>
+                  {STORM_EVENT_CATEGORIES.map((stormType) => {
+                    return (
+                      <MenuItem value={stormType} key={stormType}>
+                        {stormType}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </FormGroup>
           </div>
           <div
             style={{
@@ -121,7 +150,7 @@ function App() {
               }}
               id="storm-data-heatmap"
               selectedDimension={selectedDimension}
-              eventFilter={selectedEventType}
+              eventFilter={selectedStormType}
               colorsRange={COLOR_RANGE}
             />
           </div>
@@ -152,7 +181,7 @@ function App() {
                 }}
                 selectedDimension={selectedDimension}
                 title={selectedDimensionTitle}
-                eventFilter={selectedEventType}
+                eventFilter={selectedStormType}
                 colorsRange={COLOR_RANGE}
               />
             </div>

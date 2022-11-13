@@ -44,7 +44,7 @@ const MultiLineChart = ({
       return;
     }
 
-    console.log(stormData);
+    // console.log(stormData);
 
     const svg = d3.select(svgRef.current);
 
@@ -153,7 +153,6 @@ const MultiLineChart = ({
       const doYearFilter = yearFilter !== null;
       const doStateFilter = stateFilter !== null;
 
-      console.log('FILTER');
       stormData.forEach((row) => {
         const [yearMin, yearMax] = yearFilter;
 
@@ -250,6 +249,11 @@ const MultiLineChart = ({
         <br /> by type of Storm
       </p>
       <svg ref={svgRef}>
+      <defs>
+          <clipPath id={id}>
+            <rect x="0" y="0" width="100%" height="100%" />
+          </clipPath>
+        </defs>
         <g className="content"></g>
         <g className="x-axis axis" />
         <g className="y-axis axis" />

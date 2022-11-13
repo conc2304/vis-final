@@ -23,11 +23,10 @@ type Props = {
   margin: Margin;
   id: string;
   yearFilter: [number, number] | null;
-  eventFilter: StormEventCategoryType | null;
+  eventFilter: StormEventCategoryType | 'ALL' | null;
   colorsRange?: string[];
   selectedDimension: SelectedDimensionsType;
 };
-
 
 const HeatMap = ({
   id,
@@ -46,24 +45,23 @@ const HeatMap = ({
   type MyGeometry = Array<Feature<Geometry | null>> | Array<FeatureCollection> | [];
   const [geographies, setGeographies] = useState<MyGeometry>([]);
   const [isHexGrid, setIsHexGrid] = useState(false);
-  // const [stateData, setStateData] = useState<StateData[]>([]);
 
   const wrangleData = (): StateDataDimensions[] => {
     // first, filter according to selectedTimeRange, init empty array
     let filteredData: StormDataType[] = [];
 
-    // if there is a region selected
+    // if there is a region or year selected
     if (yearFilter || eventFilter) {
-      const doYearFilter = yearFilter !== null;
-      const doEventFilter = eventFilter !== null;
 
       stormData.forEach((row) => {
-        const [yearMin, yearMax] = yearFilter;
+        // if none is set default to our data's range
+        const [yearMin, yearMax] = !!yearFilter ? yearFilter : [1950, 2022];
 
-        const eventConditionIsTrue = doEventFilter && row.EVENT === eventFilter;
-        const yearConditionIsTrue = doYearFilter && yearMin <= row.YEAR && row.YEAR <= yearMax;
+        // if 'ALL' then the condition is true ef not then check to see if we match
+        const eventConditionIsTrue = eventFilter=== 'ALL' ? true : row.EVENT === eventFilter
+        const yearConditionIsTrue = yearMin <= row.YEAR && row.YEAR <= yearMax;
 
-        if (yearConditionIsTrue || eventConditionIsTrue) {
+        if (yearConditionIsTrue && eventConditionIsTrue) {
           filteredData.push(row);
         }
       });
@@ -164,7 +162,6 @@ const HeatMap = ({
   }, [isHexGrid]);
 
   useEffect(() => {
-    console.log('DRAW');
     const svg = d3.select(svgRef.current);
 
     let stateDataDisplay: StateDataDimensions[];
@@ -174,7 +171,7 @@ const HeatMap = ({
       return;
     }
     if (!geographies) return;
-    console.log(stateDataDisplay);
+    // console.log(stateDataDisplay);
 
     // use resized dimensions
     // but fall back to getBoundingClientRect, if no dimensions yet.
@@ -247,7 +244,7 @@ const HeatMap = ({
       }
       return null;
     }
-  }, [yearFilter, selectedDimension, stormData, geographies]);
+  }, [yearFilter, eventFilter, selectedDimension, stormData, geographies]);
 
   const handleOnMapViewToggle = () => {
     console.log(isHexGrid);
@@ -264,7 +261,7 @@ const HeatMap = ({
         <g className="content"></g>
       </svg>
       <FormControlLabel
-        style={{ position: 'absolute', bottom: 20, left: "50%", transform: "translateX(-50%)"  }}
+        style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)' }}
         label={`Switch To ${isHexGrid ? 'Map' : 'Hex Grid'} View`}
         control={<Switch checked={isHexGrid} onChange={handleOnMapViewToggle} size="small" />}
       />
