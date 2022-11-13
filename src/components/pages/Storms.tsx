@@ -7,7 +7,7 @@ import HeatMap from '../visualizers/HeatMap';
 import LineChart from '../visualizers/LineChartwBrush';
 import GlobalTempData from '../../data/Global_Temp_Data';
 import { StormDataType } from '../../data/types';
-import Layout from '../ui/Layout/Layout';
+import Layout from '../ui/Layout';
 
 const StormsPage = () => {
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
@@ -26,7 +26,7 @@ const StormsPage = () => {
 
   return (
     <Layout title="Severe Weather Events in the USA">
-      <Row>
+      <Row className="flex-grow-1">
         <Col xs={12} md={8}>
           <HeatMap
             yearFilter={selectedBrushYears}

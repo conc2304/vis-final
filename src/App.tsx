@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Home from './components/pages/Home';
 import Storms from './components/pages/Storms';
 
