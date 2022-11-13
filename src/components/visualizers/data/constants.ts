@@ -95,6 +95,10 @@ export const STORM_DISPLAY_DATA_DIMENSIONS = [
 
 export const STORM_UI_SELECT_VALUES = [
   {
+    label: "Number of Events Total",
+    value:'TOTAL_EVENTS'
+  },
+  {
     label: "Total Property Damage",
     value:'DAMAGE_PROPERTY_EVENT_SUM'
   },
@@ -114,10 +118,7 @@ export const STORM_UI_SELECT_VALUES = [
     label: "Injuries Total",
     value:'INJURIES_DIRECT_COUNT'
   },
-  {
-    label: "Number of Events Total",
-    value:'TOTAL_EVENTS'
-  },
+
 ] as const;
 
 export const EVENT_CATEGORIES = Object.values(stormEventToTypeMap).filter(getUniqueValues).sort();

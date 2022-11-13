@@ -28,6 +28,7 @@ const MultiLineChart = ({
   yearFilter = null,
   stateFilter = null,
   selectedDimension = null,
+  title = '',
   id,
 }: Props) => {
   const svgRef = useRef(null);
@@ -62,7 +63,6 @@ const MultiLineChart = ({
       .scaleLinear()
       .domain([yearFilter ? yearFilter[0] : 1950, yearFilter ? yearFilter[1] : 2022])
       .range([0, innerWidth]);
-
 
     // yscale for density of metric
     let dimensionMax = 0;
@@ -124,7 +124,7 @@ const MultiLineChart = ({
       .tickSize(5)
       .tickFormat((d) => d.toString());
 
-    const yAxis = d3.axisLeft(yScale).tickFormat(d3.format('.1f'));
+    const yAxis = d3.axisLeft(yScale).tickFormat(d3.format('.0f'));
 
     svg
       .select('.x-axis')
@@ -229,7 +229,6 @@ const MultiLineChart = ({
 
       const sortedData = [...filledData].sort((a, b) => b.YEAR - a.YEAR);
 
-
       displayData.push({
         key: eventCategory,
         values: sortedData,
@@ -240,10 +239,16 @@ const MultiLineChart = ({
     return displayData;
   }
 
-
-
   return (
-    <div ref={wrapperRef} style={{ width: '100%', height: '100%' }} className={`${id}-wrapper`}>
+    <div
+      ref={wrapperRef}
+      style={{ width: '100%', height: '100%', position: 'relative' }}
+      className={`${id}-wrapper`}
+    >
+      <p style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: '12px' }}>
+        {title}
+        <br /> by type of Storm
+      </p>
       <svg ref={svgRef}>
         <g className="content"></g>
         <g className="x-axis axis" />

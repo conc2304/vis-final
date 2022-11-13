@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import * as d3 from 'd3';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import './App.scss';
 import HeatMap from './components/visualizers/HeatMap';
 import LineChart from './components/visualizers/LineChartBrushed';
@@ -12,19 +13,25 @@ import {
   StormEventCategoryType,
 } from './components/visualizers/data/types';
 import { COLOR_RANGE, STORM_UI_SELECT_VALUES } from './components/visualizers/data/constants';
-// import MultiLineChart from './components/visualizers/MultiLineChart';
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import MultiLineChart from './components/visualizers/MultiLineChart';
 import TopStatesOverTimeMultiLineChart from './components/visualizers/MultiLineChartTop';
 
 function App() {
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
   const [selectedEventType, setSelectedEventType] = useState<StormEventCategoryType | null>(null);
-  const [selectedDimension, setSelectedDimension] =
-    useState<SelectedDimensionsType>('TOTAL_EVENTS');
+  const [selectedDimensionTitle, setSelectedDimensionTitle] = useState(
+    STORM_UI_SELECT_VALUES[0].label
+  );
+  const [selectedDimension, setSelectedDimension] = useState<SelectedDimensionsType>(
+    STORM_UI_SELECT_VALUES[0].value
+  );
   const [stormData, setStormData] = useState<StormDataType[]>(null);
 
   const onDataDimensionChange = (event: SelectChangeEvent) => {
+    const newDimension = event.target.value as SelectedDimensionsType;
+    const dimensionLabel = STORM_UI_SELECT_VALUES.find((elem) => elem.value === newDimension).label;
     setSelectedDimension(event.target.value as SelectedDimensionsType);
+    setSelectedDimensionTitle(dimensionLabel as any);
   };
 
   const handleOnBrush = ([start, end]) => {
@@ -126,21 +133,50 @@ function App() {
               display: 'inline-block',
             }}
           >
-            <TopStatesOverTimeMultiLineChart
-              yearFilter={selectedBrushYears}
-              stormData={stormData}
-              margin={{
-                top: 10,
-                bottom: 30,
-                right: 30,
-                left: 60,
+            <div
+              style={{
+                width: '100%',
+                height: '49%',
+                display: 'inline-block',
               }}
-              id="storm-data-multi-line"
-              selectedDimension={selectedDimension}
-              title={STORM_UI_SELECT_VALUES.find((elem) => elem.value === selectedDimension).label}
-              // eventFilter={selectedEventType}
-              // colorsRange={COLOR_RANGE}
-            />
+            >
+              <TopStatesOverTimeMultiLineChart
+                id="storm-data-top-states"
+                yearFilter={selectedBrushYears}
+                stormData={stormData}
+                margin={{
+                  top: 10,
+                  bottom: 30,
+                  right: 30,
+                  left: 60,
+                }}
+                selectedDimension={selectedDimension}
+                title={selectedDimensionTitle}
+                eventFilter={selectedEventType}
+                colorsRange={COLOR_RANGE}
+              />
+            </div>
+            <div
+              style={{
+                width: '100%',
+                height: '49%',
+                display: 'inline-block',
+              }}
+            >
+              <MultiLineChart
+                id="storm-data-events-by-selection"
+                yearFilter={selectedBrushYears}
+                stormData={stormData}
+                margin={{
+                  top: 10,
+                  bottom: 30,
+                  right: 30,
+                  left: 60,
+                }}
+                title={selectedDimensionTitle}
+                selectedDimension={selectedDimension}
+              />
+            </div>
           </div>
         </div>
       </header>

@@ -21,6 +21,8 @@ type Props = {
   selectedDimension: SelectedDimensionsType;
   yearFilter: [number, number] | null;
   numberOfTopStates?: number;
+  colorsRange?: string[]
+  eventFilter?: StormEventCategoryType;
 };
 
 const TopStatesOverTimeMultiLineChart = ({
@@ -103,14 +105,12 @@ const TopStatesOverTimeMultiLineChart = ({
       .selectAll('.area-path')
       .data(displayData)
       .join('path')
-      .attr('data', (d) => {
-        console.log(d);
-        return 'd';
-      })
       .attr('class', (d) => `area-path path-for-${d.key}`)
       // @ts-ignore
       .datum((d: DisplayData) => d.values)
       .attr('fill', 'none')
+      .transition()
+      .duration(500)
       .attr('stroke', '#FFF')
       .attr('stroke-width', 1)
       .attr('opacity', 0.4)
@@ -125,7 +125,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .tickSize(5)
       .tickFormat((d) => d.toString());
 
-    const yAxis = d3.axisLeft(yScale).tickFormat(d3.format('.1f'));
+    const yAxis = d3.axisLeft(yScale).tickFormat(d3.format('.0f'));
 
     svg
       .select('.x-axis')
@@ -140,7 +140,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // done
-  }, [stormData, yearFilter]);
+  }, [stormData, yearFilter, selectedDimension]);
 
   /**
    * Get the sum of the counts for each event and aggregate them per year
@@ -323,7 +323,7 @@ const TopStatesOverTimeMultiLineChart = ({
   return (
     <>
       <div ref={wrapperRef} style={{ width: '100%', height: '100%', position: "relative" }} className={`${id}-wrapper`}>
-        <p style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: "16px" }}>
+        <p style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: "12px" }}>
           {title}
           <br /> Most Impacted States
         </p>
