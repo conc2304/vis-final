@@ -29,47 +29,52 @@ const StormsPage = () => {
   return (
     <Layout>
       <header>
-        <h1>Severe Weather Events in the USA</h1>
+        <Link to={Routes.home} className="btn btn-primary btn-lg border-radius-0 d-block p-1">
+          Home &#9651;
+        </Link>
+        <h1 className="p-2">Severe Weather Events in the USA</h1>
       </header>
-      <Row className="flex-grow-1">
-        <Col xs={12} md={8}>
-          <HeatMap
-            yearFilter={selectedBrushYears}
-            stormData={stormData}
+      <main className="p-4 flex-grow-1 d-flex flex-column">
+        <Row className="flex-grow-1">
+          <Col xs={12} md={8}>
+            <HeatMap
+              yearFilter={selectedBrushYears}
+              stormData={stormData}
+              margin={{
+                top: 10,
+                bottom: 30,
+                right: 30,
+                left: 0,
+              }}
+              id="storm-data-heatmap"
+              selectedDimension="TOTAL_EVENTS"
+            />
+          </Col>
+          <Col xs={12} md={4}>
+            {/* @TODO - focus chart */}
+            {/* @TODO - legend */}
+            {/* @TODO - chart filter */}
+          </Col>
+        </Row>
+        <Row>
+          <LineChart
+            data={GlobalTempData}
             margin={{
               top: 10,
               bottom: 30,
               right: 30,
-              left: 0,
+              left: 40,
             }}
-            id="storm-data-heatmap"
-            selectedDimension="TOTAL_EVENTS"
+            onBrush={handleOnBrush}
+            lineColor="blue"
+            id="global-temp-chart"
+            title="Global Temperature Anomaly"
           />
-        </Col>
-        <Col xs={12} md={4}>
-          {/* @TODO - focus chart */}
-          {/* @TODO - legend */}
-          {/* @TODO - chart filter */}
-        </Col>
-      </Row>
-      <Row>
-        <LineChart
-          data={GlobalTempData}
-          margin={{
-            top: 10,
-            bottom: 30,
-            right: 30,
-            left: 40,
-          }}
-          onBrush={handleOnBrush}
-          lineColor="blue"
-          id="global-temp-chart"
-          title="Global Temperature Anomaly"
-        />
-      </Row>
+        </Row>
+      </main>
       <footer>
-        <Link to={Routes.hurricanes} className="btn btn-primary">
-          Explore Hurricanes
+        <Link to={Routes.hurricanes} className="btn btn-primary btn-lg border-radius-0 d-block p-4">
+          Explore Hurricanes &#9661;
         </Link>
       </footer>
     </Layout>

@@ -1,5 +1,32 @@
+// BOOTSTRAP CONFIGURATION
+$theme-colors: (
+  "primary": #002939
+);
+
+@import '~bootstrap/scss/bootstrap.scss';
+
+
 h1, h2, h3, h4, h5, h6 { margin: 0; }
 body, html, #root {
   height: 100%;
   position: relative;
+}
+
+body {
+  background: rgb(0,66,92);
+  background: radial-gradient(circle, rgba(0,66,92,1) 0%, rgba(0,38,92,1) 100%);
+  color: #f2f8ff;
+}
+
+.chart-placeholder {
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+      -45deg,
+      #002939,
+      #002939 10px,
+      transparent 10px,
+      transparent 20px
+  );
+  opacity: 0.7;
 }
