@@ -1,0 +1,19 @@
+.navigation-link {
+  &:before {
+    content: ' ';
+    width: 32px;
+    height: 32px;
+    background: #002939;
+    margin-right: 1rem;
+    border-radius: 50%;
+    border: 1px solid #001828;
+  }
+  &:hover:before {
+    background: #001828;
+  }
+
+  &.active:before {
+    background: #fff;
+  }
+}
+
