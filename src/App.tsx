@@ -27,7 +27,7 @@ import StormsTypesOverTimeSeries from './components/visualizers/MultiLineChart';
 import TopStatesOverTimeMultiLineChart from './components/visualizers/MultiLineChartTop';
 
 function App() {
-  // Event and State Handlers
+  // State Handlers
   const [selectedGeoRegion, setSelectedGeoRegion] = useState<GeoRegionUSType | 'ALL'>('ALL');
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
   const [selectedStormType, setSelectedStormType] = useState<StormEventCategoryType | 'ALL'>('ALL');
@@ -39,6 +39,7 @@ function App() {
   );
   const [stormData, setStormData] = useState<StormDataType[]>(null);
 
+  // Event Handlers
   const onDataDimensionChange = (event: SelectChangeEvent) => {
     const newDimension = event.target.value as SelectedDimensionsType;
     const dimensionLabel = STORM_UI_SELECT_VALUES.find((elem) => elem.value === newDimension).label;
@@ -213,6 +214,7 @@ function App() {
                 title={selectedDimensionTitle}
                 selectedDimension={selectedDimension}
                 regionSelected={selectedGeoRegion}
+                stormTypeSelected={selectedStormType}
               />
             </div>
           </div>

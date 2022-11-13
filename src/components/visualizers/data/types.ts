@@ -54,5 +54,6 @@ export type StateDataDimensions = {
   STATE?: GeoRegionUSType;
   TOTAL_EVENTS: number;
   YEAR?: number,
+  EVENT_NAME?: StormEventCategoryType; 
 };
 

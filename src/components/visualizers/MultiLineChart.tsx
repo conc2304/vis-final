@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { useState, useRef, useEffect } from 'react';
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 import {
   GeoRegionUSType,
   SelectedDimensionsType,
@@ -10,6 +11,7 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
+import { COLOR_RANGE, STORM_EVENT_CATEGORIES } from './data/constants';
 
 type Props = {
   stormData: StormDataType[];
@@ -20,6 +22,7 @@ type Props = {
   selectedDimension: SelectedDimensionsType;
   yearFilter: [number, number] | null;
   regionSelected?: GeoRegionUSType | 'ALL';
+  stormTypeSelected?: StormEventCategoryType | 'ALL';
 };
 
 const MultiLineChart = ({
@@ -27,6 +30,7 @@ const MultiLineChart = ({
   margin,
   yearFilter = null,
   regionSelected = 'ALL',
+  stormTypeSelected = "ALL",
   selectedDimension = null,
   title = '',
   id,
@@ -99,11 +103,20 @@ const MultiLineChart = ({
       // @ts-ignore
       .datum((d: DisplayData) => d.values)
       .attr('fill', 'none')
-      .attr('stroke', '#FFF')
+      // @ts-ignore
+      .attr("debug", (d: StateDataDimensions, i) => {
+        console.log("d")
+        console.log(i, d)
+        // console.log(STORM_EVENT_CATEGORIES[i])
+        console.log(stormTypeSelected, STORM_EVENT_CATEGORIES[i])
+        return "0"
+      })
+      .attr("mix-blend-mode", "multiply")
       .transition()
       .duration(500)
-      .attr('stroke-width', 1)
-      .attr('opacity', 0.4)
+      .attr('stroke', (d,i) => stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? COLOR_RANGE[6] : '#FFF')
+      .attr('stroke-width', (d,i) => stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? 2 : 1)
+      .attr('opacity', (d,i) => stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? 1 : 0.6)
       // @ts-ignore
       .attr('d', generator);
 
@@ -130,7 +143,7 @@ const MultiLineChart = ({
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // done
-  }, [stormData, yearFilter, selectedDimension, regionSelected]);
+  }, [stormData, yearFilter, selectedDimension, regionSelected, stormTypeSelected]);
 
   /**
    * Get the sum of the counts for each event and aggregate them per year
@@ -171,9 +184,9 @@ const MultiLineChart = ({
 
     // Loop through each Event Category (tornado, hurricane, ...)
     stormDataByEvent.forEach((eventCategoryData) => {
-      if (eventCategoryData.key === 'EVENT') return;
-
       const { key: eventCategory } = eventCategoryData;
+      
+      if (!STORM_EVENT_CATEGORIES.includes(eventCategory)) return;
 
       // Group all of this event's data by year
       const eventsByYear = Array.from(
@@ -206,6 +219,7 @@ const MultiLineChart = ({
         });
 
         yearData.push({
+          EVENT_NAME: eventCategory,
           YEAR: entry.year,
           DAMAGE_PROPERTY_EVENT_SUM,
           DEATHS_DIRECT_COUNT,
@@ -241,7 +255,7 @@ const MultiLineChart = ({
       <p style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: '12px' }}>
         {title}
         <br /> by type of Storm
-        <br />{' '}
+        <br />
         <small>
           {regionSelected === 'ALL'
             ? 'USA'
