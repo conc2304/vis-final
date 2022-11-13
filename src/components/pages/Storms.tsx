@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import * as d3 from 'd3';
 import { Col, Row } from 'react-bootstrap';
 
+import { Link } from 'react-router-dom';
 import HeatMap from '../visualizers/HeatMap';
 import LineChart from '../visualizers/LineChartwBrush';
 import GlobalTempData from '../../data/Global_Temp_Data';
 import { StormDataType } from '../../data/types';
 import Layout from '../ui/Layout';
+import { Routes } from '../../router/router';
 
 const StormsPage = () => {
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
@@ -25,7 +27,10 @@ const StormsPage = () => {
   }, []);
 
   return (
-    <Layout title="Severe Weather Events in the USA">
+    <Layout>
+      <header>
+        <h1>Severe Weather Events in the USA</h1>
+      </header>
       <Row className="flex-grow-1">
         <Col xs={12} md={8}>
           <HeatMap
@@ -62,6 +67,11 @@ const StormsPage = () => {
           title="Global Temperature Anomaly"
         />
       </Row>
+      <footer>
+        <Link to={Routes.hurricanes} className="btn btn-primary">
+          Explore Hurricanes
+        </Link>
+      </footer>
     </Layout>
   );
 };

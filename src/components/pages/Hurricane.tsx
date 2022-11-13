@@ -1,48 +1,16 @@
-import * as d3 from 'd3';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import Layout from '../ui/Layout';
-import HeatMap from '../visualizers/HeatMap';
-import { StormDataType } from '../../data/types';
 import { Routes } from '../../router/router';
 
-const HomePage = () => {
-  const [stormData, setStormData] = useState<StormDataType[]>(null);
-
-  useEffect(() => {
-    const promises = [d3.json('/data/Storm_Data_Sums.json')];
-
-    Promise.all(promises).then((data) => {
-      setStormData(data[0] as StormDataType[]);
-    });
-  }, []);
-
+const HurricanePage = () => {
   return (
     <Layout>
-      <header>
-        <h1>Is Earth Fighting Back?</h1>
-      </header>
       <Row className="flex-grow-1">
-        <Col md={8}>
-          <HeatMap
-            yearFilter={null}
-            stormData={stormData}
-            margin={{
-              top: 10,
-              bottom: 30,
-              right: 30,
-              left: 0,
-            }}
-            id="storm-data-heatmap"
-            selectedDimension="TOTAL_EVENTS"
-          />
-        </Col>
         <Col md={4}>
-          {/* @TODO - introduction copy */}
-          <h2>Header Text</h2>
+          <h2>Hurricanes in the USA</h2>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at imperdiet arcu.
             Proin ut lacus mauris. Fusce et nisi iaculis, tincidunt mauris non, mollis nunc. Donec
@@ -54,13 +22,16 @@ const HomePage = () => {
             dapibus. Vestibulum sed congue turpis. Nullam aliquam leo odio, nec congue lacus
             placerat eget. Phasellus ut tincidunt libero.
           </p>
-          <Link to={Routes.storms} className="btn btn-primary">
-            Explore
-          </Link>
         </Col>
+        <Col md={8}>{/* @TODO - hurricane chart */}</Col>
       </Row>
+      <footer>
+        <Link to={Routes.resources} className="btn btn-primary">
+          More Resources
+        </Link>
+      </footer>
     </Layout>
   );
 };
 
-export default HomePage;
+export default HurricanePage;
