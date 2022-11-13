@@ -124,9 +124,9 @@ export const STORM_UI_SELECT_VALUES = [
 export const EVENT_CATEGORIES = Object.values(stormEventToTypeMap).filter(getUniqueValues).sort();
 
 export const STORM_EVENT_CATEGORIES = [
-  'Avalanche',
-  'Draught',
-  'Dust Storm',
+  // 'Avalanche', // no data on map ?
+  // 'Draught', // should have data but not?
+  // 'Dust Storm',
   'Extreme Temperature',
   'Flood',
   'Hurricane',
@@ -134,7 +134,7 @@ export const STORM_EVENT_CATEGORIES = [
   'Thunderstorm',
   'Tornado',
   'Tropical Storm',
-  'Volcanic Event',
+  // 'Volcanic Event', // no data on  map
   'Wildfire',
   'Winter Storm',
 ] as const;

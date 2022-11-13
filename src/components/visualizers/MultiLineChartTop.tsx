@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import {
   GeoRegionUSType,
   SelectedDimensionsType,
@@ -22,7 +22,7 @@ type Props = {
   yearFilter: [number, number] | null;
   numberOfTopStates?: number;
   colorsRange?: string[]
-  eventFilter?: StormEventCategoryType;
+  eventFilter?: StormEventCategoryType | 'ALL';
 };
 
 const TopStatesOverTimeMultiLineChart = ({
@@ -33,6 +33,7 @@ const TopStatesOverTimeMultiLineChart = ({
   selectedDimension = null,
   id,
   title,
+  eventFilter = 'ALL'
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
@@ -140,7 +141,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // done
-  }, [stormData, yearFilter, selectedDimension]);
+  }, [stormData, yearFilter, eventFilter, selectedDimension]);
 
   /**
    * Get the sum of the counts for each event and aggregate them per year
@@ -151,17 +152,17 @@ const TopStatesOverTimeMultiLineChart = ({
     let filteredData: StormDataType[] = [];
 
     // if there is a region selected
-    if (yearFilter) {
-      const doYearFilter = yearFilter !== null;
-      // const doEventFilter = eventFilter !== null;
+    if (yearFilter || eventFilter) {
 
       stormData.forEach((row) => {
-        const [yearMin, yearMax] = yearFilter;
+        const [yearMin, yearMax] = !!yearFilter ? yearFilter : [1950, 2022];
 
-        // const eventConditionIsTrue = doEventFilter && row.EVENT === eventFilter;
-        const yearConditionIsTrue = doYearFilter && yearMin <= row.YEAR && row.YEAR <= yearMax;
+        // if 'ALL' then the condition is true ef not then check to see if we match
 
-        if (yearConditionIsTrue) {
+        const eventConditionIsTrue = eventFilter=== 'ALL' ? true : row.EVENT === eventFilter
+        const yearConditionIsTrue = yearMin <= row.YEAR && row.YEAR <= yearMax;
+
+        if (yearConditionIsTrue && eventConditionIsTrue) {
           filteredData.push(row);
         }
       });

@@ -23,7 +23,7 @@ type Props = {
   margin: Margin;
   id: string;
   yearFilter: [number, number] | null;
-  eventFilter: StormEventCategoryType | 'ALL' | null;
+  eventFilter: StormEventCategoryType | 'ALL' ;
   colorsRange?: string[];
   selectedDimension: SelectedDimensionsType;
 };
