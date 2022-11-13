@@ -12,6 +12,7 @@ import { Margin } from './types';
 import { fillMissingYears } from './helpers';
 
 type Props = {
+  // data: StormDataColumns;
   stormData: StormDataType[];
   margin: Margin;
   title?: string;
@@ -19,16 +20,17 @@ type Props = {
   id: string;
   selectedDimension: SelectedDimensionsType;
   yearFilter: [number, number] | null;
-  stateFilter?: GeoRegionUSType | null;
+  numberOfTopStates?: number;
 };
 
-const MultiLineChart = ({
+const TopStatesOverTimeMultiLineChart = ({
   stormData,
   margin,
   yearFilter = null,
-  stateFilter = null,
+  numberOfTopStates = 5,
   selectedDimension = null,
   id,
+  title,
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
@@ -43,7 +45,7 @@ const MultiLineChart = ({
       return;
     }
 
-    console.log(stormData);
+    console.log(displayData);
 
     const svg = d3.select(svgRef.current);
 
@@ -57,12 +59,18 @@ const MultiLineChart = ({
       .select('.content')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+    // Set the title
+    svg
+      .select('.title')
+      .attr('transform', `translate(${2 * margin.left}, ${30})`)
+      .attr('font-size', '14')
+      .attr('fill', 'white');
+
     // xScale for Years
     const xScale = d3
       .scaleLinear()
       .domain([yearFilter ? yearFilter[0] : 1950, yearFilter ? yearFilter[1] : 2022])
       .range([0, innerWidth]);
-
 
     // yscale for density of metric
     let dimensionMax = 0;
@@ -79,16 +87,8 @@ const MultiLineChart = ({
       if (eventMin < dimensionMin) dimensionMin = eventMin;
     });
 
-    const stormEventCategories = displayData.map((d) => d.key);
-
+    // yscale for density of metric
     const yScale = d3.scaleLinear().range([innerHeight, 0]).domain([dimensionMin, dimensionMax]); // height of the individual lines
-
-    // Y Axis for categories
-    const yCategory = d3
-      .scaleBand()
-      .domain(stormEventCategories)
-      .range([0, innerHeight])
-      .paddingInner(1);
 
     const generator = d3
       .line()
@@ -103,14 +103,15 @@ const MultiLineChart = ({
       .selectAll('.area-path')
       .data(displayData)
       .join('path')
-      // .attr('transform', (d) => `translate(${margin.left}, ${margin.top})`)
+      .attr('data', (d) => {
+        console.log(d);
+        return 'd';
+      })
       .attr('class', (d) => `area-path path-for-${d.key}`)
       // @ts-ignore
       .datum((d: DisplayData) => d.values)
       .attr('fill', 'none')
       .attr('stroke', '#FFF')
-      .transition()
-      .duration(500)
       .attr('stroke-width', 1)
       .attr('opacity', 0.4)
       // @ts-ignore
@@ -139,25 +140,25 @@ const MultiLineChart = ({
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // done
-  }, [stormData, yearFilter, selectedDimension]);
+  }, [stormData, yearFilter]);
 
   /**
    * Get the sum of the counts for each event and aggregate them per year
    * @returns displayData
    */
-  function wrangleData(): DisplayData[] {
-    let filteredData = [];
+  const wrangleData = (): DisplayData[] => {
+    // first, filter according to selectedTimeRange, init empty array
+    let filteredData: StormDataType[] = [];
 
-    // Filter
-    if (yearFilter || stateFilter) {
+    // if there is a region selected
+    if (yearFilter) {
       const doYearFilter = yearFilter !== null;
-      const doStateFilter = stateFilter !== null;
+      // const doEventFilter = eventFilter !== null;
 
-      console.log('FILTER');
       stormData.forEach((row) => {
         const [yearMin, yearMax] = yearFilter;
 
-        // const stateConditionIsTrue = doStateFilter && row.STATE === stateFilter;
+        // const eventConditionIsTrue = doEventFilter && row.EVENT === eventFilter;
         const yearConditionIsTrue = doYearFilter && yearMin <= row.YEAR && row.YEAR <= yearMax;
 
         if (yearConditionIsTrue) {
@@ -168,27 +169,44 @@ const MultiLineChart = ({
       filteredData = stormData;
     }
 
-    // Group the Data by Storm Event Type (tornado, Hurricane ...)
-    const stormDataByEvent = Array.from(
-      d3.group(filteredData, (d) => d.EVENT),
+    // prep data by state
+    const stormDataByState = Array.from(
+      d3.group(filteredData, (d) => d.STATE),
       ([key, value]) => ({ key, value })
     );
 
+    console.log(stormDataByState);
+    // filtered for time and for top X States by cumulative storm dimension (event count, property damage ...)
+    const topStatesTotalValues = getTopNthStatesByDimension(stormDataByState);
+    const topStatesNameArr = topStatesTotalValues.map((stateData) => stateData.STATE);
+
+    // get the yearly values for each state in our time period
+
+    const topStatesData = getStormDataPerStatePerYear(stormDataByState, topStatesNameArr);
+    console.log('topStatesData');
+    console.log(topStatesData);
+
+    return topStatesData;
+  };
+
+  function getStormDataPerStatePerYear(
+    stormDataGroupedByState: { key: GeoRegionUSType; value: StormDataType[] }[],
+    statesFilter: GeoRegionUSType[]
+  ) {
     const displayData: DisplayData[] = [];
 
-    // Loop through each Event Category (tornado, hurricane, ...)
-    stormDataByEvent.forEach((eventCategoryData) => {
-      if (eventCategoryData.key === 'EVENT') return;
+    // loop through each state and skip over the ones that we dont need and then group the data by year
+    stormDataGroupedByState;
+    stormDataGroupedByState.forEach((entry) => {
+      const { key: stateName } = entry;
 
-      const { key: eventCategory } = eventCategoryData;
+      // only add the top states that were passed in
+      if (!statesFilter.includes(stateName)) return;
 
-      // Group all of this event's data by year
       const eventsByYear = Array.from(
-        d3.group(eventCategoryData.value, (d) => d.YEAR),
+        d3.group(entry.value, (d) => d.YEAR),
         ([year, value]) => ({ year, value })
       );
-
-      // console.log('eventsByYear', eventCategory, eventsByYear);
 
       const yearData: StateDataDimensions[] = [];
 
@@ -229,33 +247,99 @@ const MultiLineChart = ({
 
       const sortedData = [...filledData].sort((a, b) => b.YEAR - a.YEAR);
 
-
       displayData.push({
-        key: eventCategory,
+        key: stateName,
         values: sortedData,
       });
-    }); // end events by category loop
+    });
 
-    // console.log('displayData', displayData);
     return displayData;
   }
 
+  /**
+   *
+   * @param stormDataByState
+   * @returns An Array with the aggregate sums of dimensions for the top Nth states
+   */
+  function getTopNthStatesByDimension(
+    stormDataByState: {
+      key: GeoRegionUSType;
+      value: StormDataType[];
+    }[]
+  ): StateDataDimensions[] {
+    const stateData: StateDataDimensions[] = [];
 
+    stormDataByState.forEach((state) => {
+      const { key: stateName } = state;
+
+      if (stateName === 'STATE') return;
+
+      let DAMAGE_PROPERTY_EVENT_SUM = 0;
+      let DEATHS_DIRECT_COUNT = 0;
+      let DEATHS_INDIRECT_COUNT = 0;
+      let DEATHS_TOTAL_COUNT = 0;
+      let INJURIES_DIRECT_COUNT = 0;
+      let TOTAL_EVENTS = 0;
+      const COUNTS_BY_EVENT: Record<StormEventCategoryType, number> = {} as Record<
+        StormEventCategoryType,
+        number
+      >;
+
+      // sum up the totals per state
+      state.value.forEach((entry: StormDataType) => {
+        const eventType = entry.EVENT || 'misc';
+
+        DAMAGE_PROPERTY_EVENT_SUM += entry.DAMAGE_PROPERTY_EVENT_SUM;
+        DEATHS_DIRECT_COUNT += entry.DEATHS_DIRECT_COUNT;
+        DEATHS_INDIRECT_COUNT += entry.DEATHS_INDIRECT_COUNT;
+        DEATHS_TOTAL_COUNT += entry.DEATHS_DIRECT_COUNT + entry.DEATHS_INDIRECT_COUNT;
+        INJURIES_DIRECT_COUNT += entry.INJURIES_DIRECT_COUNT;
+        TOTAL_EVENTS += entry.EVENT_COUNT;
+
+        if (eventType in COUNTS_BY_EVENT) {
+          COUNTS_BY_EVENT[eventType] += entry.EVENT_COUNT;
+        } else {
+          COUNTS_BY_EVENT[eventType] = entry.EVENT_COUNT;
+        }
+      });
+
+      stateData.push({
+        STATE: stateName,
+        DAMAGE_PROPERTY_EVENT_SUM,
+        DEATHS_DIRECT_COUNT,
+        DEATHS_INDIRECT_COUNT,
+        DEATHS_TOTAL_COUNT,
+        INJURIES_DIRECT_COUNT,
+        TOTAL_EVENTS,
+        COUNTS_BY_EVENT,
+      });
+    }); // end foreach
+
+    stateData.sort((a, b) => b[selectedDimension] - a[selectedDimension]);
+    const topStates = stateData.slice(0, numberOfTopStates); // top states cumulative values
+    return topStates;
+  }
 
   return (
-    <div ref={wrapperRef} style={{ width: '100%', height: '100%' }} className={`${id}-wrapper`}>
-      <svg ref={svgRef}>
-        <g className="content"></g>
-        <g className="x-axis axis" />
-        <g className="y-axis axis" />
-      </svg>
-    </div>
+    <>
+      <div ref={wrapperRef} style={{ width: '100%', height: '100%', position: "relative" }} className={`${id}-wrapper`}>
+        <p style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: "16px" }}>
+          {title}
+          <br /> Most Impacted States
+        </p>
+        <svg ref={svgRef}>
+          <g className="content"></g>
+          <g className="x-axis axis" />
+          <g className="y-axis axis" />
+        </svg>
+      </div>
+    </>
   );
 };
 
-export default MultiLineChart;
+export default TopStatesOverTimeMultiLineChart;
 
 type DisplayData = {
-  key: StormEventCategoryType;
+  key: GeoRegionUSType;
   values: StateDataDimensions[];
 };

@@ -12,8 +12,9 @@ import {
   StormEventCategoryType,
 } from './components/visualizers/data/types';
 import { COLOR_RANGE, STORM_UI_SELECT_VALUES } from './components/visualizers/data/constants';
-import MultiLineChart from './components/visualizers/MultiLineChart';
+// import MultiLineChart from './components/visualizers/MultiLineChart';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import TopStatesOverTimeMultiLineChart from './components/visualizers/MultiLineChartTop';
 
 function App() {
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
@@ -125,7 +126,7 @@ function App() {
               display: 'inline-block',
             }}
           >
-            <MultiLineChart
+            <TopStatesOverTimeMultiLineChart
               yearFilter={selectedBrushYears}
               stormData={stormData}
               margin={{
@@ -136,6 +137,7 @@ function App() {
               }}
               id="storm-data-multi-line"
               selectedDimension={selectedDimension}
+              title={STORM_UI_SELECT_VALUES.find((elem) => elem.value === selectedDimension).label}
               // eventFilter={selectedEventType}
               // colorsRange={COLOR_RANGE}
             />

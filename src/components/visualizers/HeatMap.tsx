@@ -77,11 +77,6 @@ const HeatMap = ({
       ([key, value]) => ({ key, value })
     );
 
-    // const stormDatabyEvent = Array.from(
-    //   d3.group(filteredData, (d) => d.EVENT),
-    //   ([key, value]) => ({ key, value })
-    // );
-
     // merge
     const stateData: StateDataDimensions[] = [];
 
@@ -223,7 +218,6 @@ const HeatMap = ({
       .attr('stroke-width', '0.5px')
       .attr('stroke', 'white')
       .attr('data', (feature) => {
-        // console.log(feature.properties.google_name)
         return getFillColor(feature, stateDataDisplay);
       })
       .transition()
@@ -235,7 +229,6 @@ const HeatMap = ({
     function getFillColor(d: GeoJsonFeatureType, stateData: StateDataDimensions[]) {
       const stateVar = isHexGrid ? 'google_name' : 'name';
       const { [stateVar]: name } = d.properties;
-      console.log(name);
       const cleanedName = (name as string).replace('(United States)', '').trim();
       const stateName = cleanedName as GeoRegionUSType;
       const stateInfo = getStateInfoByStateName(stateName, stateData);
