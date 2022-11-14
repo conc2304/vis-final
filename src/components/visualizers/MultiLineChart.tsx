@@ -104,13 +104,13 @@ const MultiLineChart = ({
       .datum((d: DisplayData) => d.values)
       .attr('fill', 'none')
       // @ts-ignore
-      .attr("debug", (d: StateDataDimensions, i) => {
-        console.log("d")
-        console.log(i, d)
-        // console.log(STORM_EVENT_CATEGORIES[i])
-        console.log(stormTypeSelected, STORM_EVENT_CATEGORIES[i])
-        return "0"
-      })
+      // .attr("debug", (d: StateDataDimensions, i) => {
+      //   console.log("d")
+      //   console.log(i, d)
+      //   // console.log(STORM_EVENT_CATEGORIES[i])
+      //   console.log(stormTypeSelected, STORM_EVENT_CATEGORIES[i])
+      //   return "0"
+      // })
       .attr("mix-blend-mode", "multiply")
       .transition()
       .duration(500)

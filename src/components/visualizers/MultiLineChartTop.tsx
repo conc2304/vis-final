@@ -10,6 +10,7 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
+import { COLOR_RANGE } from './data/constants';
 
 type Props = {
   // data: StormDataColumns;
@@ -21,9 +22,9 @@ type Props = {
   selectedDimension: SelectedDimensionsType;
   yearFilter: [number, number] | null;
   numberOfTopStates?: number;
-  colorsRange?: string[]
+  colorsRange?: string[];
   eventFilter?: StormEventCategoryType | 'ALL';
-  regionSelected?: GeoRegionUSType | "ALL" 
+  regionSelected?: GeoRegionUSType | 'ALL';
 };
 
 const TopStatesOverTimeMultiLineChart = ({
@@ -32,9 +33,10 @@ const TopStatesOverTimeMultiLineChart = ({
   yearFilter = null,
   numberOfTopStates = 5,
   selectedDimension = null,
+  regionSelected = 'ALL',
   id,
   title,
-  eventFilter = 'ALL'
+  eventFilter = 'ALL',
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
@@ -111,11 +113,21 @@ const TopStatesOverTimeMultiLineChart = ({
       // @ts-ignore
       .datum((d: DisplayData) => d.values)
       .attr('fill', 'none')
+            // @ts-ignore
+      .attr("debug", (d: StateDataDimensions, i) => {
+        // console.log("d")
+        console.log(i, d)
+        console.log(d[0].STATE)
+        // console.log(STORM_EVENT_CATEGORIES[i])
+        // console.log(regionSelected)
+        return "0"
+      })
+      .attr("mix-blend-mode", "multiply")
       .transition()
       .duration(500)
-      .attr('stroke', '#FFF')
-      .attr('stroke-width', 1)
-      .attr('opacity', 0.4)
+      .attr('stroke', (d) => regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? COLOR_RANGE[6] : '#FFF')
+      .attr('stroke-width', (d) => regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? 2 : 1)
+      .attr('opacity', (d) => regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? 1 : 0.6)
       // @ts-ignore
       .attr('d', generator);
 
@@ -142,7 +154,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // done
-  }, [stormData, yearFilter, eventFilter, selectedDimension]);
+  }, [stormData, yearFilter, eventFilter, selectedDimension, regionSelected]);
 
   /**
    * Get the sum of the counts for each event and aggregate them per year
@@ -154,13 +166,12 @@ const TopStatesOverTimeMultiLineChart = ({
 
     // if there is a region selected
     if (yearFilter || eventFilter) {
-
       stormData.forEach((row) => {
         const [yearMin, yearMax] = !!yearFilter ? yearFilter : [1950, 2022];
 
         // if 'ALL' then the condition is true ef not then check to see if we match
 
-        const eventConditionIsTrue = eventFilter=== 'ALL' ? true : row.EVENT === eventFilter
+        const eventConditionIsTrue = eventFilter === 'ALL' ? true : row.EVENT === eventFilter;
         const yearConditionIsTrue = yearMin <= row.YEAR && row.YEAR <= yearMax;
 
         if (yearConditionIsTrue && eventConditionIsTrue) {
@@ -182,10 +193,7 @@ const TopStatesOverTimeMultiLineChart = ({
     const topStatesNameArr = topStatesTotalValues.map((stateData) => stateData.STATE);
 
     // get the yearly values for each state in our time period
-
     const topStatesData = getStormDataPerStatePerYear(stormDataByState, topStatesNameArr);
-    // console.log('topStatesData');
-    // console.log(topStatesData);
 
     return topStatesData;
   };
@@ -233,6 +241,7 @@ const TopStatesOverTimeMultiLineChart = ({
 
         yearData.push({
           YEAR: entry.year,
+          STATE: stateName,
           DAMAGE_PROPERTY_EVENT_SUM,
           DEATHS_DIRECT_COUNT,
           DEATHS_INDIRECT_COUNT,
@@ -317,14 +326,33 @@ const TopStatesOverTimeMultiLineChart = ({
     }); // end foreach
 
     stateData.sort((a, b) => b[selectedDimension] - a[selectedDimension]);
+
+    // add in the selected state for comparision
+    // regionSelected
+    const isRegionSelectedAccounted = stateData.some(
+      (entry) => entry.STATE.toLowerCase() === regionSelected.toLowerCase()
+    );
+
     const topStates = stateData.slice(0, numberOfTopStates); // top states cumulative values
+
+    if (isRegionSelectedAccounted && regionSelected !== 'ALL') {
+      // if we dont have them accounted for find them and add them;
+      const selectedStateData = stateData.find(
+        (entry) => entry.STATE.toLowerCase() === regionSelected.toLowerCase()
+      );
+      topStates.push(selectedStateData);
+    }
     return topStates;
   }
 
   return (
     <>
-      <div ref={wrapperRef} style={{ width: '100%', height: '100%', position: "relative" }} className={`${id}-wrapper`}>
-        <p style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: "12px" }}>
+      <div
+        ref={wrapperRef}
+        style={{ width: '100%', height: '100%', position: 'relative' }}
+        className={`${id}-wrapper`}
+      >
+        <p style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: '12px' }}>
           {title}
           <br /> Most Impacted States
         </p>

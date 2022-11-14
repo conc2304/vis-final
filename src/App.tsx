@@ -192,6 +192,7 @@ function App() {
                 title={selectedDimensionTitle}
                 eventFilter={selectedStormType}
                 colorsRange={COLOR_RANGE}
+                regionSelected={selectedGeoRegion}
               />
             </div>
             <div
