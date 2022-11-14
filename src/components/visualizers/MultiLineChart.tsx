@@ -227,6 +227,7 @@ const MultiLineChart = ({
           DEATHS_TOTAL_COUNT,
           INJURIES_DIRECT_COUNT,
           TOTAL_EVENTS,
+
         });
       }); // end event by year Loop
 

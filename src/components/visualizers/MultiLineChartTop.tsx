@@ -114,14 +114,14 @@ const TopStatesOverTimeMultiLineChart = ({
       .datum((d: DisplayData) => d.values)
       .attr('fill', 'none')
             // @ts-ignore
-      // .attr("debug", (d: StateDataDimensions, i) => {
-      //   // console.log("d")
-      //   console.log(i, d)
-      //   console.log(d[0].STATE)
-      //   // console.log(STORM_EVENT_CATEGORIES[i])
-      //   // console.log(regionSelected)
-      //   return "0"
-      // })
+      .attr("debug", (d: StateDataDimensions, i) => {
+        // console.log("d")
+        console.log(i, d)
+        console.log(d[0].STATE)
+        // console.log(STORM_EVENT_CATEGORIES[i])
+        // console.log(regionSelected)
+        return "0"
+      })
       .attr("mix-blend-mode", "multiply")
       .transition()
       .duration(500)
@@ -253,7 +253,7 @@ const TopStatesOverTimeMultiLineChart = ({
 
       // fill in missing values with 0's
       const [minYear, maxYear] = d3.extent(yearData, (d) => d.YEAR);
-      const filledData = fillMissingYears(yearData, minYear, maxYear);
+      const filledData = fillMissingYears(yearData, minYear, maxYear, stateName);
 
       const sortedData = [...filledData].sort((a, b) => b.YEAR - a.YEAR);
 
@@ -354,7 +354,7 @@ const TopStatesOverTimeMultiLineChart = ({
       >
         <p style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: '12px' }}>
           {title}
-          <br /> Most Impacted States
+          <br /> Top {numberOfTopStates} Most Impacted States
           <br /> <small>by ({eventFilter === "ALL" ? "All Events": eventFilter })</small>
         </p>
         <svg ref={svgRef}>
