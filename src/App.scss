@@ -26,7 +26,14 @@
 
 
 .App {
-
+  // MATERIAL OVERRIDES
+  .MuiSelect-select {
+    color: white;
+  }
+  .MuiOutlinedInput-root {
+    border-color: white;
+    color: white;
+  }
   .ui-form-container {
     width: 49%;
     height: 100%;

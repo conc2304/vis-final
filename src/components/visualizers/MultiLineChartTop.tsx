@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import {
   GeoRegionUSType,
   SelectedDimensionsType,
@@ -41,6 +41,9 @@ const TopStatesOverTimeMultiLineChart = ({
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
+
+  const [topStateAsNameList, setTopStatesAsNameList] = useState<GeoRegionUSType[]>([]);
+
   let displayData: DisplayData[] = [];
 
   useEffect(() => {
@@ -113,21 +116,25 @@ const TopStatesOverTimeMultiLineChart = ({
       // @ts-ignore
       .datum((d: DisplayData) => d.values)
       .attr('fill', 'none')
-            // @ts-ignore
-      .attr("debug", (d: StateDataDimensions, i) => {
+      // @ts-ignore
+      .attr('debug', (d: StateDataDimensions, i) => {
         // console.log("d")
-        console.log(i, d)
-        console.log(d[0].STATE)
+        console.log(i, d);
+        console.log(d[0].STATE);
         // console.log(STORM_EVENT_CATEGORIES[i])
         // console.log(regionSelected)
-        return "0"
+        return '0';
       })
-      .attr("mix-blend-mode", "multiply")
+      .attr('mix-blend-mode', 'multiply')
       .transition()
       .duration(500)
-      .attr('stroke', (d) => regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? COLOR_RANGE[6] : '#FFF')
-      .attr('stroke-width', (d) => regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? 2 : 1)
-      .attr('opacity', (d) => regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? 1 : 0.6)
+      .attr('stroke', (d) =>
+        regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? COLOR_RANGE[6] : '#FFF'
+      )
+      .attr('stroke-width', (d) =>
+        regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? 2 : 1
+      )
+      .attr('opacity', (d) => (regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? 1 : 0.6))
       // @ts-ignore
       .attr('d', generator);
 
@@ -191,7 +198,7 @@ const TopStatesOverTimeMultiLineChart = ({
     // filtered for time and for top X States by cumulative storm dimension (event count, property damage ...)
     const topStatesTotalValues = getTopNthStatesByDimension(stormDataByState);
     const topStatesNameArr = topStatesTotalValues.map((stateData) => stateData.STATE);
-
+    setTopStatesAsNameList(topStatesNameArr.slice(0, numberOfTopStates));
     // get the yearly values for each state in our time period
     const topStatesData = getStormDataPerStatePerYear(stormDataByState, topStatesNameArr);
 
@@ -342,9 +349,19 @@ const TopStatesOverTimeMultiLineChart = ({
       );
       topStates.push(selectedStateData);
     }
+
+    console.log('topStates');
+    console.log(topStates);
+
     return topStates;
   }
 
+  console.log('topStateAsNameList');
+  console.log(topStateAsNameList, regionSelected.toUpperCase());
+  const isSelectedStateIncluded =
+    regionSelected !== 'ALL' &&
+    topStateAsNameList.includes(regionSelected.toUpperCase() as GeoRegionUSType);
+  const stateNamesMatch = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
   return (
     <>
       <div
@@ -352,11 +369,41 @@ const TopStatesOverTimeMultiLineChart = ({
         style={{ width: '100%', height: '100%', position: 'relative' }}
         className={`${id}-wrapper`}
       >
-        <p style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: '12px' }}>
-          {title}
-          <br /> Top {numberOfTopStates} Most Impacted States
-          <br /> <small>by ({eventFilter === "ALL" ? "All Events": eventFilter })</small>
-        </p>
+        <div style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: '12px' }}>
+          <p>
+            {title}
+            <br /> Top {numberOfTopStates} Most Impacted States
+            <br /> <small>by ({eventFilter === 'ALL' ? 'All Events' : eventFilter})</small>
+          </p>
+          <div style={{ textAlign: 'left' }}>
+            {topStateAsNameList.map((stateName, i) => (
+              <>
+                <br />
+                <small
+                  style={{
+                    color: stateNamesMatch(stateName, regionSelected) ? COLOR_RANGE[6] : null,
+                  }}
+                >
+                  {i + 1}. {stateName}
+                </small>
+              </>
+            ))}
+            {regionSelected !== "ALL" && !isSelectedStateIncluded ? (
+              <>
+                <br />
+                <small
+                  style={{
+                    color: COLOR_RANGE[6],
+                  }}
+                >
+                  { regionSelected.toUpperCase()}
+                </small>
+              </>
+            ) : (
+              ''
+            )}
+          </div>
+        </div>
         <svg ref={svgRef}>
           <g className="content"></g>
           <g className="x-axis axis" />
