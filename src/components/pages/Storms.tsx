@@ -2,18 +2,67 @@ import { useEffect, useState } from 'react';
 
 import * as d3 from 'd3';
 import { Col, Row } from 'react-bootstrap';
-
 import { Link } from 'react-router-dom';
-import HeatMap from '../visualizers/HeatMap';
-import LineChart from '../visualizers/LineChartwBrush';
-import GlobalTempData from '../../data/Global_Temp_Data';
-import { StormDataType } from '../../data/types';
-import Layout from '../ui/Layout';
+
+import {
+  FormControl,
+  FormGroup,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
+
 import { Routes } from '../../router/router';
+import Layout from '../ui/Layout';
+import HeatMap from '../visualizers/HeatMap';
+import LineChart from '../visualizers/LineChartBrushed';
+import GlobalTempData from '../visualizers/data/Global_Temp_Data';
+import {
+  GeoRegionUSType,
+  SelectedDimensionsType,
+  StormDataType,
+  StormEventCategoryType,
+} from '../visualizers/data/types';
+import {
+  COLOR_RANGE,
+  STORM_EVENT_CATEGORIES,
+  STORM_UI_SELECT_VALUES,
+} from '../visualizers/data/constants';
+import StormsTypesOverTimeSeries from '../visualizers/MultiLineChart';
+import TopStatesOverTimeMultiLineChart from '../visualizers/MultiLineChartTop';
+import './App.scss';
 
 const StormsPage = () => {
+  // State Handlers
+  const [selectedGeoRegion, setSelectedGeoRegion] = useState<GeoRegionUSType | 'ALL'>('ALL');
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
+  const [selectedStormType, setSelectedStormType] = useState<StormEventCategoryType | 'ALL'>('ALL');
+  const [selectedDimensionTitle, setSelectedDimensionTitle] = useState(
+    STORM_UI_SELECT_VALUES[0].label
+  );
+  const [selectedDimension, setSelectedDimension] = useState<SelectedDimensionsType>(
+    STORM_UI_SELECT_VALUES[0].value
+  );
   const [stormData, setStormData] = useState<StormDataType[]>(null);
+
+  // Event Handlers
+  const onDataDimensionChange = (event: SelectChangeEvent) => {
+    const newDimension = event.target.value as SelectedDimensionsType;
+    const dimensionLabel = STORM_UI_SELECT_VALUES.find((elem) => elem.value === newDimension).label;
+    setSelectedDimension(event.target.value as SelectedDimensionsType);
+    setSelectedDimensionTitle(dimensionLabel as any);
+  };
+
+  const handleOnStateHover = (regionOnHover: GeoRegionUSType | 'ALL') => {
+    setSelectedGeoRegion(regionOnHover);
+  };
+
+  const onEventTypeChanged = (event: SelectChangeEvent) => {
+    const stormType = event.target.value as StormEventCategoryType;
+    setSelectedStormType(stormType);
+  };
+
   const handleOnBrush = ([start, end]) => {
     setSeletedBrushYears(end > start ? [start, end] : [end, start]);
   };
@@ -37,18 +86,69 @@ const StormsPage = () => {
       <main className="p-4 flex-grow-1 d-flex flex-column">
         <Row className="flex-grow-1">
           <Col xs={12} md={8}>
-            <HeatMap
-              yearFilter={selectedBrushYears}
-              stormData={stormData}
-              margin={{
-                top: 10,
-                bottom: 30,
-                right: 30,
-                left: 0,
-              }}
-              id="storm-data-heatmap"
-              selectedDimension="TOTAL_EVENTS"
-            />
+            <Row>
+              <div className="ui-form-container">
+                <FormGroup className="form-group">
+                  <FormControl className="ui-select">
+                    <InputLabel id="label-for-dimension-select">Data to view...</InputLabel>
+                    <Select
+                      labelId="label-for-dimension-select"
+                      placeholder="Data to view"
+                      label="Data to view..."
+                      value={selectedDimension}
+                      onChange={onDataDimensionChange}
+                    >
+                      {STORM_UI_SELECT_VALUES.map((uiValue) => {
+                        return (
+                          <MenuItem value={uiValue.value} key={uiValue.value}>
+                            {uiValue.label}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                  <FormControl className="ui-select">
+                    <InputLabel id="label-for-event-select">Severe Weather Type</InputLabel>
+                    <Select
+                      labelId="label-for-event-select"
+                      placeholder="Dat"
+                      label="Severe Weather Type"
+                      value={selectedStormType}
+                      onChange={onEventTypeChanged}
+                    >
+                      <MenuItem value={'ALL'} key={0}>
+                        All Severe Weather
+                      </MenuItem>
+                      {STORM_EVENT_CATEGORIES.map((stormType) => {
+                        return (
+                          <MenuItem value={stormType} key={stormType}>
+                            {stormType}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                </FormGroup>
+              </div>
+            </Row>
+            <Row className="flex-grow-1">
+              <HeatMap
+                yearFilter={selectedBrushYears}
+                stormData={stormData}
+                regionSelected={selectedGeoRegion}
+                margin={{
+                  top: 10,
+                  bottom: 30,
+                  right: 30,
+                  left: 0,
+                }}
+                id="storm-data-heatmap"
+                selectedDimension={selectedDimension}
+                eventFilter={selectedStormType}
+                colorsRange={COLOR_RANGE}
+                handleOnStateHover={handleOnStateHover}
+              />
+            </Row>
           </Col>
           <Col xs={12} md={4}>
             {/* @TODO - focus chart */}
@@ -63,12 +163,47 @@ const StormsPage = () => {
               top: 10,
               bottom: 30,
               right: 30,
-              left: 40,
+              left: 60,
             }}
             onBrush={handleOnBrush}
             lineColor="blue"
             id="global-temp-chart"
             title="Global Temperature Anomaly"
+          />
+        </Row>
+        <Row>
+          <TopStatesOverTimeMultiLineChart
+            id="storm-data-top-states"
+            yearFilter={selectedBrushYears}
+            stormData={stormData}
+            margin={{
+              top: 10,
+              bottom: 30,
+              right: 30,
+              left: 60,
+            }}
+            selectedDimension={selectedDimension}
+            title={selectedDimensionTitle}
+            eventFilter={selectedStormType}
+            colorsRange={COLOR_RANGE}
+            regionSelected={selectedGeoRegion}
+          />
+        </Row>
+        <Row>
+          <StormsTypesOverTimeSeries
+            id="storm-data-events-by-selection"
+            yearFilter={selectedBrushYears}
+            stormData={stormData}
+            margin={{
+              top: 10,
+              bottom: 30,
+              right: 30,
+              left: 60,
+            }}
+            title={selectedDimensionTitle}
+            selectedDimension={selectedDimension}
+            regionSelected={selectedGeoRegion}
+            stormTypeSelected={selectedStormType}
           />
         </Row>
       </main>

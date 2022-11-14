@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
-import { GlobalTempDataType } from '../../data/types';
+import { GlobalTempDataType } from './data/types';
 import { Margin } from './types';
 import useResizeObserver from './useResizeObserver';
 
@@ -11,7 +11,7 @@ type Props = {
   title?: string;
   onBrush?: (selectionYears: [number, number]) => unknown;
   lineColor?: string;
-  id: string;
+  id?: string;
 };
 
 const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
@@ -20,17 +20,20 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
 
-
-
   useEffect(() => {
     const svg = d3.select(svgRef.current);
 
-    const { width: svgWidth, height: svgHeight } = dimensions || wrapperRef.current.getBoundingClientRect();
+    const { width: svgWidth, height: svgHeight } =
+      dimensions || wrapperRef.current.getBoundingClientRect();
     const innerWidth = svgWidth - margin.left - margin.right;
     const innerHeight = svgHeight - margin.top - margin.bottom;
 
     svg.attr('width', svgWidth).attr('height', svgHeight);
-    const svgContent = svg.select('.content').attr('transform', `translate(${margin.left}, ${margin.top})`);
+    const svgContent = svg
+      .select('.content')
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    // Set the title
     svg
       .select('.title')
       .attr('transform', `translate(${2 * margin.left}, ${30})`)
@@ -60,7 +63,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .data([data])
       .join('path')
       .classed('line-path', true)
-      .transition() // TODO - not working
+      .transition()
       .duration(500)
       .ease(d3.easeSinInOut)
       .attr('stroke', 'red')
@@ -70,26 +73,28 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .attr('d', lineGenerator);
 
     // Axis
-    // const;
     const xAxis = d3.axisBottom(xScale).tickFormat((d) => d.toString());
-    const yAxis = d3.axisLeft(yScale).tickFormat(d3.format('.1f'));
+    const yAxis = d3.axisLeft(yScale).tickFormat(d3.format('.1f')).ticks(5);
 
     svg
       .select('.x-axis')
-      .attr('transform', `translate(0, ${innerHeight})`)
+      .attr('transform', `translate(${margin.left}, ${innerHeight + margin.top})`)
       // @ts-ignore
       .call(xAxis);
 
-    // @ts-ignore
-    svg.select('.y-axis').call(yAxis);
+    svg
+      .select('.y-axis')
+      // @ts-ignore
+      .call(yAxis)
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // Brushing
     const brushElem = svg.select('.brush-group');
     const brush = d3
       .brushX()
       .extent([
-        [margin.left, 0],
-        [innerWidth + margin.left, innerHeight + 10],
+        [0, 0],
+        [innerWidth, innerHeight],
       ])
       .on('brush end', (event) => {
         const {
@@ -110,16 +115,23 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
           </clipPath>
         </defs>
         <g className="content">
-          <path className="line-path" ></path>
-          <g className="x-axis axis" />
-          <g className="y-axis axis" />
+          <path className="line-path"></path>
+          <g className="brush-group"></g>
         </g>
+        <g className="x-axis axis" />
+        <g className="y-axis axis" />
         <g className="title">
           <text>{title}</text>
         </g>
-        <g className="brush-group"></g>
+      </svg>
+    </div>
+  );
+};
 
-        {/* <g> // todo maybe make this a pop up
+export default LineChart;
+
+{
+  /* <g> // todo maybe make this a pop up
           <text
             className="description"
             style={{ fontSize: '12px', lineHeight: '12px', width: '80%', margin: '0 auto' }}
@@ -128,10 +140,5 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
             anomaly indicates that the observed temperature was warmer than the reference value, while a negative
             anomaly indicates that the observed temperature was cooler than the reference value.
           </text>
-        </g> */}
-      </svg>
-    </div>
-  );
-};
-
-export default LineChart;
+        </g> */
+}

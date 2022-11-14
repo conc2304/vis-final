@@ -1,10 +1,32 @@
-# Getting Started with Create React App
+# The Three Planeteers present Climate Change : Is Earth Fighting Back?
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Getting Started
+
+Do you have node installed on your computer? No?
+Follow these instructions: 
+Mac Terminal: [How to install NodeJS and NPM on Mac using Homebrew](https://medium.com/@hayasnc/how-to-install-nodejs-and-npm-on-mac-using-homebrew-b33780287d8f)
+or
+Download the the os specific NodeJs [installer](https://nodejs.org/en/download/)
+
+Once you have NodeJs installed on your computer you will be able to run this React Application locally.
+
+From root folder of the project (aka the project directory)
+Run this command once:  
+- `npm install` - installs the project dependencies
+Run everytime you want to relaunch the application locally on your computer:
+- `npm start` - starts the application and launches it in the browser
+- If it doesnt open it in your browser : Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### `npm start`
 
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm install`
+
+Installs all of the project dependencies from the package.json file.
+You only have to run this once before running `npm start` to launch the application. 
 
 ### `npm start`
 
@@ -39,8 +61,11 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Project Directory Structure
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+src/App.tsx - the entry file of the project, think of it like index.html
+src/components/visualizers/*.tsx -  the d3 charts written as React Components ie HeatMap.tsx
+public - the public directory that serves any non web specific asses (images, csv files, json files, etc...)
+public/data - public directory that is serving the locally hosted data that is driving the application
+

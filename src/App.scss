@@ -34,3 +34,48 @@ body {
   );
   opacity: 0.7;
 }
+
+.App {
+  // MATERIAL OVERRIDES
+  .MuiSelect-select {
+    color: white;
+
+    .css-1d3z3hw-MuiOutlinedInput-notchedOutline  {
+      border-color: grey;
+    }
+  }
+
+  MuiInputBase-root feildset {
+    border-color: white;
+  }
+  .MuiOutlinedInput-root {
+    border-color: white;
+    color: white;
+  }
+  .MuiFormLabel-root {
+    color: white;
+  }
+
+  svg.MuiSvgIcon-root path{
+    fill: white;
+  }
+
+  .ui-form-container {
+    width: 49%;
+    height: 100%;
+    display: flex;
+
+  }
+  .form-group {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    color: #FFF;
+  }
+
+  .ui-select {
+    width: 40%;
+    padding-bottom: 10px;
+
+  }
+}

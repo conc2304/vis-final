@@ -26,8 +26,8 @@
   "rules": {
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/ban-ts-comment": "warn",
-    "no-undef": "error",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-undef": "warn",
     "import/order": [
       "warn",
       {

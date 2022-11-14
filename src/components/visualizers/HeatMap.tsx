@@ -2,17 +2,19 @@ import * as d3 from 'd3';
 import { useState, useRef, useEffect } from 'react';
 import { geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
-import { Feature, FeatureCollection, Geometry } from 'geojson';
+import { Feature, Geometry, FeatureCollection } from 'geojson';
+import { FormControlLabel, Switch } from '@mui/material';
 import {
   GeoJsonFeatureType,
   GeoRegionUSType,
-  NumericStormMetricType,
   SelectedDimensionsType,
+  StateDataDimensions,
   StormDataType,
   StormEventCategoryType,
-} from '../../data/types';
+} from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
+import { COLOR_RANGE } from './data/constants';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // const uuid = require('react-uuid');
@@ -21,53 +23,51 @@ type Props = {
   margin: Margin;
   id: string;
   yearFilter: [number, number] | null;
+  eventFilter: StormEventCategoryType | 'ALL';
   colorsRange?: string[];
   selectedDimension: SelectedDimensionsType;
+  handleOnStateHover?: (selectedRegion: GeoRegionUSType | 'ALL') => void;
+  regionSelected: GeoRegionUSType | 'ALL';
 };
-
-const defaultColorRange = [
-  /* "#2c7bb6",  "#00a6ca", */ '#a3bacc',
-  '#00ccbc',
-  '#90eb9d',
-  '#ffff8c',
-  '#f9d057',
-  '#f29e2e',
-  '#e76818',
-  '#d7191c',
-];
 
 const HeatMap = ({
   id,
   stormData,
-  yearFilter,
   margin,
   selectedDimension,
-  colorsRange = defaultColorRange,
+  colorsRange = COLOR_RANGE,
+  yearFilter = null,
+  eventFilter = null,
+  regionSelected = 'ALL',
+  handleOnStateHover,
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
 
-  const [selectedState, setSelectedState] = useState<GeoRegionUSType>(null);
-
-  const [geographies, setGeographies] = useState<[] | Array<Feature<Geometry | null>>>([]);
-  // const [stateData, setStateData] = useState<StateData[]>([]);
+  type MyGeometry = Array<Feature<Geometry | null>> | Array<FeatureCollection> | [];
+  const [geographies, setGeographies] = useState<MyGeometry>([]);
+  const [isHexGrid, setIsHexGrid] = useState(false);
 
   const wrangleData = (): StateDataDimensions[] => {
     // first, filter according to selectedTimeRange, init empty array
     let filteredData: StormDataType[] = [];
 
-    // if there is a region selected
-    if (yearFilter) {
-      console.log('FILTER');
+    // if there is a region or year selected
+    if (yearFilter || eventFilter || regionSelected) {
       stormData.forEach((row) => {
-        const [yearMin, yearMax] = yearFilter;
-        if (yearMin <= row.YEAR && row.YEAR <= yearMax) {
+        // if none is set default to our data's range
+        const [yearMin, yearMax] = !!yearFilter ? yearFilter : [1950, 2022];
+
+        // if 'ALL' then the condition is true ef not then check to see if we match
+        const eventConditionIsTrue = eventFilter === 'ALL' ? true : row.EVENT === eventFilter;
+        const yearConditionIsTrue = yearMin <= row.YEAR && row.YEAR <= yearMax;
+
+        if (yearConditionIsTrue && eventConditionIsTrue) {
           filteredData.push(row);
         }
       });
     } else {
-      console.log('NO FILTER');
       filteredData = stormData;
     }
 
@@ -76,11 +76,6 @@ const HeatMap = ({
       d3.group(filteredData, (d) => d.STATE),
       ([key, value]) => ({ key, value })
     );
-
-    // const stormDatabyEvent = Array.from(
-    //   d3.group(filteredData, (d) => d.EVENT),
-    //   ([key, value]) => ({ key, value })
-    // );
 
     // merge
     const stateData: StateDataDimensions[] = [];
@@ -127,32 +122,42 @@ const HeatMap = ({
         TOTAL_EVENTS,
         COUNTS_BY_EVENT,
       });
-
-      // setStateData(stateData);
     }); // end foreach
 
-    console.log('stateData');
-    console.log(stateData);
+    // console.log('stateData');
+    // console.log(stateData);
     return stateData;
   };
 
   // load geo data on init
   useEffect(() => {
-    // ?? do we want locally or over cdn ??
-    // d3.json('/data/states-10m.json').then((geoData: any) => {
-    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then((geoData) => {
-      const usaGeoFeatures: Array<Feature<Geometry | null>> = feature(
-        // @ts-ignore
-        geoData,
-        // @ts-ignore
-        geoData.objects.states
-      )['features'];
+    const geoDataURL = isHexGrid
+      ? 'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/us_states_hexgrid.geojson.json'
+      : 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json';
+
+    // ONINIT Callback
+    d3.json(geoDataURL).then((geoData) => {
+      console.log('geoData');
+      console.log(geoData);
+
+      console.log('features', geoData['features']);
+      let usaGeoFeatures;
+      if (isHexGrid) {
+        usaGeoFeatures = geoData['features'];
+      } else {
+        usaGeoFeatures = feature(
+          // @ts-ignore
+          geoData,
+          // @ts-ignore
+          geoData.objects.states
+        )['features'];
+      }
+
       setGeographies(usaGeoFeatures);
     });
-  }, []);
+  }, [isHexGrid]);
 
   useEffect(() => {
-    console.log('DRAW');
     const svg = d3.select(svgRef.current);
 
     let stateDataDisplay: StateDataDimensions[];
@@ -161,7 +166,8 @@ const HeatMap = ({
     } else {
       return;
     }
-    console.log(stateDataDisplay);
+    if (!geographies) return;
+    // console.log(stateDataDisplay);
 
     // use resized dimensions
     // but fall back to getBoundingClientRect, if no dimensions yet.
@@ -184,32 +190,45 @@ const HeatMap = ({
       .select('.content')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const projection = d3
-      .geoAlbersUsa()
-      .translate([svgWidth / 2 + 20, svgHeight / 2])
-      .scale(750);
+    const translationValues: [number, number] = isHexGrid
+      ? [920, svgHeight]
+      : [svgWidth / 2 + 20, svgHeight / 2];
+    const projectionFn = isHexGrid ? d3.geoMercator : d3.geoAlbersUsa;
+    const projection = projectionFn()
+      // .translate([svgWidth / 2 + 20, svgHeight / 2])
+      .translate([920, svgHeight])
+      .translate(translationValues)
+      .scale(isHexGrid ? 350 : 600);
 
     const pathGenerator = geoPath().projection(projection);
 
-    svgContent
+    const statePaths = svgContent
       .selectAll('.state')
+      // @ts-ignore
       .data(geographies)
       .join('path')
       .classed('state', true)
       .attr('stroke-width', '0.5px')
       .attr('stroke', 'white')
-      .attr('data', (feature) => {
-        return getFillColor(feature, stateDataDisplay);
-      })
+      .attr('data', (feature) => getFillColor(feature, stateDataDisplay));
+
+    statePaths
       .transition()
       .duration(500)
       .attr('fill', (feature) => getFillColor(feature, stateDataDisplay))
       .attr('d', pathGenerator);
 
+    statePaths.on('mouseover', onStateHover);
+    statePaths.on('mouseout', () => {
+      handleOnStateHover('ALL');
+    });
+
     // Internal Functions
     function getFillColor(d: GeoJsonFeatureType, stateData: StateDataDimensions[]) {
-      const { name } = d.properties;
-      const stateName = name as GeoRegionUSType;
+      const stateVar = isHexGrid ? 'google_name' : 'name';
+      const { [stateVar]: name } = d.properties;
+      const cleanedName = (name as string).replace('(United States)', '').trim();
+      const stateName = cleanedName as GeoRegionUSType;
       const stateInfo = getStateInfoByStateName(stateName, stateData);
 
       if (stateInfo && stateInfo[selectedDimension])
@@ -226,13 +245,35 @@ const HeatMap = ({
       }
       return null;
     }
-  }, [yearFilter, selectedDimension, stormData]);
+  }, [yearFilter, eventFilter, selectedDimension, regionSelected, stormData, geographies]);
+
+  const handleOnMapViewToggle = () => {
+    setIsHexGrid(!isHexGrid);
+  };
+
+  function onStateHover(e: MouseEvent, d: GeoJsonFeatureType) {
+    const stateVar = isHexGrid ? 'google_name' : 'name';
+    const { [stateVar]: name } = d.properties;
+    const cleanedName = (name as string).replace('(United States)', '').trim();
+    const stateName = cleanedName as GeoRegionUSType;
+    handleOnStateHover(stateName);
+    // show tooltip // TODO
+  }
 
   return (
-    <div ref={wrapperRef} style={{ width: '100%', height: '100%' }} className={`${id}-wrapper`}>
+    <div
+      ref={wrapperRef}
+      style={{ width: '100%', height: '100%', position: 'relative' }}
+      className={`${id}-wrapper`}
+    >
       <svg ref={svgRef}>
         <g className="content"></g>
       </svg>
+      <FormControlLabel
+        style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)' }}
+        label={`Switch To ${isHexGrid ? 'Map' : 'Hex Grid'} View`}
+        control={<Switch checked={isHexGrid} onChange={handleOnMapViewToggle} size="small" />}
+      />
     </div>
   );
 };
@@ -252,14 +293,3 @@ export default HeatMap;
 //  'LAKE ST CLAIR',
 //  'LAKE SUPERIOR',
 //  'ST LAWRENCE R', ]
-
-type StateDataDimensions = {
-  COUNTS_BY_EVENT: Record<StormEventCategoryType, number>;
-  DAMAGE_PROPERTY_EVENT_SUM: number;
-  DEATHS_DIRECT_COUNT: number;
-  DEATHS_INDIRECT_COUNT: number;
-  DEATHS_TOTAL_COUNT: number;
-  INJURIES_DIRECT_COUNT: number;
-  STATE: GeoRegionUSType;
-  TOTAL_EVENTS: number;
-};
