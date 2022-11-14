@@ -54,7 +54,7 @@ const TopStatesOverTimeMultiLineChart = ({
       return;
     }
 
-    console.log(displayData);
+    // console.log(displayData);
 
     const svg = d3.select(svgRef.current);
 
