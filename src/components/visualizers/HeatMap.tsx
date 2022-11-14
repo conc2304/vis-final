@@ -28,6 +28,7 @@ type Props = {
   selectedDimension: SelectedDimensionsType;
   handleOnStateHover?: (selectedRegion: GeoRegionUSType | 'ALL') => void;
   regionSelected: GeoRegionUSType | 'ALL';
+  hideHex?: boolean;
 };
 
 const HeatMap = ({
@@ -40,6 +41,7 @@ const HeatMap = ({
   eventFilter = null,
   regionSelected = 'ALL',
   handleOnStateHover,
+  hideHex,
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
@@ -269,11 +271,13 @@ const HeatMap = ({
       <svg ref={svgRef}>
         <g className="content"></g>
       </svg>
-      <FormControlLabel
-        style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)' }}
-        label={`Switch To ${isHexGrid ? 'Map' : 'Hex Grid'} View`}
-        control={<Switch checked={isHexGrid} onChange={handleOnMapViewToggle} size="small" />}
-      />
+      {!hideHex && (
+        <FormControlLabel
+          style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)' }}
+          label={`Switch To ${isHexGrid ? 'Map' : 'Hex Grid'} View`}
+          control={<Switch checked={isHexGrid} onChange={handleOnMapViewToggle} size="small" />}
+        />
+      )}
     </div>
   );
 };

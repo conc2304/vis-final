@@ -35,7 +35,7 @@ body {
   opacity: 0.7;
 }
 
-.App {
+#root {
   // MATERIAL OVERRIDES
   .MuiSelect-select {
     color: white;
@@ -45,7 +45,7 @@ body {
     }
   }
 
-  MuiInputBase-root feildset {
+  .MuiInputBase-root fieldset {
     border-color: white;
   }
   .MuiOutlinedInput-root {
@@ -60,22 +60,9 @@ body {
     fill: white;
   }
 
-  .ui-form-container {
-    width: 49%;
-    height: 100%;
-    display: flex;
-
-  }
-  .form-group {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    color: #FFF;
-  }
-
   .ui-select {
-    width: 40%;
+    width: 100%;
     padding-bottom: 10px;
-
+    color: #fff;
   }
 }

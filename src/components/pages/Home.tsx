@@ -1,15 +1,16 @@
 import * as d3 from 'd3';
+import { useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { useEffect, useState } from 'react';
-
 import { Link } from 'react-router-dom';
+
+import { Routes } from '../../router/router';
 import Layout from '../ui/Layout';
 import HeatMap from '../visualizers/HeatMap';
-import { StormDataType } from '../../data/types';
-import { Routes } from '../../router/router';
-import LineChart from '../visualizers/LineChartwBrush';
-import GlobalTempData from '../../data/Global_Temp_Data';
+import { StormDataType } from '../visualizers/data/types';
+import LineChart from '../visualizers/LineChartBrushed';
+import GlobalTempData from '../visualizers/data/Global_Temp_Data';
+import { COLOR_RANGE, STORM_UI_SELECT_VALUES } from '../visualizers/data/constants';
 
 const HomePage = () => {
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
@@ -38,6 +39,7 @@ const HomePage = () => {
               <HeatMap
                 yearFilter={selectedBrushYears}
                 stormData={stormData}
+                regionSelected={'ALL'}
                 margin={{
                   top: 10,
                   bottom: 30,
@@ -45,7 +47,10 @@ const HomePage = () => {
                   left: 0,
                 }}
                 id="storm-data-heatmap"
-                selectedDimension="TOTAL_EVENTS"
+                selectedDimension={STORM_UI_SELECT_VALUES[0].value}
+                eventFilter={'ALL'}
+                colorsRange={COLOR_RANGE}
+                hideHex
               />
             </Row>
             <Row>

@@ -31,7 +31,6 @@ import {
 } from '../visualizers/data/constants';
 import StormsTypesOverTimeSeries from '../visualizers/MultiLineChart';
 import TopStatesOverTimeMultiLineChart from '../visualizers/MultiLineChartTop';
-import './App.scss';
 
 const StormsPage = () => {
   // State Handlers
@@ -85,10 +84,10 @@ const StormsPage = () => {
       </header>
       <main className="p-4 flex-grow-1 d-flex flex-column">
         <Row className="flex-grow-1">
-          <Col xs={12} md={8}>
-            <Row>
-              <div className="ui-form-container">
-                <FormGroup className="form-group">
+          <Col xs={12} md={8} className="flex-grow-1 d-flex flex-column">
+            <FormGroup className="form-group">
+              <Row className="ui-form-container">
+                <Col>
                   <FormControl className="ui-select">
                     <InputLabel id="label-for-dimension-select">Data to view...</InputLabel>
                     <Select
@@ -107,6 +106,8 @@ const StormsPage = () => {
                       })}
                     </Select>
                   </FormControl>
+                </Col>
+                <Col>
                   <FormControl className="ui-select">
                     <InputLabel id="label-for-event-select">Severe Weather Type</InputLabel>
                     <Select
@@ -128,9 +129,9 @@ const StormsPage = () => {
                       })}
                     </Select>
                   </FormControl>
-                </FormGroup>
-              </div>
-            </Row>
+                </Col>
+              </Row>
+            </FormGroup>
             <Row className="flex-grow-1">
               <HeatMap
                 yearFilter={selectedBrushYears}
@@ -151,60 +152,57 @@ const StormsPage = () => {
             </Row>
           </Col>
           <Col xs={12} md={4}>
-            {/* @TODO - focus chart */}
-            {/* @TODO - legend */}
-            {/* @TODO - chart filter */}
+            <Row>
+              <LineChart
+                data={GlobalTempData}
+                margin={{
+                  top: 10,
+                  bottom: 30,
+                  right: 30,
+                  left: 60,
+                }}
+                onBrush={handleOnBrush}
+                lineColor="blue"
+                id="global-temp-chart"
+                title="Global Temperature Anomaly"
+              />
+            </Row>
+            <Row>
+              <TopStatesOverTimeMultiLineChart
+                id="storm-data-top-states"
+                yearFilter={selectedBrushYears}
+                stormData={stormData}
+                margin={{
+                  top: 10,
+                  bottom: 30,
+                  right: 30,
+                  left: 60,
+                }}
+                selectedDimension={selectedDimension}
+                title={selectedDimensionTitle}
+                eventFilter={selectedStormType}
+                colorsRange={COLOR_RANGE}
+                regionSelected={selectedGeoRegion}
+              />
+            </Row>
+            <Row>
+              <StormsTypesOverTimeSeries
+                id="storm-data-events-by-selection"
+                yearFilter={selectedBrushYears}
+                stormData={stormData}
+                margin={{
+                  top: 10,
+                  bottom: 30,
+                  right: 30,
+                  left: 60,
+                }}
+                title={selectedDimensionTitle}
+                selectedDimension={selectedDimension}
+                regionSelected={selectedGeoRegion}
+                stormTypeSelected={selectedStormType}
+              />
+            </Row>
           </Col>
-        </Row>
-        <Row>
-          <LineChart
-            data={GlobalTempData}
-            margin={{
-              top: 10,
-              bottom: 30,
-              right: 30,
-              left: 60,
-            }}
-            onBrush={handleOnBrush}
-            lineColor="blue"
-            id="global-temp-chart"
-            title="Global Temperature Anomaly"
-          />
-        </Row>
-        <Row>
-          <TopStatesOverTimeMultiLineChart
-            id="storm-data-top-states"
-            yearFilter={selectedBrushYears}
-            stormData={stormData}
-            margin={{
-              top: 10,
-              bottom: 30,
-              right: 30,
-              left: 60,
-            }}
-            selectedDimension={selectedDimension}
-            title={selectedDimensionTitle}
-            eventFilter={selectedStormType}
-            colorsRange={COLOR_RANGE}
-            regionSelected={selectedGeoRegion}
-          />
-        </Row>
-        <Row>
-          <StormsTypesOverTimeSeries
-            id="storm-data-events-by-selection"
-            yearFilter={selectedBrushYears}
-            stormData={stormData}
-            margin={{
-              top: 10,
-              bottom: 30,
-              right: 30,
-              left: 60,
-            }}
-            title={selectedDimensionTitle}
-            selectedDimension={selectedDimension}
-            regionSelected={selectedGeoRegion}
-            stormTypeSelected={selectedStormType}
-          />
         </Row>
       </main>
       <footer>
