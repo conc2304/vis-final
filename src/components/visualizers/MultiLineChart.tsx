@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
-import { useState, useRef, useEffect } from 'react';
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
+import { useRef, useEffect } from 'react';
 import {
   GeoRegionUSType,
   SelectedDimensionsType,

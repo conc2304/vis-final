@@ -32,6 +32,8 @@ import {
 import StormsTypesOverTimeSeries from '../visualizers/MultiLineChart';
 import TopStatesOverTimeMultiLineChart from '../visualizers/MultiLineChartTop';
 
+import "./Storms.scss";
+
 const StormsPage = () => {
   // State Handlers
   const [selectedGeoRegion, setSelectedGeoRegion] = useState<GeoRegionUSType | 'ALL'>('ALL');
@@ -151,7 +153,7 @@ const StormsPage = () => {
               />
             </Row>
           </Col>
-          <Col xs={12} md={4}>
+          <Col xs={12} md={4} className="d-flex flex-column justify-content-between">
             <Row>
               <LineChart
                 data={GlobalTempData}
@@ -167,7 +169,7 @@ const StormsPage = () => {
                 title="Global Temperature Anomaly"
               />
             </Row>
-            <Row>
+            <Row className="data-display-wrapper">
               <TopStatesOverTimeMultiLineChart
                 id="storm-data-top-states"
                 yearFilter={selectedBrushYears}
@@ -185,7 +187,7 @@ const StormsPage = () => {
                 regionSelected={selectedGeoRegion}
               />
             </Row>
-            <Row>
+            <Row className="data-display-wrapper">
               <StormsTypesOverTimeSeries
                 id="storm-data-events-by-selection"
                 yearFilter={selectedBrushYears}

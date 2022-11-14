@@ -1,3 +1,4 @@
+import { fontSize } from '@mui/system';
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
 import { GlobalTempDataType } from './data/types';
@@ -33,13 +34,6 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .select('.content')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    // Set the title
-    svg
-      .select('.title')
-      .attr('transform', `translate(${2 * margin.left}, ${30})`)
-      .attr('font-size', '14')
-      .attr('fill', 'white');
-
     const xScale = d3
       .scaleLinear()
       .range([0, innerWidth])
@@ -48,7 +42,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
     const yScale = d3
       .scaleLinear()
       .range([innerHeight, 0])
-      .domain(d3.extent(data, (d) => d.smoothed));
+      .domain([-0.2, d3.max(data, (d) => d.smoothed)]);
 
     const lineGenerator = d3
       .line()
@@ -107,7 +101,11 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
   }, [data, margin]);
 
   return (
-    <div ref={wrapperRef} style={{ width: '100%', height: '100%' }} className={`${id}-wrapper`}>
+    <div ref={wrapperRef} style={{ width: '100%', height: '100%', position: 'relative' }} className={`${id}-wrapper`}>
+      <div style={{ position: 'absolute', top: "12px", left: margin.left + 20, fontSize: '12px' }}>
+        <p className="m-0">{title}</p>
+      </div>
+
       <svg ref={svgRef}>
         <defs>
           <clipPath id={id}>

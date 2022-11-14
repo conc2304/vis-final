@@ -370,7 +370,7 @@ const TopStatesOverTimeMultiLineChart = ({
         className={`${id}-wrapper`}
       >
         <div style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: '12px' }}>
-          <p>
+          <p className="mb-2">
             {title}
             <br /> Top {numberOfTopStates} Most Impacted States
             <br /> <small>by ({eventFilter === 'ALL' ? 'All Events' : eventFilter})</small>
@@ -378,8 +378,8 @@ const TopStatesOverTimeMultiLineChart = ({
           <div style={{ textAlign: 'left' }}>
             {topStateAsNameList.map((stateName, i) => (
               <>
-                <br />
                 <small
+                  className="d-block"
                   style={{
                     color: stateNamesMatch(stateName, regionSelected) ? COLOR_RANGE[6] : null,
                   }}
@@ -388,15 +388,15 @@ const TopStatesOverTimeMultiLineChart = ({
                 </small>
               </>
             ))}
-            {regionSelected !== "ALL" && !isSelectedStateIncluded ? (
+            {regionSelected !== 'ALL' && !isSelectedStateIncluded ? (
               <>
-                <br />
                 <small
+                  className="d-block"
                   style={{
                     color: COLOR_RANGE[6],
                   }}
                 >
-                  { regionSelected.toUpperCase()}
+                  {regionSelected.toUpperCase()}
                 </small>
               </>
             ) : (
