@@ -10,9 +10,10 @@ Download the the os specific NodeJs [installer](https://nodejs.org/en/download/)
 
 Once you have NodeJs installed on your computer you will be able to run this React Application locally.
 
-From root folder of the project (aka the project directory)
+In a terminal window go to the root folder of the project (aka the project directory)
 Run this command once:  
 - `npm install` - installs the project dependencies
+
 Run everytime you want to relaunch the application locally on your computer:
 - `npm start` - starts the application and launches it in the browser
 - If it doesnt open it in your browser : Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
