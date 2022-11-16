@@ -10,7 +10,9 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import { COLOR_RANGE, STORM_EVENT_CATEGORIES } from './data/constants';
+import { COLOR_ACCCENT, COLOR_UI_PRIMARY, STORM_EVENT_CATEGORIES } from './data/constants';
+
+import './MultiLineChart.scss';
 
 type Props = {
   stormData: StormDataType[];
@@ -29,7 +31,7 @@ const MultiLineChart = ({
   margin,
   yearFilter = null,
   regionSelected = 'ALL',
-  stormTypeSelected = "ALL",
+  stormTypeSelected = 'ALL',
   selectedDimension = null,
   title = '',
   id,
@@ -92,30 +94,22 @@ const MultiLineChart = ({
       .y((d: StateDataDimensions) => yScale(d[selectedDimension]))
       .curve(d3.curveBasis);
 
+    const isSelectedRegion = (index: number) => stormTypeSelected === STORM_EVENT_CATEGORIES[index];
     // Render the Area Paths for each of the storm events
     svgContent
       .selectAll('.area-path')
       .data(displayData)
       .join('path')
-      // .attr('transform', (d) => `translate(${margin.left}, ${margin.top})`)
-      .attr('class', (d) => `area-path path-for-${d.key}`)
+      .attr('class', (d) => `area-path path-for-${d.key.replace(' ', '-')}`)
       // @ts-ignore
       .datum((d: DisplayData) => d.values)
       .attr('fill', 'none')
-      // @ts-ignore
-      // .attr("debug", (d: StateDataDimensions, i) => {
-      //   console.log("d")
-      //   console.log(i, d)
-      //   // console.log(STORM_EVENT_CATEGORIES[i])
-      //   console.log(stormTypeSelected, STORM_EVENT_CATEGORIES[i])
-      //   return "0"
-      // })
-      .attr("mix-blend-mode", "multiply")
+      .attr('mix-blend-mode', 'multiply')
       .transition()
       .duration(500)
-      .attr('stroke', (d,i) => stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? COLOR_RANGE[6] : '#FFF')
-      .attr('stroke-width', (d,i) => stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? 2 : 1)
-      .attr('opacity', (d,i) => stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? 1 : 0.6)
+      .attr('stroke', (d, i) => (isSelectedRegion(i) ? COLOR_ACCCENT : COLOR_UI_PRIMARY))
+      .attr('stroke-width', (d, i) => (isSelectedRegion(i) ? 2 : 1))
+      .attr('opacity', (d, i) => (isSelectedRegion(i) ? 1 : 0.6))
       // @ts-ignore
       .attr('d', generator);
 
@@ -184,7 +178,7 @@ const MultiLineChart = ({
     // Loop through each Event Category (tornado, hurricane, ...)
     stormDataByEvent.forEach((eventCategoryData) => {
       const { key: eventCategory } = eventCategoryData;
-      
+
       if (!STORM_EVENT_CATEGORIES.includes(eventCategory)) return;
 
       // Group all of this event's data by year
@@ -226,7 +220,6 @@ const MultiLineChart = ({
           DEATHS_TOTAL_COUNT,
           INJURIES_DIRECT_COUNT,
           TOTAL_EVENTS,
-
         });
       }); // end event by year Loop
 
@@ -250,9 +243,9 @@ const MultiLineChart = ({
     <div
       ref={wrapperRef}
       style={{ width: '100%', height: '100%', position: 'relative' }}
-      className={`${id}-wrapper`}
+      className={`${id}-wrapper event-by-storm-chart`}
     >
-      <p style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: '12px' }}>
+      <p className="title" style={{ position: 'absolute', top: 0, left: margin.left + 20 }}>
         {title}
         <br /> by type of Storm
         <br />

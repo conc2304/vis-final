@@ -14,7 +14,9 @@ import {
 } from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
-import { COLOR_RANGE } from './data/constants';
+import { COLOR_GREY, COLOR_RANGE } from './data/constants';
+
+import './HeatMap.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // const uuid = require('react-uuid');
@@ -26,7 +28,7 @@ type Props = {
   eventFilter: StormEventCategoryType | 'ALL';
   colorsRange?: string[];
   selectedDimension: SelectedDimensionsType;
-  handleOnStateHover?: (selectedRegion: GeoRegionUSType | 'ALL') => void;
+  handleOnStateSelect?: (selectedRegion: GeoRegionUSType | 'ALL') => void;
   regionSelected: GeoRegionUSType | 'ALL';
   hideHex?: boolean;
 };
@@ -40,7 +42,8 @@ const HeatMap = ({
   yearFilter = null,
   eventFilter = null,
   regionSelected = 'ALL',
-  handleOnStateHover,
+  // handleOnStateHover,
+  handleOnStateSelect,
   hideHex,
 }: Props) => {
   const svgRef = useRef(null);
@@ -220,10 +223,8 @@ const HeatMap = ({
       .attr('fill', (feature) => getFillColor(feature, stateDataDisplay))
       .attr('d', pathGenerator);
 
-    statePaths.on('mouseover', onStateHover);
-    statePaths.on('mouseout', () => {
-      handleOnStateHover('ALL');
-    });
+    statePaths.on('click', onStateClick);
+    svg.on('click', onCountryClick);
 
     // Internal Functions
     function getFillColor(d: GeoJsonFeatureType, stateData: StateDataDimensions[]) {
@@ -235,7 +236,7 @@ const HeatMap = ({
 
       if (stateInfo && stateInfo[selectedDimension])
         return colorScale(stateInfo[selectedDimension]);
-      return 'grey';
+      return COLOR_GREY;
     }
 
     function getStateInfoByStateName(
@@ -253,13 +254,34 @@ const HeatMap = ({
     setIsHexGrid(!isHexGrid);
   };
 
-  function onStateHover(e: MouseEvent, d: GeoJsonFeatureType) {
+  function onStateClick(e: MouseEvent, d: GeoJsonFeatureType) {
+    e.stopPropagation();
+
+    document.querySelectorAll('path.state').forEach((elem) => {
+      elem.classList.remove('selected');
+      elem.classList.add('unselected');
+    });
+
+    this.classList.remove('unselected');
+    this.classList.add('selected');
+
     const stateVar = isHexGrid ? 'google_name' : 'name';
     const { [stateVar]: name } = d.properties;
     const cleanedName = (name as string).replace('(United States)', '').trim();
     const stateName = cleanedName as GeoRegionUSType;
-    handleOnStateHover(stateName);
+    handleOnStateSelect(stateName);
     // show tooltip // TODO
+  }
+
+  function onCountryClick(e: MouseEvent, d: GeoJsonFeatureType) {
+    console.log('onCountryClick');
+
+    document.querySelectorAll('path.state').forEach((elem) => {
+      elem.classList.remove('selected');
+      elem.classList.remove('unselected');
+    });
+
+    handleOnStateSelect('ALL');
   }
 
   return (
@@ -268,7 +290,7 @@ const HeatMap = ({
       style={{ width: '100%', height: '100%', position: 'relative' }}
       className={`${id}-wrapper`}
     >
-      <svg ref={svgRef}>
+      <svg ref={svgRef} className="heatmap">
         <g className="content"></g>
       </svg>
       {!hideHex && (
@@ -283,17 +305,3 @@ const HeatMap = ({
 };
 
 export default HeatMap;
-
-// ['ATLANTIC NORTH',
-//  'ATLANTIC SOUTH',
-//  'E PACIFIC',
-//  'GULF OF ALASKA',
-//  'GULF OF MEXICO',
-//  'HAWAII WATERS',
-//  'LAKE ERIE',
-//  'LAKE HURON',
-//  'LAKE MICHIGAN',
-//  'LAKE ONTARIO',
-//  'LAKE ST CLAIR',
-//  'LAKE SUPERIOR',
-//  'ST LAWRENCE R', ]

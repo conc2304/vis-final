@@ -10,7 +10,9 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import { COLOR_RANGE } from './data/constants';
+import { COLOR_ACCCENT, COLOR_UI_PRIMARY } from './data/constants';
+
+import './MultiLineChartTop.scss';
 
 type Props = {
   // data: StormDataColumns;
@@ -107,34 +109,23 @@ const TopStatesOverTimeMultiLineChart = ({
       .y((d: StateDataDimensions) => yScale(d[selectedDimension]))
       .curve(d3.curveBasis);
 
+    const isSelectedRegion = (d) => regionSelected.toLowerCase() === d[0].STATE.toLowerCase();
+
     // Render the Area Paths for each of the storm events
     svgContent
       .selectAll('.area-path')
       .data(displayData)
       .join('path')
-      .attr('class', (d) => `area-path path-for-${d.key}`)
+      .attr('class', (d) => `area-path path-for-${d.key.replace(" ", "-")}`)
       // @ts-ignore
       .datum((d: DisplayData) => d.values)
       .attr('fill', 'none')
-      // @ts-ignore
-      .attr('debug', (d: StateDataDimensions, i) => {
-        // console.log("d")
-        console.log(i, d);
-        console.log(d[0].STATE);
-        // console.log(STORM_EVENT_CATEGORIES[i])
-        // console.log(regionSelected)
-        return '0';
-      })
       .attr('mix-blend-mode', 'multiply')
       .transition()
       .duration(500)
-      .attr('stroke', (d) =>
-        regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? COLOR_RANGE[6] : '#FFF'
-      )
-      .attr('stroke-width', (d) =>
-        regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? 2 : 1
-      )
-      .attr('opacity', (d) => (regionSelected.toLowerCase() === d[0].STATE.toLowerCase() ? 1 : 0.6))
+      .attr('stroke', (d) => (isSelectedRegion(d) ? COLOR_ACCCENT : COLOR_UI_PRIMARY))
+      .attr('stroke-width', (d) => (isSelectedRegion(d) ? 2 : 1))
+      .attr('opacity', (d) => (isSelectedRegion(d) ? 1 : 0.6))
       // @ts-ignore
       .attr('d', generator);
 
@@ -356,8 +347,6 @@ const TopStatesOverTimeMultiLineChart = ({
     return topStates;
   }
 
-  console.log('topStateAsNameList');
-  console.log(topStateAsNameList, regionSelected.toUpperCase());
   const isSelectedStateIncluded =
     regionSelected !== 'ALL' &&
     topStateAsNameList.includes(regionSelected.toUpperCase() as GeoRegionUSType);
@@ -367,38 +356,23 @@ const TopStatesOverTimeMultiLineChart = ({
       <div
         ref={wrapperRef}
         style={{ width: '100%', height: '100%', position: 'relative' }}
-        className={`${id}-wrapper`}
+        className={`${id}-wrapper top-states-chart`}
       >
-        <div style={{ position: 'absolute', top: 0, left: margin.left + 20, fontSize: '12px' }}>
-          <p className="mb-2">
-            {title}
-            <br /> Top {numberOfTopStates} Most Impacted States
-            <br /> <small>by ({eventFilter === 'ALL' ? 'All Events' : eventFilter})</small>
-          </p>
-          <div style={{ textAlign: 'left' }}>
+        <div
+          className="state-list-container"
+          style={{ position: 'absolute', top: margin.top, left: margin.left + 20 }}
+        >
+          <div>
             {topStateAsNameList.map((stateName, i) => (
-              <>
-                <small
-                  className="d-block"
-                  style={{
-                    color: stateNamesMatch(stateName, regionSelected) ? COLOR_RANGE[6] : null,
-                  }}
-                >
-                  {i + 1}. {stateName}
-                </small>
-              </>
+              <small
+                className={`d-block ${stateNamesMatch(stateName, regionSelected) ? 'active' : ''}`}
+                key={stateName}
+              >
+                {i + 1}. {stateName}
+              </small>
             ))}
             {regionSelected !== 'ALL' && !isSelectedStateIncluded ? (
-              <>
-                <small
-                  className="d-block"
-                  style={{
-                    color: COLOR_RANGE[6],
-                  }}
-                >
-                  {regionSelected.toUpperCase()}
-                </small>
-              </>
+              <small className="d-block active">{regionSelected.toUpperCase()}</small>
             ) : (
               ''
             )}

@@ -1,0 +1,38 @@
+@import '../variables';
+
+.top-states-chart {
+  .area-path {
+    // stroke: $color-ui-primary;
+    // stroke-width: 1.5;
+    // stroke-linecap: round;
+    // stroke-opacity: 0.6;
+
+    // transition: all 500ms ease-in-out;
+
+    // &.active {
+    //   stroke: $color-ui-accent;
+    //   stroke-width: 2;
+    // }
+  }
+
+  .state-list-container {
+    font-size: 14px;
+    text-align: left;
+    color: $color-ui-primary;
+
+    .active {
+      color: $color-ui-accent;
+    }
+  }
+
+  .axis {
+    text {
+      fill: $color-ui-primary;
+    }
+
+    path,
+    line {
+      stroke: $color-ui-primary;
+    }
+  }
+}

@@ -55,8 +55,8 @@ const StormsPage = () => {
     setSelectedDimensionTitle(dimensionLabel as any);
   };
 
-  const handleOnStateHover = (regionOnHover: GeoRegionUSType | 'ALL') => {
-    setSelectedGeoRegion(regionOnHover);
+  const handleOnStateHover = (regionSeclected: GeoRegionUSType | 'ALL') => {
+    setSelectedGeoRegion(regionSeclected);
   };
 
   const onEventTypeChanged = (event: SelectChangeEvent) => {
@@ -149,7 +149,7 @@ const StormsPage = () => {
                 selectedDimension={selectedDimension}
                 eventFilter={selectedStormType}
                 colorsRange={COLOR_RANGE}
-                handleOnStateHover={handleOnStateHover}
+                handleOnStateSelect={handleOnStateHover}
               />
             </Row>
           </Col>
@@ -176,7 +176,7 @@ const StormsPage = () => {
                 stormData={stormData}
                 margin={{
                   top: 10,
-                  bottom: 30,
+                  bottom: 60,
                   right: 30,
                   left: 60,
                 }}

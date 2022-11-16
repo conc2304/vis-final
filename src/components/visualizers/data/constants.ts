@@ -95,30 +95,29 @@ export const STORM_DISPLAY_DATA_DIMENSIONS = [
 
 export const STORM_UI_SELECT_VALUES = [
   {
-    label: "Number of Events Total",
-    value:'TOTAL_EVENTS'
+    label: 'Number of Events Total',
+    value: 'TOTAL_EVENTS',
   },
   {
-    label: "Total Property Damage",
-    value:'DAMAGE_PROPERTY_EVENT_SUM'
+    label: 'Total Property Damage',
+    value: 'DAMAGE_PROPERTY_EVENT_SUM',
   },
   {
-    label: "Direct Deaths Total",
-    value:'DEATHS_DIRECT_COUNT'
+    label: 'Direct Deaths Total',
+    value: 'DEATHS_DIRECT_COUNT',
   },
   {
-    label: "Indirect Deaths Total",
-    value:'DEATHS_INDIRECT_COUNT'
+    label: 'Indirect Deaths Total',
+    value: 'DEATHS_INDIRECT_COUNT',
   },
   {
-    label: "All Deaths Total",
-    value:'DEATHS_TOTAL_COUNT'
+    label: 'All Deaths Total',
+    value: 'DEATHS_TOTAL_COUNT',
   },
   {
-    label: "Injuries Total",
-    value:'INJURIES_DIRECT_COUNT'
+    label: 'Injuries Total',
+    value: 'INJURIES_DIRECT_COUNT',
   },
-
 ] as const;
 
 export const EVENT_CATEGORIES = Object.values(stormEventToTypeMap).filter(getUniqueValues).sort();
@@ -212,13 +211,27 @@ export const STORM_EVENT_REGIONS = [
   'Kentucky',
 ] as const;
 
+// HEAT MAP
+// export const COLOR_RANGE = [
+//   '#010002', // blackish
+//   '#7C30FC', // purple
+//   '#1233E4', // blue
+//   '#22FCE1', // aqua
+//   '#17CE26', // green
+//   '#EAFF06', // yellow
+//   '#FFB508', // orange
+//   '#FE2222', // red
+// ];
+
+export const COLOR_ACCCENT = '#ffb703'; // yello
+export const COLOR_UI_PRIMARY = '#61efff';
 export const COLOR_RANGE = [
-  '#010002', // blackish
-  '#7C30FC', // purple
-  '#1233E4', // blue
-  '#22FCE1', // aqua
-  '#17CE26', // green
-  '#EAFF06', // yellow
-  '#FFB508', // orange
-  '#FE2222', // red
+  // "#0E1625",
+  '#091C3A',
+  '#0B3069',
+  '#066EA8',
+  '#029FBF',
+  '#02C4DA',
 ];
+
+export const COLOR_GREY = '#495153';
