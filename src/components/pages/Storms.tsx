@@ -175,8 +175,8 @@ const StormsPage = () => {
                 yearFilter={selectedBrushYears}
                 stormData={stormData}
                 margin={{
-                  top: 10,
-                  bottom: 60,
+                  top: 40,
+                  bottom: 30,
                   right: 30,
                   left: 60,
                 }}

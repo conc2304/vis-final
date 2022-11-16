@@ -56,8 +56,6 @@ const TopStatesOverTimeMultiLineChart = ({
       return;
     }
 
-    // console.log(displayData);
-
     const svg = d3.select(svgRef.current);
 
     const { width: svgWidth, height: svgHeight } =
@@ -116,7 +114,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .selectAll('.area-path')
       .data(displayData)
       .join('path')
-      .attr('class', (d) => `area-path path-for-${d.key.replace(" ", "-")}`)
+      .attr('class', (d) => `area-path path-for-${d.key.replace(' ', '-')}`)
       // @ts-ignore
       .datum((d: DisplayData) => d.values)
       .attr('fill', 'none')
@@ -137,7 +135,8 @@ const TopStatesOverTimeMultiLineChart = ({
       .tickSize(5)
       .tickFormat((d) => d.toString());
 
-    const yAxis = d3.axisLeft(yScale).tickFormat(d3.format('.0f'));
+    const formatFn = yScale.domain()[1].toString().length ? d3.format('.2s') : d3.format('.0f');
+    const yAxis = d3.axisLeft(yScale).tickFormat(formatFn);
 
     svg
       .select('.x-axis')
@@ -353,11 +352,12 @@ const TopStatesOverTimeMultiLineChart = ({
   const stateNamesMatch = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
   return (
     <>
-      <div
-        ref={wrapperRef}
-        style={{ width: '100%', height: '100%', position: 'relative' }}
-        className={`${id}-wrapper top-states-chart`}
-      >
+      <div ref={wrapperRef} className={`${id}-wrapper top-states-chart`}>
+        <div className="title" style={{ position: 'absolute', top: 12, left: margin.left + 20 }}>
+          <strong>
+            Top {numberOfTopStates} Most Impacted States: {title}
+          </strong>
+        </div>
         <div
           className="state-list-container"
           style={{ position: 'absolute', top: margin.top, left: margin.left + 20 }}
