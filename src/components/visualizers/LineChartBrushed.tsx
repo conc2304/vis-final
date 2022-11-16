@@ -1,9 +1,11 @@
-import { fontSize } from '@mui/system';
 import * as d3 from 'd3';
 import { useEffect, useRef } from 'react';
 import { GlobalTempDataType } from './data/types';
 import { Margin } from './types';
 import useResizeObserver from './useResizeObserver';
+
+import "./LineChartBrushed.scss"
+import { COLOR_UI_ERROR } from './data/constants';
 
 type Props = {
   // data: StormDataColumns;
@@ -60,7 +62,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .transition()
       .duration(500)
       .ease(d3.easeSinInOut)
-      .attr('stroke', 'red')
+      .attr('stroke', COLOR_UI_ERROR)
       .attr('stroke-width', '2')
       .attr('fill', 'none')
       // @ts-ignore
@@ -101,8 +103,8 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
   }, [data, margin]);
 
   return (
-    <div ref={wrapperRef} style={{ width: '100%', height: '100%', position: 'relative' }} className={`${id}-wrapper`}>
-      <div style={{ position: 'absolute', top: "12px", left: margin.left + 20, fontSize: '12px' }}>
+    <div ref={wrapperRef} style={{ width: '100%', height: '100%', position: 'relative' }} className={`${id}-wrapper global-temp-chart`}>
+      <div className='title' style={{ position: 'absolute', top: -10, left: margin.left + 20}}>
         <p className="m-0">{title}</p>
       </div>
 
