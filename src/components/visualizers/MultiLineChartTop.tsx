@@ -45,6 +45,8 @@ const TopStatesOverTimeMultiLineChart = ({
   const dimensions = useResizeObserver(wrapperRef);
 
   const [topStateAsNameList, setTopStatesAsNameList] = useState<GeoRegionUSType[]>([]);
+  const [innerDimension, setInnerDimensions] = useState({w: 0, h:0})
+
 
   let displayData: DisplayData[] = [];
 
@@ -62,6 +64,7 @@ const TopStatesOverTimeMultiLineChart = ({
       dimensions || wrapperRef.current.getBoundingClientRect();
     const innerWidth = svgWidth - margin.left - margin.right;
     const innerHeight = svgHeight - margin.top - margin.bottom;
+    setInnerDimensions({w:innerWidth, h: innerHeight });
 
     svg.attr('width', svgWidth).attr('height', svgHeight);
     const svgContent = svg
@@ -379,7 +382,12 @@ const TopStatesOverTimeMultiLineChart = ({
           </div>
         </div>
         <svg ref={svgRef}>
-          <g className="content"></g>
+        <defs>
+          <clipPath id={`${id}`}>
+            <rect x="0" y="0"  width={innerDimension.w} height="100%" />
+          </clipPath>
+        </defs>
+          <g className="content" clipPath={`url(#${id})`}></g>
           <g className="x-axis axis" />
           <g className="y-axis axis" />
         </svg>

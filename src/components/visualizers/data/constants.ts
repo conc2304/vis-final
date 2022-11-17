@@ -224,7 +224,9 @@ export const STORM_EVENT_REGIONS = [
 // ];
 
 export const COLOR_ACCCENT = '#ffb703'; // yello
-export const COLOR_UI_PRIMARY = '#61efff';
+export const COLOR_UI_PRIMARY = '#61efff'; // cyan
+export const COLOR_UI_HIGHLIGHT = '#1cfc3a'; // green
+
 export const COLOR_UI_ERROR ="#E34D94"; // magenta 
 export const COLOR_RANGE = [
   // "#0E1625",
