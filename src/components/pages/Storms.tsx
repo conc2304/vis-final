@@ -78,8 +78,8 @@ const StormsPage = () => {
 
   return (
     <Layout>
-      <header>
-        <Link to={Routes.home} className="btn btn-primary btn-lg border-radius-0 d-block p-1">
+      <header className=''>
+        <Link to={Routes.home} className="btn btn-primary btn-lg border-radius-0 d-block p-1 custom-header">
           Home &#9651;
         </Link>
         <h1 className="p-2">Severe Weather Events in the USA</h1>
@@ -208,7 +208,7 @@ const StormsPage = () => {
         </Row>
       </main>
       <footer>
-        <Link to={Routes.hurricanes} className="btn btn-primary btn-lg border-radius-0 d-block p-4">
+        <Link to={Routes.hurricanes} className="btn btn-primary btn-lg border-radius-0 d-block p-4 custom-footer">
           Explore Hurricanes &#9661;
         </Link>
       </footer>
