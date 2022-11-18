@@ -31,47 +31,29 @@ const CircleBarChart = ({
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
+  const dimensions = useResizeObserver(wrapperRef);
+
   const [stormDataByStateAndYear, setStormDataByStateAndYear] = useState<StormByStateAndYearMap>(
     new Map()
   );
-  const dimensions = useResizeObserver(wrapperRef);
   const [yearFilter, setYearFilter] = useState(YEAR_RANGE.min);
-  const innerRadius = 80;
 
   const svgContent: MutableRefObject<d3.Selection<d3.BaseType, unknown, null, undefined>> =
     useRef();
   const arcGenerator: MutableRefObject<d3.Arc<unknown, DisplayData>> = useRef();
-  const eventsMax = useRef(0);
-  const radiusMax = useRef(innerRadius);
 
   useEffect(() => {
     if (!stormData) {
       return;
     }
 
+    const innerRadius = 80;
+    let eventsMax = 0;
     const dataByYear = d3.group(stormData, (d) => d.YEAR);
     const stormDataByState = d3.group(stormData, (d) => d.STATE);
     const stormCountByYear: StormByStateAndYearMap = new Map();
 
     const states = Array.from(stormDataByState.keys());
-    const stateBandScale = d3
-      .scaleBand()
-      .domain(states)
-      .range([0, 2 * Math.PI]);
-
-    const eventsScale = d3
-      .scaleLinear()
-      .range([innerRadius, radiusMax.current])
-      .domain([0, eventsMax.current]);
-
-    arcGenerator.current = d3
-      .arc<DisplayData>()
-      .innerRadius(innerRadius)
-      .outerRadius((d) => eventsScale(d.numberOfStorms))
-      .startAngle((d) => stateBandScale(d.state))
-      .endAngle((d) => stateBandScale(d.state) + stateBandScale.bandwidth())
-      .padAngle(0.03)
-      .padRadius(80);
 
     dataByYear.forEach((value, year) => {
       if (isNaN(year)) {
@@ -90,25 +72,41 @@ const CircleBarChart = ({
 
       stormCountByYear.set(year, dataByState);
       const maxSum = d3.max(dataByState, (d) => d.numberOfStorms);
-      if (maxSum > eventsMax.current) {
-        eventsMax.current = maxSum;
+      if (maxSum > eventsMax) {
+        eventsMax = maxSum;
       }
+
+      const svg = d3.select(svgRef.current);
+
+      const { width: svgWidth, height: svgHeight } =
+        dimensions || wrapperRef.current.getBoundingClientRect();
+      const innerWidth = svgWidth - margin.left - margin.right;
+      const innerHeight = svgHeight - margin.top - margin.bottom;
+      const radiusMax = d3.min([innerWidth / 2, innerHeight / 2]);
+
+      svg.attr('width', svgWidth).attr('height', svgHeight);
+      svgContent.current = svg
+        .select('.content')
+        .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
+
+      const eventsScale = d3.scaleLinear().range([innerRadius, radiusMax]).domain([0, eventsMax]);
+
+      const stateBandScale = d3
+        .scaleBand()
+        .domain(states)
+        .range([0, 2 * Math.PI]);
+
+      arcGenerator.current = d3
+        .arc<DisplayData>()
+        .innerRadius(innerRadius)
+        .outerRadius((d) => eventsScale(d.numberOfStorms))
+        .startAngle((d) => stateBandScale(d.state))
+        .endAngle((d) => stateBandScale(d.state) + stateBandScale.bandwidth())
+        .padAngle(0.03)
+        .padRadius(80);
     });
 
     setStormDataByStateAndYear(stormCountByYear);
-
-    const svg = d3.select(svgRef.current);
-
-    const { width: svgWidth, height: svgHeight } =
-      dimensions || wrapperRef.current.getBoundingClientRect();
-    const innerWidth = svgWidth - margin.left - margin.right;
-    const innerHeight = svgHeight - margin.top - margin.bottom;
-    radiusMax.current = d3.min([innerWidth / 2, innerHeight / 2]);
-
-    svg.attr('width', svgWidth).attr('height', svgHeight);
-    svgContent.current = svg
-      .select('.content')
-      .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
   }, [stormData]);
 
   useEffect(() => {
