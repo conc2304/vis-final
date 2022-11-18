@@ -29,7 +29,7 @@ const MultiLineChart = ({
   margin,
   yearFilter = null,
   regionSelected = 'ALL',
-  stormTypeSelected = "ALL",
+  stormTypeSelected = 'ALL',
   selectedDimension = null,
   title = '',
   id,
@@ -110,12 +110,14 @@ const MultiLineChart = ({
       //   console.log(stormTypeSelected, STORM_EVENT_CATEGORIES[i])
       //   return "0"
       // })
-      .attr("mix-blend-mode", "multiply")
+      .attr('mix-blend-mode', 'multiply')
       .transition()
       .duration(500)
-      .attr('stroke', (d,i) => stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? COLOR_RANGE[6] : '#FFF')
-      .attr('stroke-width', (d,i) => stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? 2 : 1)
-      .attr('opacity', (d,i) => stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? 1 : 0.6)
+      .attr('stroke', (d, i) =>
+        stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? COLOR_RANGE[6] : '#FFF'
+      )
+      .attr('stroke-width', (d, i) => (stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? 2 : 1))
+      .attr('opacity', (d, i) => (stormTypeSelected === STORM_EVENT_CATEGORIES[i] ? 1 : 0.6))
       // @ts-ignore
       .attr('d', generator);
 
@@ -184,7 +186,7 @@ const MultiLineChart = ({
     // Loop through each Event Category (tornado, hurricane, ...)
     stormDataByEvent.forEach((eventCategoryData) => {
       const { key: eventCategory } = eventCategoryData;
-      
+
       if (!STORM_EVENT_CATEGORIES.includes(eventCategory)) return;
 
       // Group all of this event's data by year
@@ -226,7 +228,6 @@ const MultiLineChart = ({
           DEATHS_TOTAL_COUNT,
           INJURIES_DIRECT_COUNT,
           TOTAL_EVENTS,
-
         });
       }); // end event by year Loop
 

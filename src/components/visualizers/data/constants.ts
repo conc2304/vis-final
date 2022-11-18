@@ -95,30 +95,29 @@ export const STORM_DISPLAY_DATA_DIMENSIONS = [
 
 export const STORM_UI_SELECT_VALUES = [
   {
-    label: "Number of Events Total",
-    value:'TOTAL_EVENTS'
+    label: 'Number of Events Total',
+    value: 'TOTAL_EVENTS',
   },
   {
-    label: "Total Property Damage",
-    value:'DAMAGE_PROPERTY_EVENT_SUM'
+    label: 'Total Property Damage',
+    value: 'DAMAGE_PROPERTY_EVENT_SUM',
   },
   {
-    label: "Direct Deaths Total",
-    value:'DEATHS_DIRECT_COUNT'
+    label: 'Direct Deaths Total',
+    value: 'DEATHS_DIRECT_COUNT',
   },
   {
-    label: "Indirect Deaths Total",
-    value:'DEATHS_INDIRECT_COUNT'
+    label: 'Indirect Deaths Total',
+    value: 'DEATHS_INDIRECT_COUNT',
   },
   {
-    label: "All Deaths Total",
-    value:'DEATHS_TOTAL_COUNT'
+    label: 'All Deaths Total',
+    value: 'DEATHS_TOTAL_COUNT',
   },
   {
-    label: "Injuries Total",
-    value:'INJURIES_DIRECT_COUNT'
+    label: 'Injuries Total',
+    value: 'INJURIES_DIRECT_COUNT',
   },
-
 ] as const;
 
 export const EVENT_CATEGORIES = Object.values(stormEventToTypeMap).filter(getUniqueValues).sort();
@@ -222,3 +221,7 @@ export const COLOR_RANGE = [
   '#FFB508', // orange
   '#FE2222', // red
 ];
+export const YEAR_RANGE = {
+  min: 1950,
+  max: 2022,
+};
