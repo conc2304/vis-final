@@ -53,7 +53,17 @@ export type StateDataDimensions = {
   INJURIES_DIRECT_COUNT: number;
   STATE?: GeoRegionUSType;
   TOTAL_EVENTS: number;
-  YEAR?: number,
-  EVENT_NAME?: StormEventCategoryType; 
+  YEAR?: number;
+  EVENT_NAME?: StormEventCategoryType;
 };
 
+export type ScatterPlotData = {
+  BEGIN_LAT: number; // "31.9"
+  BEGIN_LON: number; // "-98.6"
+  END_LAT: number; // "31.73"
+  END_LON: number; // "-98.6"
+  EVENT_COUNT: number; // "1"
+  EVENT_ID: string; // "10120412"
+  EVENT_TYPE_CLEANED: StormEventCategoryType; // "Tornado"
+  STATE: GeoRegionUSType; // "TEXAS"
+};

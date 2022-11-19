@@ -33,6 +33,7 @@ import StormsTypesOverTimeSeries from '../visualizers/MultiLineChart';
 import TopStatesOverTimeMultiLineChart from '../visualizers/MultiLineChartTop';
 
 import "./Storms.scss";
+import RadarChart from '../visualizers/RadialChart';
 
 const StormsPage = () => {
   // State Handlers
@@ -134,6 +135,12 @@ const StormsPage = () => {
                 </Col>
               </Row>
             </FormGroup>
+            <Row className='flex-grow-1' style={{flexBasis: "1%", border: "2xp solid blue"}}>
+                    <RadarChart id="radial-chart"
+                    data={[]}
+
+                    />
+            </Row>
             <Row className="flex-grow-1">
               <HeatMap
                 yearFilter={selectedBrushYears}

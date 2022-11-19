@@ -12,7 +12,6 @@ import { Margin } from './types';
 import { fillMissingYears } from './helpers';
 import {
   COLOR_ACCCENT,
-  COLOR_UI_HIGHLIGHT,
   COLOR_UI_PRIMARY,
   STORM_EVENT_CATEGORIES,
 } from './data/constants';
@@ -56,7 +55,6 @@ const MultiLineChart = ({
       return;
     }
 
-    // console.log(stormData);
 
     const svg = d3.select(svgRef.current);
 
@@ -115,7 +113,7 @@ const MultiLineChart = ({
       .attr('mix-blend-mode', 'multiply')
       .transition()
       .duration(500)
-      .attr('stroke', (d, i) => (isSelectedRegion(i) ? COLOR_UI_HIGHLIGHT : COLOR_UI_PRIMARY))
+      .attr('stroke', (d, i) => (isSelectedRegion(i) ? COLOR_ACCCENT : COLOR_UI_PRIMARY))
       .attr('stroke-width', (d, i) => (isSelectedRegion(i) ? 2 : 1))
       .attr('stroke-opacity', (d, i) => (isSelectedRegion(i) ? 1 : 0.5))
       // @ts-ignore
@@ -268,10 +266,6 @@ const MultiLineChart = ({
         </small>
         )
       </p>
-
-      <div className="tooltip" style={{ position: 'absolute' }}>
-        <p>STuff</p>
-      </div>
 
       <svg ref={svgRef}>
         <defs>

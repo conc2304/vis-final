@@ -15,7 +15,6 @@ import { COLOR_ACCCENT, COLOR_UI_PRIMARY } from './data/constants';
 import './MultiLineChartTop.scss';
 
 type Props = {
-  // data: StormDataColumns;
   stormData: StormDataType[];
   margin: Margin;
   title?: string;
@@ -33,7 +32,7 @@ const TopStatesOverTimeMultiLineChart = ({
   stormData,
   margin,
   yearFilter = null,
-  numberOfTopStates = 5,
+  numberOfTopStates = 3,
   selectedDimension = null,
   regionSelected = 'ALL',
   id,
@@ -353,6 +352,7 @@ const TopStatesOverTimeMultiLineChart = ({
     regionSelected !== 'ALL' &&
     topStateAsNameList.includes(regionSelected.toUpperCase() as GeoRegionUSType);
   const stateNamesMatch = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
+  
   return (
     <>
       <div ref={wrapperRef} className={`${id}-wrapper top-states-chart`}>
