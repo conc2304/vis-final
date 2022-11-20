@@ -5,6 +5,7 @@ import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { COLOR_RANGE, YEAR_RANGE } from './data/constants';
 import GlobalTempData from './data/Global_Temp_Data';
+import { allStates } from './data/states';
 
 interface DisplayData {
   state: GeoRegionUSType;
@@ -61,7 +62,6 @@ const CircleBarChart = ({
     const dataByYear = d3.group(stormData, (d) => d.YEAR);
     const stormDataByState = d3.group(stormData, (d) => d.STATE);
     const stormCountByYear: StormByStateAndYearMap = new Map();
-    const states = Array.from(stormDataByState.keys());
 
     dataByYear.forEach((value, year) => {
       if (isNaN(year)) {
@@ -101,7 +101,7 @@ const CircleBarChart = ({
       const eventsScale = d3.scaleRadial().range([innerRadius, radiusMax]).domain([0, eventsMax]);
       const stateBandScale = d3
         .scaleBand()
-        .domain(states)
+        .domain(allStates)
         .range([0, 2 * Math.PI]);
       const getTemp = (d) => d.smoothed;
       timeScale.current = d3
