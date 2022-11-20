@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import { useEffect, useState, useRef } from 'react';
 import set from 'lodash.set';
+import { Tooltip } from 'react-bootstrap';
 import { Margin } from './types';
 import useResizeObserver from './useResizeObserver';
 import { COLOR_ACCCENT, COLOR_UI_PRIMARY } from './data/constants';
@@ -39,6 +40,7 @@ const RadarChart = ({
   lineType = 'linear',
 }: Props) => {
   const svgRef = useRef(null);
+  const tooltipRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
   const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
@@ -194,7 +196,6 @@ const RadarChart = ({
 
     // Draw the Radar Points and Lines
 
-    // const axisScale = (d) => axisScaleMap[d.axis];
     const radarLineGenerator = d3
       .lineRadial()
       .curve(lineType === 'linear' ? d3.curveLinearClosed : d3.curveCardinalClosed)
@@ -206,18 +207,22 @@ const RadarChart = ({
       .angle((d, i) => i * angleSize);
 
     // add a wrapper for each item
-    const radarWrapper = svgContent.selectAll('.radar-wrapper').data(data).join('radar-wrapper');
-
-    radarWrapper.attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
+    const radarWrapper = svgContent
+      .selectAll('.radar-wrapper')
+      .data(data)
+      .join('g')
+      .attr('class', 'radar-wrapper')
+      .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
 
     console.log(radarWrapper);
+    radarWrapper.selectAll('.radar-area').remove();
 
     // background of area
     radarWrapper
-      .selectAll('.radar-area')
-      .data(data)
-      .join('path')
+      .append('path')
       .attr('class', 'radar-area')
+      // @ts-ignore
+      .merge(radarWrapper)
       // @ts-ignore
       .attr('d', radarLineGenerator)
       .style('fill', COLOR_UI_PRIMARY)
@@ -235,10 +240,10 @@ const RadarChart = ({
 
     //  add outline of shape
     radarWrapper
-      .selectAll('.radar-stroke')
-      .data(data)
-      .join('path')
+      .append('path')
       .attr('class', 'radar-stroke')
+      // @ts-ignore
+      .merge(radarWrapper)
       // @ts-ignore
       .attr('d', radarLineGenerator)
       .style('stroke-width', strokeWidth + 'px')
@@ -247,28 +252,93 @@ const RadarChart = ({
       .style('filter', 'url(#glow)');
 
     // add the data points
-
     radarWrapper
-      .selectAll('.radar-circle')
-      .data(data)
-      .join('circle')
+      .selectAll('.radar-cirlcle')
+      .data((d) => d)
+      .enter()
+      .append('circle')
       .attr('class', 'radar-circle')
+      //  @ts-ignore
+      .merge(radarWrapper)
       .attr('r', dotRadius)
-      .attr('test', (d, i) => {
-        console.log('test');
-        console.log(d, i);
-        return 'test';
+      .attr('cx', (d: { axis: string; value: number }, i: number) => {
+        const axisName = d.axis;
+        const scale = axisScaleMap[axisName];
+        return scale(d.value) * Math.cos(angleSize * i - Math.PI / 2);
       })
-      // .attr('cx', function (d: { axis: string; value: number }[], i) {
-      //   const scale = axisScaleMap[d[i].axis];
-      //   return scale(d.value) * Math.cos(angleSize * i - Math.PI / 2);
-      // })
-      // .attr('cy', function (d, i) {
-      //   const scale = axisScaleMap[i].axis;
-      //   return scale(d.value) * Math.sin(angleSize * i - Math.PI / 2);
-      // })
+      .attr('cy', function (d, i) {
+        const axisName = d.axis;
+        const scale = axisScaleMap[axisName];
+        return scale(d.value) * Math.sin(angleSize * i - Math.PI / 2);
+      })
       .style('fill', COLOR_UI_PRIMARY)
       .style('fill-opacity', 0.8);
+
+    // Radar tooltip
+
+    const circleWrapper = svgContent
+      .selectAll('.circle-wrapper')
+      .data(data)
+      .join('g')
+      .attr('class', 'circle-wrapper')
+      .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
+
+    // const tooltip = svgContent
+    //   .append('text')
+    //   .attr('class', 'tooltip')
+    //   .style('opacity', 0)
+    //   .attr("fill", COLOR_ACCCENT)
+    //   .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
+
+    const tooltip = tooltipRef.current;
+    console.log(tooltip);
+
+    circleWrapper
+      .selectAll('.invisible-circle')
+      .data((d) => d)
+      .join('circle')
+      .attr('class', 'invisible-circle')
+      .attr('r', dotRadius * 1.5)
+      .attr('cx', (d: { axis: string; value: number }, i: number) => {
+        const axisName = d.axis;
+        const scale = axisScaleMap[axisName];
+        return scale(d.value) * Math.cos(angleSize * i - Math.PI / 2);
+      })
+      .attr('cy', function (d, i) {
+        const axisName = d.axis;
+        const scale = axisScaleMap[axisName];
+        return scale(d.value) * Math.sin(angleSize * i - Math.PI / 2);
+      })
+      .attr('fill', 'none')
+      .style('pointer-events', 'all')
+      .on('mouseover', function (event, d) {
+        const newX = parseFloat(d3.select(this).attr('cx')) + 20;
+        const newY = parseFloat(d3.select(this).attr('cy')) - 16;
+
+        console.log('hover');
+        console.log(tooltip);
+
+        console.log(newX, newY)
+        tooltip.innerHTML = d.value;
+        tooltip.style.left = `${newX + svgWidth/2}px`;
+        tooltip.style.top = `${newY + svgHeight/2}px`;
+        tooltip.style.opacity = 1;
+        console.log(tooltip['style']['top'])
+
+        // tooltip
+        //   .attr('x', newX)
+        //   .attr('y', newY)
+        //   .text(d.value) // todo format
+        //   .transition()
+        //   .duration(200)
+        //   .style('opacity', 1);
+      })
+      .on('mouseout', function () {
+        console.log("out")
+        tooltip.style.opacity = 0;
+
+        // tooltip.transition().duration(200).style('opacity', 0);
+      });
   }, []);
 
   return (
@@ -291,10 +361,13 @@ const RadarChart = ({
           </filter>
         </defs>
         <g className="content" clipPath={`url(#${id})`}>
+          {/* <text className="tooltip>">TEXT</text> */}
           <g className="axis-grid" />
-          <g className="radar-wrapper" />
         </g>
       </svg>
+      <div ref={tooltipRef} className="tooltip" style={{ position: 'absolute' }}>
+        TEXT
+      </div>
     </div>
   );
 };
