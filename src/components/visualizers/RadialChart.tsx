@@ -283,15 +283,7 @@ const RadarChart = ({
       .attr('class', 'circle-wrapper')
       .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
 
-    // const tooltip = svgContent
-    //   .append('text')
-    //   .attr('class', 'tooltip')
-    //   .style('opacity', 0)
-    //   .attr("fill", COLOR_ACCCENT)
-    //   .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
-
     const tooltip = tooltipRef.current;
-    console.log(tooltip);
 
     circleWrapper
       .selectAll('.invisible-circle')
@@ -305,6 +297,7 @@ const RadarChart = ({
         return scale(d.value) * Math.cos(angleSize * i - Math.PI / 2);
       })
       .attr('cy', function (d, i) {
+  
         const axisName = d.axis;
         const scale = axisScaleMap[axisName];
         return scale(d.value) * Math.sin(angleSize * i - Math.PI / 2);
@@ -315,29 +308,13 @@ const RadarChart = ({
         const newX = parseFloat(d3.select(this).attr('cx')) + 20;
         const newY = parseFloat(d3.select(this).attr('cy')) - 16;
 
-        console.log('hover');
-        console.log(tooltip);
-
-        console.log(newX, newY)
         tooltip.innerHTML = d.value;
         tooltip.style.left = `${newX + svgWidth/2}px`;
         tooltip.style.top = `${newY + svgHeight/2}px`;
         tooltip.style.opacity = 1;
-        console.log(tooltip['style']['top'])
-
-        // tooltip
-        //   .attr('x', newX)
-        //   .attr('y', newY)
-        //   .text(d.value) // todo format
-        //   .transition()
-        //   .duration(200)
-        //   .style('opacity', 1);
       })
       .on('mouseout', function () {
-        console.log("out")
         tooltip.style.opacity = 0;
-
-        // tooltip.transition().duration(200).style('opacity', 0);
       });
   }, []);
 
@@ -365,8 +342,8 @@ const RadarChart = ({
           <g className="axis-grid" />
         </g>
       </svg>
-      <div ref={tooltipRef} className="tooltip" style={{ position: 'absolute' }}>
-        TEXT
+      <div ref={tooltipRef} className="tooltip" style={{ position: 'absolute', backgroundColor: "black", borderRadius: "8px", border : `0.5px solid ${COLOR_UI_PRIMARY}`  }}>
+        
       </div>
     </div>
   );
