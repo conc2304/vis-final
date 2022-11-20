@@ -221,7 +221,8 @@ export const COLOR_RANGE = [
   '#FFB508', // orange
   '#FE2222', // red
 ];
+
 export const YEAR_RANGE = {
   min: 1950,
-  max: 2022,
+  max: 2021,
 };
