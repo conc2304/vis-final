@@ -198,23 +198,26 @@ const StormsPage = () => {
                   </Col>
                 </Row>
               </Col>
-              <Col xs={12} lg={8} xl={9}>
-                <HeatMap
-                  yearFilter={selectedBrushYears}
-                  stormData={stormData}
-                  regionSelected={selectedGeoRegion}
-                  margin={{
-                    top: 0,
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                  }}
-                  id="storm-data-heatmap"
-                  selectedDimension={selectedDimension}
-                  eventFilter={selectedStormType}
-                  colorsRange={COLOR_RANGE}
-                  handleOnStateSelect={handleOnStateSelect}
-                />
+              <Col xs={12} lg={8} xl={9}  className="justify-content-around d-flex flex-column">
+                <div style={{height: "60%"}}>
+                  <HeatMap
+                    yearFilter={selectedBrushYears}
+                    stormData={stormData}
+                    regionSelected={selectedGeoRegion}
+                    margin={{
+                      top: 10,
+                      bottom: 200,
+                      right: 10,
+                      left: 10,
+                    }}
+                    id="storm-data-heatmap"
+                    selectedDimension={selectedDimension}
+                    eventFilter={selectedStormType}
+                    colorsRange={COLOR_RANGE}
+                    handleOnStateSelect={handleOnStateSelect}
+                    
+                  />
+                </div>
               </Col>
             </Row>
           </Col>

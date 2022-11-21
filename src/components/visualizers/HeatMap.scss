@@ -1,9 +1,49 @@
-
 @import 'src/variables';
+
+// .storm-data-heatmap-wrapper {
+//   border: 0.5px solid $color-ui-primary;
+//   border-radius: 20px;
+//   transition: all 300ms ease-in;
+//   &:hover {
+//     border-color: red;
+//   }
+// }
 
 svg.heatmap {
   cursor: pointer;
+  position: relative;
+  z-index: 100;
+
+  background-color: rgba($color: #000000, $alpha: 0.2);
+
+  border-radius: 20px;
+  border: 0.5px solid $color-ui-primary;
+
+  &.hover {
+    border: 0.5px solid $color-ui-accent;
+  }
 }
+
+// .heatmap-background {
+//   width: 100%;
+//   height: 100%;
+//   position: absolute;
+//   top: 0;
+//   bottom: 0;
+//   left: 0;
+//   right: 0;
+//   z-index: 1;
+//   // background-color: red;
+//   border-radius: 20px;
+//   border: 0.5px solid $color-ui-primary;
+//   opacity: 0.2;
+//   background-color: black;
+//   cursor: pointer;
+
+//   &:hover {
+//     border: 0.5px solid $color-ui-accent;
+//   }
+// }
 
 path.state {
   stroke: $color-ui-primary;
