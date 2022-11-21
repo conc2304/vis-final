@@ -10,7 +10,6 @@
 // }
 
 svg.heatmap {
-  cursor: pointer;
   position: relative;
   z-index: 100;
 
@@ -19,6 +18,8 @@ svg.heatmap {
   border: 0.5px solid $color-ui-primary;
 
   &.hover {
+    cursor: pointer;
+
     border: 0.5px solid $color-ui-accent;
   }
 }

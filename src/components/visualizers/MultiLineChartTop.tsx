@@ -10,7 +10,7 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import { COLOR_ACCCENT, COLOR_UI_PRIMARY } from './data/constants';
+import { COLOR_ACCCENT, COLOR_UI_PRIMARY, STORM_EVENT_REGIONS } from './data/constants';
 
 import './MultiLineChartTop.scss';
 
@@ -280,7 +280,8 @@ const TopStatesOverTimeMultiLineChart = ({
     stormDataByState.forEach((state) => {
       const { key: stateName } = state;
 
-      if (stateName === 'STATE') return;
+      if (!STORM_EVENT_REGIONS.includes(stateName)) return;
+      if ((stateName as string) === 'STATE') return;
 
       let DAMAGE_PROPERTY_EVENT_SUM = 0;
       let DEATHS_DIRECT_COUNT = 0;

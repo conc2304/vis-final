@@ -336,7 +336,6 @@ const RadarChart = ({
           </filter>
         </defs>
         <g className="content" clipPath={`url(#${id})`}>
-          {/* <text className="tooltip>">TEXT</text> */}
           <g className="axis-grid" />
         </g>
       </svg>

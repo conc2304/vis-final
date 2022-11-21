@@ -116,7 +116,7 @@ export const getTopStatesByDimension = ({
   dataGroupedByState.forEach((state) => {
     const { key: stateName } = state;
 
-    if (stateName === 'STATE') return;
+    if (stateName as string === 'STATE') return;
 
     let DAMAGE_PROPERTY_EVENT_SUM = 0;
     let DEATHS_DIRECT_COUNT = 0;
