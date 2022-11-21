@@ -34,7 +34,6 @@ const RadarChart = ({
   dotRadius = 4, //The size of the colored circles of each blog
   opacityCircles = 0.1, //The opacity of the circles of each blob
   strokeWidth = 2, //The width of the stroke around each blob
-  roundStrokes = false, //If true the area and stroke will follow a round path (cardinal-closed)
   color = d3.schemeCategory10, //Color function
   lineType = 'linear',
   areValuesNormalized = true,
@@ -64,7 +63,14 @@ const RadarChart = ({
     // Configure the Chart
     const axisNames = data[0].map((d) => d.axis);
     const axisQty = axisNames.length;
-    const radius = Math.min(innerWidth, innerHeight);
+    console.log({
+      w: svgWidth,
+      h: svgHeight,
+      iw: innerHeight,
+      ih: innerHeight
+    })
+    const radius = Math.min(innerWidth, innerHeight) / (labelFactor * 1.2);
+    console.log(radius)
     const angleSize = (Math.PI * 2) / axisQty;
 
     const getMaxByAxis = (axisName: string, data: RadarData) => {
@@ -273,6 +279,7 @@ const RadarChart = ({
   }, [data]);
 
   function wrap(text, width: number) {
+    console.log("test here")
     text.each(function () {
       const text = d3.select(this);
       const words = text.text().split(/\s+/).reverse();
@@ -310,7 +317,11 @@ const RadarChart = ({
   } //wrap
 
   return (
-    <div ref={wrapperRef} className={`${id}-wrapper event-by-storm-chart position-relative`}>
+    <div
+      ref={wrapperRef}
+      style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}
+      className={`${id}-wrapper event-by-storm-chart position-relative`}
+    >
       <svg ref={svgRef}>
         <defs>
           <clipPath id={`${id}`}>
