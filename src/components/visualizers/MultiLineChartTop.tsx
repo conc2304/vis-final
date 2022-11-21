@@ -151,6 +151,8 @@ const TopStatesOverTimeMultiLineChart = ({
       .call(yAxis)
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+    svg.select('.y-axis text').attr("text-anchor", "end")
+
     // done
   }, [stormData, yearFilter, eventFilter, selectedDimension, regionSelected]);
 

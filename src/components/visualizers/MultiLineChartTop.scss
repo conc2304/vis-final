@@ -26,4 +26,8 @@
       stroke: $color-ui-primary;
     }
   }
+
+  .y-axis text {
+    text-anchor: end;
+  }
 }
