@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createHashRouter } from 'react-router-dom';
 import Home from '../components/pages/Home';
 import Storms from '../components/pages/Storms';
 import Resources from '../components/pages/Resources';
@@ -30,6 +30,6 @@ const routes: Route[] = [
   },
 ];
 
-const router = createBrowserRouter(routes);
+const router = createHashRouter(routes);
 
 export { Routes, router as default };

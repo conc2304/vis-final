@@ -1,6 +1,7 @@
 {
   "name": "vis-final",
   "version": "0.1.0",
+  "homepage": "/vis-final/storms#",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -30,6 +31,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -58,6 +61,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "gh-pages": "^4.0.0",
     "prettier": "^2.7.1",
     "sass": "^1.55.0"
   }
