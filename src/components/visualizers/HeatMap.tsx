@@ -50,6 +50,9 @@ const HeatMap = ({
   type MyGeometry = Array<Feature<Geometry | null>> | Array<FeatureCollection> | [];
   const [geographies, setGeographies] = useState<MyGeometry>([]);
   const [isHexGrid, setIsHexGrid] = useState(false);
+  const [stateIsHovered, setStateIsHovered] = useState(false);
+  const [svgIsHovered, setSvgIsHovered] = useState(false);
+  const [stateIsSelected, setStateIsSelected] = useState(false);
 
   const wrangleData = (): StateDataDimensions[] => {
     // first, filter according to selectedTimeRange, init empty array
@@ -217,7 +220,11 @@ const HeatMap = ({
       .attr('d', pathGenerator);
 
     statePaths.on('click', onStateClick);
+    statePaths.on('mouseenter', onStateHover);
+    statePaths.on('mouseout', onStateExit);
     svg.on('click', onCountryClick);
+    svg.on('mouseenter', onSvgHover);
+    svg.on('mouseout', onSvgExit);
 
     // Internal Functions
     function getFillColor(d: GeoJsonFeatureType, stateData: StateDataDimensions[]) {
@@ -263,6 +270,7 @@ const HeatMap = ({
     const cleanedName = (name as string).replace('(United States)', '').trim();
     const stateName = cleanedName as GeoRegionUSType;
     handleOnStateSelect(stateName);
+    setStateIsSelected(true);
   }
 
   function onCountryClick() {
@@ -271,16 +279,38 @@ const HeatMap = ({
       elem.classList.remove('unselected');
     });
 
+    setStateIsSelected(false);
     handleOnStateSelect('ALL');
+  }
+
+  function onStateHover(e: MouseEvent, d: GeoJsonFeatureType) {
+    e.stopPropagation();
+    setStateIsHovered(true);
+    setSvgIsHovered(true);
+  }
+
+  function onStateExit(e: MouseEvent, d: GeoJsonFeatureType) {
+    e.stopPropagation();
+    setStateIsHovered(false);
+    setSvgIsHovered(true);
+  }
+
+  function onSvgHover(e: MouseEvent, d: GeoJsonFeatureType) {
+    setSvgIsHovered(true);
+  }
+
+  function onSvgExit(e: MouseEvent, d: GeoJsonFeatureType) {
+    e.stopPropagation();
+    setSvgIsHovered(false);
   }
 
   return (
     <div
       ref={wrapperRef}
-      style={{ width: '100%', height: '100%', position: 'relative' }}
+      style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}
       className={`${id}-wrapper`}
     >
-      <svg ref={svgRef} className="heatmap">
+      <svg ref={svgRef} className={`heatmap ${stateIsSelected && svgIsHovered && !stateIsHovered ? 'hover' : ''}`}>
         <g className="content"></g>
       </svg>
       {/* {!hideHex && (

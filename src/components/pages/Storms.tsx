@@ -77,7 +77,7 @@ const StormsPage = () => {
   };
 
   useEffect(() => {
-    const promises = [d3.json('/data/Storm_Data_Sums.json')];
+    const promises = [d3.json('/vis-final/data/Storm_Data_Sums.json')];
 
     Promise.all(promises).then((data) => {
       setStormData(data[0] as StormDataType[]);
@@ -174,47 +174,50 @@ const StormsPage = () => {
               </Row>
             </FormGroup>
             <Row className="flex-grow-1">
-              <Col xs={12} lg={4} xl={3}>
+              <Col xs={12} lg={6} xl={5}>
                 <Row className="justify-content-around d-flex flex-column h-100">
-                  <Col xs={6} lg={12}>
+                  <Col xs={6} lg={12} className="h-50">
                     <RadarChart
                       id="radar-chart-top-states"
                       data={radarDataTopStates}
                       areValuesNormalized={false}
                       lineType="curved"
-                      labelFactor={1.4}
-                      margin={{ top: 70, right: 0, bottom: 30, left: 0 }}
+                      labelFactor={1.25}
+                      margin={{ top: 80, right: 0, bottom: 80, left: 0 }}
                     />
                   </Col>
-                  <Col xs={6} lg={12}>
+                  <Col xs={6} lg={12} className="h-50 mb-10">
                     <RadarChart
                       id="radar-chart-state-storms"
                       data={radarDataStormEvents}
                       areValuesNormalized={true}
                       lineType="curved"
-                      labelFactor={1}
-                      margin={{ top: 40, right: 0, bottom: 60, left: 0 }}
+                      labelFactor={1.25}
+                      wrapWidth={120}
+                      margin={{ top: 80, right: 0, bottom: 100, left: 0 }}
                     />
                   </Col>
                 </Row>
               </Col>
-              <Col xs={12} lg={8} xl={9}>
-                <HeatMap
-                  yearFilter={selectedBrushYears}
-                  stormData={stormData}
-                  regionSelected={selectedGeoRegion}
-                  margin={{
-                    top: 0,
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                  }}
-                  id="storm-data-heatmap"
-                  selectedDimension={selectedDimension}
-                  eventFilter={selectedStormType}
-                  colorsRange={COLOR_RANGE}
-                  handleOnStateSelect={handleOnStateSelect}
-                />
+              <Col xs={12} lg={6} xl={7} className="justify-content-around d-flex flex-column">
+                <div style={{ height: '60%' }}>
+                  <HeatMap
+                    yearFilter={selectedBrushYears}
+                    stormData={stormData}
+                    regionSelected={selectedGeoRegion}
+                    margin={{
+                      top: 10,
+                      bottom: 200,
+                      right: 10,
+                      left: 10,
+                    }}
+                    id="storm-data-heatmap"
+                    selectedDimension={selectedDimension}
+                    eventFilter={selectedStormType}
+                    colorsRange={COLOR_RANGE}
+                    handleOnStateSelect={handleOnStateSelect}
+                  />
+                </div>
               </Col>
             </Row>
           </Col>
@@ -272,7 +275,15 @@ const StormsPage = () => {
           </Col>
         </Row>
       </main>
-      <footer className="d-flex justify-content-center">
+      <footer
+        className="d-flex justify-content-center"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+        }}
+      >
         <Link
           to={Routes.resources}
           className="btn btn-primary btn-lg border-radius-0 d-block p-4 pb-3 custom-footer"
