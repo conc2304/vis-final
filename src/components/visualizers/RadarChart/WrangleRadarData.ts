@@ -116,7 +116,7 @@ export const getTopStatesByDimension = ({
   dataGroupedByState.forEach((state) => {
     const { key: stateName } = state;
 
-    if (stateName as string === 'STATE') return;
+    if ((stateName as string) === 'STATE') return;
 
     let DAMAGE_PROPERTY_EVENT_SUM = 0;
     let DEATHS_DIRECT_COUNT = 0;
@@ -202,6 +202,13 @@ export const getTopStatesByDimension = ({
   return topStates;
 };
 
+export const getFormat = ({ value, isMoney = false, maxLength = 5 }) => {
+  const prefix = isMoney ? '$' : '';
+  return value.toString().length > maxLength
+    ? d3.format(`${prefix},.2s`)
+    : d3.format(`${prefix},.0f`);
+};
+
 export const formatStatesCountDataForRadarDisplay = (data: StateDataDimensions[]): RadarData => {
   const radarData = data.map((stateData) => {
     return [
@@ -209,24 +216,19 @@ export const formatStatesCountDataForRadarDisplay = (data: StateDataDimensions[]
         axis: 'Total Storms',
         value: stateData.TOTAL_EVENTS,
         state: stateData.STATE,
-        formatFn:
-          stateData.TOTAL_EVENTS.toString().length > 5 ? d3.format('.2s') : d3.format('.0f'),
+        formatFn: getFormat({ value: stateData.TOTAL_EVENTS }),
       },
       {
         axis: 'Deaths',
         value: stateData.DEATHS_TOTAL_COUNT,
         state: stateData.STATE,
-        formatFn:
-          stateData.DEATHS_TOTAL_COUNT.toString().length > 5 ? d3.format('.2s') : d3.format('.0f'),
+        formatFn: getFormat({ value: stateData.DEATHS_TOTAL_COUNT }),
       },
       {
         axis: 'Property Damage ',
         value: stateData.DAMAGE_PROPERTY_EVENT_SUM,
         state: stateData.STATE,
-        formatFn:
-          stateData.DAMAGE_PROPERTY_EVENT_SUM.toString().length > 5
-            ? d3.format('.2s')
-            : d3.format('.0f'),
+        formatFn: getFormat({ value: stateData.DAMAGE_PROPERTY_EVENT_SUM, isMoney: true }),
       },
     ];
   });
@@ -247,7 +249,7 @@ export const wrangleDataByStormEvents = ({
   numberOfStates = 3,
 }: RadarWrangleProps) => {
   // get the top states for selected metric
-  console.log("here")
+  console.log('here');
 
   const filteredData = filterData({ stormData: data, yearFilter });
 
@@ -375,7 +377,7 @@ const formatStormEventsForRadar = ({ data, selectedDimension }: FormatFnProps): 
           axis: eventName,
           value: metric as number,
           state: d.STATE,
-          formatFn: metric.toString().length > 5 ? d3.format('.2s') : d3.format('.0f'),
+          formatFn: getFormat({ value: metric }),
         };
       });
   });

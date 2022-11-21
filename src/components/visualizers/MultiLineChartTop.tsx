@@ -151,7 +151,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .call(yAxis)
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    svg.select('.y-axis text').attr("text-anchor", "end")
+    svg.select('.y-axis text').attr('text-anchor', 'end');
 
     // done
   }, [stormData, yearFilter, eventFilter, selectedDimension, regionSelected]);
@@ -356,8 +356,8 @@ const TopStatesOverTimeMultiLineChart = ({
     <>
       <div ref={wrapperRef} className={`${id}-wrapper top-states-chart`}>
         <div className="title" style={{ position: 'absolute', top: 8, left: margin.left + 20 }}>
-          Top {numberOfTopStates} Most Impacted States: 
-          <br /> {eventFilter}s : {title}
+          Top {numberOfTopStates} Most Impacted States:
+          <br /> {eventFilter === 'ALL' ? 'All Storms' :  `${eventFilter}s`} : {title}
         </div>
         <div
           className="state-list-container"
