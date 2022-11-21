@@ -44,8 +44,7 @@ const TopStatesOverTimeMultiLineChart = ({
   const dimensions = useResizeObserver(wrapperRef);
 
   const [topStateAsNameList, setTopStatesAsNameList] = useState<GeoRegionUSType[]>([]);
-  const [innerDimension, setInnerDimensions] = useState({w: 0, h:0})
-
+  const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
 
   let displayData: DisplayData[] = [];
 
@@ -63,7 +62,7 @@ const TopStatesOverTimeMultiLineChart = ({
       dimensions || wrapperRef.current.getBoundingClientRect();
     const innerWidth = svgWidth - margin.left - margin.right;
     const innerHeight = svgHeight - margin.top - margin.bottom;
-    setInnerDimensions({w:innerWidth, h: innerHeight });
+    setInnerDimensions({ w: innerWidth, h: innerHeight });
 
     svg.attr('width', svgWidth).attr('height', svgHeight);
     const svgContent = svg
@@ -137,7 +136,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .tickSize(5)
       .tickFormat((d) => d.toString());
 
-    const formatFn = yScale.domain()[1].toString().length > 5 ?  d3.format('.2s') : d3.format('.0f');
+    const formatFn = yScale.domain()[1].toString().length > 5 ? d3.format('.2s') : d3.format('.0f');
     const yAxis = d3.axisLeft(yScale).tickFormat(formatFn);
 
     svg
@@ -342,7 +341,6 @@ const TopStatesOverTimeMultiLineChart = ({
       topStates.push(selectedStateData);
     }
 
-
     return topStates;
   }
 
@@ -350,14 +348,12 @@ const TopStatesOverTimeMultiLineChart = ({
     regionSelected !== 'ALL' &&
     topStateAsNameList.includes(regionSelected.toUpperCase() as GeoRegionUSType);
   const stateNamesMatch = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
-  
+
   return (
     <>
       <div ref={wrapperRef} className={`${id}-wrapper top-states-chart`}>
         <div className="title" style={{ position: 'absolute', top: 12, left: margin.left + 20 }}>
-          <strong>
-            Top {numberOfTopStates} Most Impacted States: {title}
-          </strong>
+          Top {numberOfTopStates} Most Impacted States: {title}
         </div>
         <div
           className="state-list-container"
@@ -380,11 +376,11 @@ const TopStatesOverTimeMultiLineChart = ({
           </div>
         </div>
         <svg ref={svgRef}>
-        <defs>
-          <clipPath id={`${id}`}>
-            <rect x="0" y="0"  width={innerDimension.w} height="100%" />
-          </clipPath>
-        </defs>
+          <defs>
+            <clipPath id={`${id}`}>
+              <rect x="0" y="0" width={innerDimension.w} height="100%" />
+            </clipPath>
+          </defs>
           <g className="content" clipPath={`url(#${id})`}></g>
           <g className="x-axis axis" />
           <g className="y-axis axis" />

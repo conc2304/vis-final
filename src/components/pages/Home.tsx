@@ -22,25 +22,23 @@ const HomePage = () => {
 
   return (
     <Layout>
-      <header className="p-4">
-        <h1>Is Earth Fighting Back?</h1>
-      </header>
       <main className="p-4 flex-grow-1 d-flex flex-column">
         <Row className="flex-grow-1 p-2">
-          <Col md={8} className="h-100 d-flex flex-column">
+          <Col md={7} className="h-100 d-flex flex-column">
             <Row className="flex-grow-1">
               <CircleBarChart stormData={stormData} id="hurricane-chart" />
             </Row>
           </Col>
-          <Col md={4}>
-            <h2 className="pb-2">Are we running out of time?</h2>
-            <p>
+          <Col md={5}>
+            <h1 className="pb-3">Is Earth Fighting Back?</h1>
+            <h2 className="pb-2 text-white">Are we running out of time?</h2>
+            <p className="text-white">
               As time progresses, Earth is getting warmer and we are seeing more storms every year.
               The graphic on the left shows the change in storm events over the last 71 years (since
               1950) in each US state, and the color of the bars represents the global temperature
               during that time.
             </p>
-            <Link to={Routes.storms} className="btn btn-primary btn-lg">
+            <Link to={Routes.storms} className="btn btn-outline-light btn-lg">
               Explore more &gt;
             </Link>
           </Col>

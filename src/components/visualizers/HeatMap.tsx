@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from 'react';
 import { geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import { Feature, Geometry, FeatureCollection } from 'geojson';
-import { FormControlLabel, Switch } from '@mui/material';
 import {
   GeoJsonFeatureType,
   GeoRegionUSType,
@@ -42,9 +41,7 @@ const HeatMap = ({
   yearFilter = null,
   eventFilter = null,
   regionSelected = 'ALL',
-  // handleOnStateHover,
   handleOnStateSelect,
-  hideHex,
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG

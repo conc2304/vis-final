@@ -15,7 +15,7 @@ const ResourcesPage = () => {
           <Col md={6} className="d-flex align-items-center">
             <div>
               <h2 className="pb-3">More Resources</h2>
-              <p>
+              <p className="text-white">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at imperdiet arcu.
                 Proin ut lacus mauris. Fusce et nisi iaculis, tincidunt mauris non, mollis nunc.
                 Donec euismod nulla id posuere laoreet. Proin dapibus elit mattis, placerat turpis

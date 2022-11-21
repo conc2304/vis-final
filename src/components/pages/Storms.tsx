@@ -63,7 +63,7 @@ const StormsPage = () => {
     setSelectedDimensionTitle(dimensionLabel as any);
   };
 
-  const handleOnStateHover = (regionSeclected: GeoRegionUSType | 'ALL') => {
+  const handleOnStateSelect = (regionSeclected: GeoRegionUSType | 'ALL') => {
     setSelectedGeoRegion(regionSeclected);
   };
 
@@ -106,28 +106,26 @@ const StormsPage = () => {
       numberOfStates: 3,
     });
 
-    console.log(radarChartDataStateByStorms)
-
+    console.log(radarChartDataStateByStorms);
 
     setRadarDataTopStates(radarChartDataTopStates);
     setRadarDataStormEvents(radarChartDataStateByStorms);
-
   }, [stormData, selectedGeoRegion, selectedBrushYears, selectedStormType, selectedDimension]);
 
   return (
     <Layout>
-      <header className="">
+      <header className="w-100 d-flex justify-content-center">
         <Link
           to={Routes.home}
-          className="btn btn-primary btn-lg border-radius-0 d-block p-1 custom-header"
+          className="btn btn-primary btn-lg border-radius-0 d-block px-4 pt-1 pb-2 custom-header"
         >
           Home &#9651;
         </Link>
-        <h1 className="p-2">Severe Weather Events in the USA</h1>
       </header>
-      <main className="p-4 flex-grow-1 d-flex flex-column">
+      <main className="p-3 flex-grow-1 d-flex flex-column">
         <Row className="flex-grow-1">
           <Col xs={12} md={8} className="flex-grow-1 d-flex flex-column">
+            <h1 className="p-2 pb-4 fs-2">Severe Weather Events in the USA</h1>
             <FormGroup className="form-group">
               <Row className="ui-form-container">
                 <Col>
@@ -212,7 +210,7 @@ const StormsPage = () => {
                 selectedDimension={selectedDimension}
                 eventFilter={selectedStormType}
                 colorsRange={COLOR_RANGE}
-                handleOnStateSelect={handleOnStateHover}
+                handleOnStateSelect={handleOnStateSelect}
               />
             </Row>
           </Col>
@@ -270,12 +268,12 @@ const StormsPage = () => {
           </Col>
         </Row>
       </main>
-      <footer>
+      <footer className="d-flex justify-content-center">
         <Link
-          to={Routes.hurricanes}
-          className="btn btn-primary btn-lg border-radius-0 d-block p-4 custom-footer"
+          to={Routes.resources}
+          className="btn btn-primary btn-lg border-radius-0 d-block p-4 pb-3 custom-footer"
         >
-          Explore Hurricanes &#9661;
+          More Resources &#9661;
         </Link>
       </footer>
     </Layout>

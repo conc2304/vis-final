@@ -6,7 +6,6 @@ const Navigation = (): JSX.Element => {
   const links: NavigationLinkProps[] = [
     { linkTo: Routes.home, label: 'Home' },
     { linkTo: Routes.storms, label: 'Severe Weather' },
-    { linkTo: Routes.hurricanes, label: 'Hurricanes' },
     { linkTo: Routes.resources, label: 'Resources', active: true },
   ];
 

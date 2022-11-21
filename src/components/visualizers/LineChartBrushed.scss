@@ -1,16 +1,6 @@
 @import 'src/variables';
 
 .global-temp-chart {
-  .title {
-    font-size: 14px;
-    text-align: left;
-    color: $color-ui-primary;
-
-    .active {
-      color: $color-ui-accent
-    }
-  }
-
   .brush-group {
     .selection {
       fill: $color-ui-primary;

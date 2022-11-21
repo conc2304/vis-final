@@ -1,16 +1,6 @@
 @import 'src/variables';
 
 .event-by-storm-chart {
-  .title {
-    font-size: 14px;
-    text-align: left;
-    color: $color-ui-primary;
-
-    .active {
-      color: $color-ui-accent
-    }
-  }
-
   .axis {
     text {
       fill: $color-ui-primary;

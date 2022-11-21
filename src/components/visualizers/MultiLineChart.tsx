@@ -10,11 +10,7 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import {
-  COLOR_ACCCENT,
-  COLOR_UI_PRIMARY,
-  STORM_EVENT_CATEGORIES,
-} from './data/constants';
+import { COLOR_ACCCENT, COLOR_UI_PRIMARY, STORM_EVENT_CATEGORIES } from './data/constants';
 
 import './MultiLineChart.scss';
 
@@ -43,7 +39,7 @@ const MultiLineChart = ({
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
-  const [innerDimension, setInnerDimensions] = useState({w: 0, h:0})
+  const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
 
   let displayData: DisplayData[] = [];
 
@@ -55,14 +51,13 @@ const MultiLineChart = ({
       return;
     }
 
-
     const svg = d3.select(svgRef.current);
 
     const { width: svgWidth, height: svgHeight } =
       dimensions || wrapperRef.current.getBoundingClientRect();
     const innerWidth = svgWidth - margin.left - margin.right;
     const innerHeight = svgHeight - margin.top - margin.bottom;
-    setInnerDimensions({w:innerWidth, h: innerHeight });
+    setInnerDimensions({ w: innerWidth, h: innerHeight });
 
     svg.attr('width', svgWidth).attr('height', svgHeight);
     const svgContent = svg
@@ -119,9 +114,9 @@ const MultiLineChart = ({
       // @ts-ignore
       .attr('d', generator);
 
-      svgContent.on("mouseenter", function () {
-        console.log(this)
-      })
+    svgContent.on('mouseenter', function () {
+      console.log(this);
+    });
 
     svgContent.exit().remove();
 
@@ -257,7 +252,7 @@ const MultiLineChart = ({
       className={`${id}-wrapper event-by-storm-chart`}
     >
       <p className="title" style={{ position: 'absolute', top: 0, left: margin.left + 20 }}>
-        <strong>{title} by Storm Type </strong>
+        {title} by Storm Type
         <small className="ms-1">
           (
           {regionSelected === 'ALL'
