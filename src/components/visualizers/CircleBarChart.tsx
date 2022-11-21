@@ -5,7 +5,9 @@ import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { COLOR_RANGE, YEAR_RANGE } from './data/constants';
 import GlobalTempData from './data/Global_Temp_Data';
-import { allStates } from './data/states';
+import { allStates, stateNameToAbbreviation } from './data/states';
+
+import './CircleBarChart.scss';
 
 interface DisplayData {
   state: GeoRegionUSType;
@@ -40,7 +42,7 @@ const CircleBarChart = ({
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
-  const innerRadius = 80;
+  const innerRadius = 150;
 
   const [stormDataByStateAndYear, setStormDataByStateAndYear] = useState<StormByStateAndYearMap>(
     new Map()
@@ -61,6 +63,12 @@ const CircleBarChart = ({
     let eventsMax = 0;
     const dataByYear = d3.group(stormData, (d) => d.YEAR);
     const stormDataByState = d3.group(stormData, (d) => d.STATE);
+    stormDataByState.forEach((entry, key) => {
+      // remove any items which are not actual states (+ DC)
+      if (!stateNameToAbbreviation(key)) {
+        stormDataByState.delete(key);
+      }
+    });
     const stormCountByYear: StormByStateAndYearMap = new Map();
 
     dataByYear.forEach((value, year) => {
@@ -83,47 +91,80 @@ const CircleBarChart = ({
       if (maxSum > eventsMax) {
         eventsMax = maxSum;
       }
-
-      const svg = d3.select(svgRef.current);
-
-      const { width: svgWidth, height: svgHeight } =
-        dimensions || wrapperRef.current.getBoundingClientRect();
-      const innerWidth = svgWidth - margin.left - margin.right;
-      const innerHeight = svgHeight - margin.top - margin.bottom;
-
-      const radiusMax = d3.min([innerWidth / 2, innerHeight / 2]);
-
-      svg.attr('width', svgWidth).attr('height', svgHeight);
-      svgContent.current = svg
-        .select('.content')
-        .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
-
-      const eventsScale = d3.scaleRadial().range([innerRadius, radiusMax]).domain([0, eventsMax]);
-      const stateBandScale = d3
-        .scaleBand()
-        .domain(allStates)
-        .range([0, 2 * Math.PI]);
-      const getTemp = (d) => d.smoothed;
-      timeScale.current = d3
-        .scaleBand()
-        // @ts-ignore
-        .domain(d3.range(YEAR_RANGE.min, YEAR_RANGE.max, 1))
-        .range([0, 360]);
-      tempScale.current = d3
-        .scaleLinear()
-        .domain([d3.min(GlobalTempData, getTemp), d3.max(GlobalTempData, getTemp)])
-        // @ts-ignore
-        .range(COLOR_RANGE.slice(1));
-
-      arcGenerator.current = d3
-        .arc<DisplayData>()
-        .innerRadius(innerRadius)
-        .outerRadius((d) => eventsScale(d.numberOfStorms))
-        .startAngle((d) => stateBandScale(d.state))
-        .endAngle((d) => stateBandScale(d.state) + stateBandScale.bandwidth())
-        .padAngle(0.03)
-        .padRadius(80);
     });
+
+    const svg = d3.select(svgRef.current);
+
+    const { width: svgWidth, height: svgHeight } =
+      dimensions || wrapperRef.current.getBoundingClientRect();
+    const innerWidth = svgWidth - margin.left - margin.right;
+    const innerHeight = svgHeight - margin.top - margin.bottom;
+
+    const radiusMax = d3.min([innerWidth / 2, innerHeight / 2]);
+
+    svg.attr('width', svgWidth).attr('height', svgHeight);
+    svgContent.current = svg
+      .select('.content')
+      .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
+
+    const eventsScale = d3.scaleRadial().range([innerRadius, radiusMax]).domain([0, eventsMax]);
+    const stateBandScale = d3
+      .scaleBand()
+      .domain(allStates)
+      .range([0, 2 * Math.PI]);
+    const getTemp = (d) => d.smoothed;
+    timeScale.current = d3
+      .scaleBand()
+      // @ts-ignore
+      .domain(d3.range(YEAR_RANGE.min, YEAR_RANGE.max, 1))
+      .range([0, 360]);
+    tempScale.current = d3
+      .scaleLinear()
+      .domain([d3.min(GlobalTempData, getTemp), d3.max(GlobalTempData, getTemp)])
+      // @ts-ignore
+      .range(COLOR_RANGE.slice(1));
+
+    arcGenerator.current = d3
+      .arc<DisplayData>()
+      .innerRadius(innerRadius)
+      .outerRadius((d) => eventsScale(d.numberOfStorms))
+      .startAngle((d) => stateBandScale(d.state))
+      .endAngle((d) => stateBandScale(d.state) + stateBandScale.bandwidth())
+      .padAngle(0.03)
+      .padRadius(80);
+
+    const stateAxis = (g) =>
+      g.attr('class', 'state-axis').call((g) =>
+        g
+          .selectAll('g')
+          .data(allStates)
+          .join('g')
+          .attr('transform', (d) => {
+            const transform = `rotate(${
+              ((stateBandScale(d) + stateBandScale.bandwidth() / 2) * 180) / Math.PI - 90
+            })
+              translate(${innerRadius},0)
+            `;
+            return transform;
+          })
+          .call((g) => g.append('line').attr('x2', -5).attr('stroke', '#000'))
+          .call((g) =>
+            g
+              .append('text')
+              .attr('transform', (d) => {
+                const transform =
+                  (stateBandScale(d) + stateBandScale.bandwidth() / 2 + Math.PI / 2) %
+                    (2 * Math.PI) <
+                  Math.PI
+                    ? 'rotate(90)translate(0,16)'
+                    : 'rotate(-90)translate(0,-9)';
+                return transform;
+              })
+              .text((d) => stateNameToAbbreviation(d))
+          )
+      );
+
+    svgContent.current.append('g').call(stateAxis);
 
     setStormDataByStateAndYear(stormCountByYear);
   }, [stormData]);
@@ -141,7 +182,7 @@ const CircleBarChart = ({
       .attr('x0', 0)
       .attr('x1', 0)
       .attr('y0', 0)
-      .attr('y1', innerRadius - 10)
+      .attr('y1', innerRadius - 50)
       .transition()
       .attr('transform', (d) => `rotate(${timeScale.current(d)})`);
 
