@@ -1,5 +1,5 @@
 
-@import "../variables";
+@import 'src/variables';
 
 svg.heatmap {
   cursor: pointer;
@@ -22,7 +22,7 @@ path.state {
   }
 
   &.selected {
-    stroke: $color-ui-secondary;
+    stroke: $color-ui-accent;
     stroke-width: 2px;
     stroke-opacity: 1;
     opacity: 1;

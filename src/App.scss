@@ -1,3 +1,5 @@
+@import './variables';
+
 // BOOTSTRAP CONFIGURATION
 $theme-colors: (
   'primary': #002939,
@@ -24,7 +26,61 @@ body {
   background: rgb(36, 36, 36);
   // background: radial-gradient(circle, rgba(0,66,92,1) 0%, rgba(0,38,92,1) 100%);
   background: radial-gradient(circle, rgb(36, 36, 36) 0%, rgb(0 0 0) 100%);
-  color: #f2f8ff;
+  color: $color-ui-primary;
+}
+
+.custom-footer {
+  width: 30%;
+  margin: 0 auto;
+
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border: 1px solid $color-ui-primary;
+  border-bottom: none;
+  background-color: rgba($color: #000000, $alpha: 0.4);
+  opacity: 0.4;
+
+  transition: all 300ms ease-in-out;
+  transition-property: opacity, background-color;
+
+  color: $color-ui-primary;
+
+  &:hover {
+    background-color: rgba($color: #000000, $alpha: 0.6);
+    color: $color-ui-primary;
+    border: 1px solid $color-ui-primary;
+    border-bottom: none;
+    opacity: 0.9;
+  }
+}
+
+.custom-header {
+  width: 10%;
+  margin: 0 auto;
+
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  border: 1px solid $color-ui-primary;
+  border-top: none;
+  background-color: rgba($color: #000000, $alpha: 0.4);
+  opacity: 0.4;
+
+  transition: all 300ms ease-in-out;
+  transition-property: opacity, background-color;
+
+  color: $color-ui-primary;
+
+  &:hover {
+    background-color: rgba($color: #000000, $alpha: 0.6);
+    color: $color-ui-primary;
+    border: 1px solid $color-ui-primary;
+    border-top: none;
+    opacity: 0.9;
+  }
 }
 
 .text-lg {
@@ -47,7 +103,7 @@ body {
 #root {
   // MATERIAL OVERRIDES
   .MuiSelect-select {
-    color: white;
+    color: $color-ui-primary;
 
     .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
       border-color: grey;
@@ -55,23 +111,67 @@ body {
   }
 
   .MuiInputBase-root fieldset {
-    border-color: white;
+    border-color: $color-ui-primary;
   }
   .MuiOutlinedInput-root {
-    border-color: white;
-    color: white;
+    border-color: $color-ui-primary;
+    color: $color-ui-primary;
   }
   .MuiFormLabel-root {
-    color: white;
+    color: $color-ui-primary;
   }
 
   svg.MuiSvgIcon-root path {
-    fill: white;
+    fill: $color-ui-primary;
   }
 
   .ui-select {
     width: 100%;
     padding-bottom: 10px;
-    color: #fff;
+    color: $color-ui-primary;
   }
+
+  .MuiPaper-root {
+    color: $color-ui-primary !important;
+    border: 3px solid red;
+  }
+}
+
+.MuiPaper-root.MuiPaper-root {
+  color: $color-ui-primary;
+  background-color: rgba($color: #000000, $alpha: 0.6);
+
+  .MuiMenuItem-root.MuiMenuItem-root {
+    background-color: rgba($color: #000000, $alpha: 0.6);
+    opacity: 0.8;
+
+    &:hover {
+      opacity: 1;
+      font-weight: bold;
+    }
+  }
+
+  .Mui-selected.Mui-selected {
+    background-color: #000000;
+    border: 0.5px solid $color-ui-primary;
+    border-radius: 20px;
+    opacity: 1;
+  }
+}
+
+.MuiSwitch-switchBase.MuiSwitch-switchBase {
+  background-color: rgba($color: #000000, $alpha: 0.6);
+  .MuiSwitch-thumb {
+    color: black;
+    border: 1px solid $color-ui-primary;
+  }
+
+
+  &.Mui-checked {
+    .MuiSwitch-thumb {
+      color: $color-ui-primary;
+      border: 1px solid $color-ui-primary;
+    }
+  }
+
 }

@@ -142,10 +142,6 @@ const HeatMap = ({
 
     // ONINIT Callback
     d3.json(geoDataURL).then((geoData) => {
-      console.log('geoData');
-      console.log(geoData);
-
-      console.log('features', geoData['features']);
       let usaGeoFeatures;
       if (isHexGrid) {
         usaGeoFeatures = geoData['features'];
@@ -270,12 +266,9 @@ const HeatMap = ({
     const cleanedName = (name as string).replace('(United States)', '').trim();
     const stateName = cleanedName as GeoRegionUSType;
     handleOnStateSelect(stateName);
-    // show tooltip // TODO
   }
 
-  function onCountryClick(e: MouseEvent, d: GeoJsonFeatureType) {
-    console.log('onCountryClick');
-
+  function onCountryClick() {
     document.querySelectorAll('path.state').forEach((elem) => {
       elem.classList.remove('selected');
       elem.classList.remove('unselected');
@@ -293,13 +286,13 @@ const HeatMap = ({
       <svg ref={svgRef} className="heatmap">
         <g className="content"></g>
       </svg>
-      {!hideHex && (
+      {/* {!hideHex && (
         <FormControlLabel
           style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)' }}
           label={`Switch To ${isHexGrid ? 'Map' : 'Hex Grid'} View`}
           control={<Switch checked={isHexGrid} onChange={handleOnMapViewToggle} size="small" />}
         />
-      )}
+      )} */}
     </div>
   );
 };

@@ -31,8 +31,14 @@ import {
 } from '../visualizers/data/constants';
 import StormsTypesOverTimeSeries from '../visualizers/MultiLineChart';
 import TopStatesOverTimeMultiLineChart from '../visualizers/MultiLineChartTop';
+import RadarChart from '../visualizers/RadarChart/RadarChart';
+import {
+  RadarData,
+  wrangleDataByStormEvents,
+  wrangleDataByTopXStates,
+} from '../visualizers/RadarChart/WrangleRadarData';
 
-import "./Storms.scss";
+import './Storms.scss';
 
 const StormsPage = () => {
   // State Handlers
@@ -46,6 +52,8 @@ const StormsPage = () => {
     STORM_UI_SELECT_VALUES[0].value
   );
   const [stormData, setStormData] = useState<StormDataType[]>(null);
+  const [radarDataTopStates, setRadarDataTopStates] = useState<RadarData>(null);
+  const [radarDataStormEvents, setRadarDataStormEvents] = useState<RadarData>(null);
 
   // Event Handlers
   const onDataDimensionChange = (event: SelectChangeEvent) => {
@@ -76,10 +84,43 @@ const StormsPage = () => {
     });
   }, []);
 
+  useEffect(() => {
+    // update radar chart data
+    if (!stormData) return;
+
+    const radarChartDataTopStates = wrangleDataByTopXStates({
+      data: stormData,
+      numberOfStates: 3,
+      stateSelected: selectedGeoRegion,
+      selectedDimension: selectedDimension,
+      yearFilter: selectedBrushYears,
+      eventFilter: selectedStormType,
+    });
+
+    const radarChartDataStateByStorms = wrangleDataByStormEvents({
+      data: stormData,
+      stateSelected: selectedGeoRegion,
+      selectedDimension: selectedDimension,
+      yearFilter: selectedBrushYears,
+      eventFilter: selectedStormType,
+      numberOfStates: 3,
+    });
+
+    console.log(radarChartDataStateByStorms)
+
+
+    setRadarDataTopStates(radarChartDataTopStates);
+    setRadarDataStormEvents(radarChartDataStateByStorms);
+
+  }, [stormData, selectedGeoRegion, selectedBrushYears, selectedStormType, selectedDimension]);
+
   return (
     <Layout>
-      <header>
-        <Link to={Routes.home} className="btn btn-primary btn-lg border-radius-0 d-block p-1">
+      <header className="">
+        <Link
+          to={Routes.home}
+          className="btn btn-primary btn-lg border-radius-0 d-block p-1 custom-header"
+        >
           Home &#9651;
         </Link>
         <h1 className="p-2">Severe Weather Events in the USA</h1>
@@ -134,15 +175,37 @@ const StormsPage = () => {
                 </Col>
               </Row>
             </FormGroup>
+            <Row className="flex-grow-1" style={{ flexBasis: '25%', border: '2xp solid blue' }}>
+              <Col xs={12} md={6}>
+                <RadarChart
+                  id="radar-chart-top-states"
+                  data={radarDataTopStates}
+                  areValuesNormalized={false}
+                  lineType="curved"
+                  labelFactor={1.4}
+                  margin={{ top: 60, right: 0, bottom: 80, left: 0 }}
+                />
+              </Col>
+              <Col xs={12} md={6}>
+                <RadarChart
+                  id="radar-chart-state-storms"
+                  data={radarDataStormEvents}
+                  areValuesNormalized={true}
+                  lineType="curved"
+                  labelFactor={1.2}
+                  margin={{ top: 60, right: 0, bottom: 80, left: 0 }}
+                />
+              </Col>
+            </Row>
             <Row className="flex-grow-1">
               <HeatMap
                 yearFilter={selectedBrushYears}
                 stormData={stormData}
                 regionSelected={selectedGeoRegion}
                 margin={{
-                  top: 10,
-                  bottom: 30,
-                  right: 30,
+                  top: 0,
+                  bottom: 0,
+                  right: 0,
                   left: 0,
                 }}
                 id="storm-data-heatmap"
@@ -208,7 +271,10 @@ const StormsPage = () => {
         </Row>
       </main>
       <footer>
-        <Link to={Routes.hurricanes} className="btn btn-primary btn-lg border-radius-0 d-block p-4">
+        <Link
+          to={Routes.hurricanes}
+          className="btn btn-primary btn-lg border-radius-0 d-block p-4 custom-footer"
+        >
           Explore Hurricanes &#9661;
         </Link>
       </footer>

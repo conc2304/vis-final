@@ -1,4 +1,4 @@
-@import '../variables';
+@import 'src/variables';
 
 .event-by-storm-chart {
   .title {
@@ -11,13 +11,6 @@
     }
   }
 
-  .area-path {
-    // stroke: $color-ui-primary;
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-opacity: 1;
-    
-  }
   .axis {
     text {
       fill: $color-ui-primary;
@@ -28,6 +21,5 @@
       stroke: $color-ui-primary;
       
     }
-
   }
 }

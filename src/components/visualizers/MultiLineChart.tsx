@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import {
   GeoRegionUSType,
   SelectedDimensionsType,
@@ -10,7 +10,11 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import { COLOR_ACCCENT, COLOR_UI_PRIMARY, STORM_EVENT_CATEGORIES } from './data/constants';
+import {
+  COLOR_ACCCENT,
+  COLOR_UI_PRIMARY,
+  STORM_EVENT_CATEGORIES,
+} from './data/constants';
 
 import './MultiLineChart.scss';
 
@@ -39,6 +43,8 @@ const MultiLineChart = ({
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
+  const [innerDimension, setInnerDimensions] = useState({w: 0, h:0})
+
   let displayData: DisplayData[] = [];
 
   useEffect(() => {
@@ -49,7 +55,6 @@ const MultiLineChart = ({
       return;
     }
 
-    // console.log(stormData);
 
     const svg = d3.select(svgRef.current);
 
@@ -57,6 +62,7 @@ const MultiLineChart = ({
       dimensions || wrapperRef.current.getBoundingClientRect();
     const innerWidth = svgWidth - margin.left - margin.right;
     const innerHeight = svgHeight - margin.top - margin.bottom;
+    setInnerDimensions({w:innerWidth, h: innerHeight });
 
     svg.attr('width', svgWidth).attr('height', svgHeight);
     const svgContent = svg
@@ -109,9 +115,13 @@ const MultiLineChart = ({
       .duration(500)
       .attr('stroke', (d, i) => (isSelectedRegion(i) ? COLOR_ACCCENT : COLOR_UI_PRIMARY))
       .attr('stroke-width', (d, i) => (isSelectedRegion(i) ? 2 : 1))
-      .attr('opacity', (d, i) => (isSelectedRegion(i) ? 1 : 0.6))
+      .attr('stroke-opacity', (d, i) => (isSelectedRegion(i) ? 1 : 0.5))
       // @ts-ignore
       .attr('d', generator);
+
+      svgContent.on("mouseenter", function () {
+        console.log(this)
+      })
 
     svgContent.exit().remove();
 
@@ -121,7 +131,7 @@ const MultiLineChart = ({
       .tickSize(5)
       .tickFormat((d) => d.toString());
 
-    const formatFn = yScale.domain()[1].toString().length ? d3.format('.2s') : d3.format('.0f');
+    const formatFn = yScale.domain()[1].toString().length > 5 ? d3.format('.2s') : d3.format('.0f');
     const yAxis = d3.axisLeft(yScale).tickFormat(formatFn);
 
     svg
@@ -247,22 +257,23 @@ const MultiLineChart = ({
       className={`${id}-wrapper event-by-storm-chart`}
     >
       <p className="title" style={{ position: 'absolute', top: 0, left: margin.left + 20 }}>
-        {title}
-        <br /> by type of Storm
-        <br />
-        <small>
+        <strong>{title} by Storm Type </strong>
+        <small className="ms-1">
+          (
           {regionSelected === 'ALL'
             ? 'USA'
             : (regionSelected as string).replace('(United States)', '').trim()}
         </small>
+        )
       </p>
+
       <svg ref={svgRef}>
         <defs>
-          <clipPath id={id}>
-            <rect x="0" y="0" width="100%" height="100%" />
+          <clipPath id={`${id}`}>
+            <rect x="0" y="0" width={innerDimension.w} height="100%" />
           </clipPath>
         </defs>
-        <g className="content"></g>
+        <g className="content" clipPath={`url(#${id})`}></g>
         <g className="x-axis axis" />
         <g className="y-axis axis" />
       </svg>
