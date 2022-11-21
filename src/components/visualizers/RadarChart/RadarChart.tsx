@@ -63,14 +63,7 @@ const RadarChart = ({
     // Configure the Chart
     const axisNames = data[0].map((d) => d.axis);
     const axisQty = axisNames.length;
-    console.log({
-      w: svgWidth,
-      h: svgHeight,
-      iw: innerHeight,
-      ih: innerHeight
-    })
     const radius = Math.min(innerWidth, innerHeight) / (labelFactor * 1.2);
-    console.log(radius)
     const angleSize = (Math.PI * 2) / axisQty;
 
     const getMaxByAxis = (axisName: string, data: RadarData) => {
@@ -279,7 +272,6 @@ const RadarChart = ({
   }, [data]);
 
   function wrap(text, width: number) {
-    console.log("test here")
     text.each(function () {
       const text = d3.select(this);
       const words = text.text().split(/\s+/).reverse();

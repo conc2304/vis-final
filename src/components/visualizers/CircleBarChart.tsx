@@ -97,6 +97,7 @@ const CircleBarChart = ({
 
     const { width: svgWidth, height: svgHeight } =
       dimensions || wrapperRef.current.getBoundingClientRect();
+
     const innerWidth = svgWidth - margin.left - margin.right;
     const innerHeight = svgHeight - margin.top - margin.bottom;
 
@@ -107,6 +108,7 @@ const CircleBarChart = ({
       .select('.content')
       .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
 
+    d3.select('.clock-hand-group').attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
     const eventsScale = d3.scaleRadial().range([innerRadius, radiusMax]).domain([0, eventsMax]);
     const stateBandScale = d3
       .scaleBand()
@@ -204,6 +206,7 @@ const CircleBarChart = ({
     }
     const displayData = stormDataByStateAndYear.get(yearFilter);
 
+    
     d3.select('.clock-hand')
       .datum(yearFilter)
       .style('stroke', 'white')
@@ -264,7 +267,7 @@ const CircleBarChart = ({
           </clipPath>
         </defs>
         <g className="content"></g>
-        <g className="clock-hand-group" style={{ transform: 'translate(50%, 50%)' }}>
+        <g className="clock-hand-group">
           <line className="clock-hand"></line>
           <circle
             cx="24"

@@ -355,8 +355,9 @@ const TopStatesOverTimeMultiLineChart = ({
   return (
     <>
       <div ref={wrapperRef} className={`${id}-wrapper top-states-chart`}>
-        <div className="title" style={{ position: 'absolute', top: 12, left: margin.left + 20 }}>
-          Top {numberOfTopStates} Most Impacted States: {title}
+        <div className="title" style={{ position: 'absolute', top: 8, left: margin.left + 20 }}>
+          Top {numberOfTopStates} Most Impacted States: 
+          <br /> {eventFilter}s : {title}
         </div>
         <div
           className="state-list-container"
