@@ -1,12 +1,10 @@
 import * as d3 from 'd3';
 import { useEffect, useState, useRef } from 'react';
 import set from 'lodash.set';
-import { Tooltip } from 'react-bootstrap';
-import { Margin } from './types';
-import useResizeObserver from './useResizeObserver';
-import { COLOR_ACCCENT, COLOR_UI_PRIMARY } from './data/constants';
-
-type RadarData = Array<{ axis: string; value: number }[]>;
+import { Margin } from '../types';
+import useResizeObserver from '../useResizeObserver';
+import { COLOR_ACCCENT, COLOR_UI_PRIMARY } from '../data/constants';
+import { RadarData } from './WrangleRadarData';
 
 type Props = {
   data?: RadarData;
@@ -22,12 +20,13 @@ type Props = {
   roundStrokes?: boolean; //If true the area and stroke will follow a round path (cardinal-closed)
   color?: readonly string[]; //Color array
   lineType?: 'curved' | 'linear';
+  areValuesNormalized?: boolean;
 };
 
 const RadarChart = ({
   data,
   id,
-  margin = { top: 20, right: 20, bottom: 20, left: 20 }, //The margins of the SVG
+  margin = { top: 50, right: 20, bottom: 50, left: 20 }, //The margins of the SVG
   levels = 3, //How many levels or inner circles should there be drawn
   labelFactor = 1.25, //How much farther than the radius of the outer circle should the labels be placed
   wrapWidth = 60, //The number of pixels after which a label needs to be given a new line
@@ -38,6 +37,7 @@ const RadarChart = ({
   roundStrokes = false, //If true the area and stroke will follow a round path (cardinal-closed)
   color = d3.schemeCategory10, //Color function
   lineType = 'linear',
+  areValuesNormalized = true,
 }: Props) => {
   const svgRef = useRef(null);
   const tooltipRef = useRef(null);
@@ -45,59 +45,10 @@ const RadarChart = ({
   const dimensions = useResizeObserver(wrapperRef);
   const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
 
-  let displayData = [];
-
-  const wrangleData = () => {
-    return [
-      [
-        //iPhone
-        { axis: 'Battery', value: 0.22 },
-        { axis: 'Brand', value: 0.28 },
-        { axis: 'Contract', value: 0.29 },
-        { axis: 'Design', value: 0.17 },
-        { axis: 'Internet', value: 0.22 },
-        { axis: 'Screen', value: 0.02 },
-        { axis: 'Price', value: 0.21 },
-        { axis: 'Smartphone', value: 0.5 },
-      ],
-      [
-        //Samsung
-        { axis: 'Battery', value: 0.27 },
-        { axis: 'Brand', value: 0.16 },
-        { axis: 'Contract', value: 0.35 },
-        { axis: 'Design', value: 0.13 },
-        { axis: 'Internet', value: 0.2 },
-        { axis: 'Screen', value: 0.13 },
-        { axis: 'Price', value: 0.35 },
-        { axis: 'Smartphone', value: 0.38 },
-      ],
-      [
-        //Nokia Smartphone
-        { axis: 'Battery', value: 0.26 },
-        { axis: 'Brand', value: 0.1 },
-        { axis: 'Contract', value: 0.3 },
-        { axis: 'Design', value: 0.14 },
-        { axis: 'Internet', value: 0.22 },
-        { axis: 'Screen', value: 0.04 },
-        { axis: 'Price', value: 0.41 },
-        { axis: 'Smartphone', value: 0.3 },
-      ],
-    ];
-  };
-
-  displayData = data = wrangleData();
-
   useEffect(() => {
-    // if we dont have data yet dont renter
-
-    if (!!data) {
-      displayData = wrangleData();
-    } else {
-      return;
-    }
-
-    console.log('displayData');
-    console.log(displayData);
+    // if we dont have data yet dont render
+    // console.log(data);
+    if (!data || !data.length || !data[0].length) return;
 
     const svg = d3.select(svgRef.current);
 
@@ -113,7 +64,7 @@ const RadarChart = ({
     // Configure the Chart
     const axisNames = data[0].map((d) => d.axis);
     const axisQty = axisNames.length;
-    const radius = Math.min(innerWidth / 2, innerHeight / 2);
+    const radius = Math.min(innerWidth, innerHeight);
     const angleSize = (Math.PI * 2) / axisQty;
 
     const getMaxByAxis = (axisName: string, data: RadarData) => {
@@ -134,6 +85,9 @@ const RadarChart = ({
       set(axisScaleMap, axisName, axisScale);
     });
 
+    const domainMax = d3.max(data, (i) => d3.max(i.map((j) => j.value)));
+    const rScale = d3.scaleLinear().range([0, radius]).domain([0, domainMax]);
+
     //Draw the background circles
     const axisGrid = svg.select('.axis-grid');
 
@@ -152,28 +106,29 @@ const RadarChart = ({
       .style('stroke-opacity', 0.2)
       .style('filter', 'url(#glow)');
 
-    // TODO TEXT out at the angle for each of the axis
-    //Text indicating at what % each level is
+    // Label the Axis Markers
     axisGrid
-      .selectAll('.axisLabel')
-      .data(d3.range(1, levels + 1).reverse())
+      .selectAll('.axis-label')
+      .data(axisNames)
       .join('text')
-      .attr('class', 'axisLabel')
-      .attr('x', svgWidth / 2)
-      .attr('y', function (d) {
-        return (-d * radius) / levels + svgHeight / 2;
+      .attr('class', 'axis-label')
+      .attr('text-anchor', 'middle')
+      .attr('dy', '0.35em')
+      .attr(
+        'x',
+        (d, i) => svgWidth / 2 + radius * labelFactor * Math.cos(angleSize * i - Math.PI / 2)
+      )
+      .attr(
+        'y',
+        (d, i) => svgHeight / 2 + radius * labelFactor * Math.sin(angleSize * i - Math.PI / 2)
+      )
+      .style('font-size', '12px')
+      .style('fill', COLOR_UI_PRIMARY)
+      .style('fill-opacity', 0.6)
+      .text(function (d) {
+        return d;
       })
-      .attr('dy', '2em')
-      .style('font-size', '10px')
-      .attr('fill', '#737373')
-      .text(function (d, i) {
-        // console.log('text');
-        // console.log(d); // d is levels... 3,2,1
-        // should be the value of that axis line
-        return 'test';
-        // return Format(maxValue * d/cfg.levels);
-      })
-      .style('text-anchor', 'middle');
+      .call(wrap, wrapWidth);
 
     //Create the straight lines radiating outward from the center
     axisGrid
@@ -195,13 +150,12 @@ const RadarChart = ({
       .style('stroke-width', '0.5px');
 
     // Draw the Radar Points and Lines
-
     const radarLineGenerator = d3
       .lineRadial()
       .curve(lineType === 'linear' ? d3.curveLinearClosed : d3.curveCardinalClosed)
       //@ts-ignore
       .radius((d: { axis: string; value: number }) => {
-        const thisScale = axisScaleMap[d.axis];
+        const thisScale = areValuesNormalized ? rScale : axisScaleMap[d.axis];
         return thisScale(d.value);
       })
       .angle((d, i) => i * angleSize);
@@ -214,8 +168,9 @@ const RadarChart = ({
       .attr('class', 'radar-wrapper')
       .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
 
-    console.log(radarWrapper);
     radarWrapper.selectAll('.radar-area').remove();
+    radarWrapper.selectAll('.radar-circle').remove();
+    radarWrapper.selectAll('.radar-stroke').remove();
 
     // background of area
     radarWrapper
@@ -263,12 +218,12 @@ const RadarChart = ({
       .attr('r', dotRadius)
       .attr('cx', (d: { axis: string; value: number }, i: number) => {
         const axisName = d.axis;
-        const scale = axisScaleMap[axisName];
+        const scale = areValuesNormalized ? rScale : axisScaleMap[axisName];
         return scale(d.value) * Math.cos(angleSize * i - Math.PI / 2);
       })
       .attr('cy', function (d, i) {
         const axisName = d.axis;
-        const scale = axisScaleMap[axisName];
+        const scale = areValuesNormalized ? rScale : axisScaleMap[axisName];
         return scale(d.value) * Math.sin(angleSize * i - Math.PI / 2);
       })
       .style('fill', COLOR_UI_PRIMARY)
@@ -293,13 +248,12 @@ const RadarChart = ({
       .attr('r', dotRadius * 1.5)
       .attr('cx', (d: { axis: string; value: number }, i: number) => {
         const axisName = d.axis;
-        const scale = axisScaleMap[axisName];
+        const scale = areValuesNormalized ? rScale : axisScaleMap[axisName];
         return scale(d.value) * Math.cos(angleSize * i - Math.PI / 2);
       })
       .attr('cy', function (d, i) {
-  
         const axisName = d.axis;
-        const scale = axisScaleMap[axisName];
+        const scale = areValuesNormalized ? rScale : axisScaleMap[axisName];
         return scale(d.value) * Math.sin(angleSize * i - Math.PI / 2);
       })
       .attr('fill', 'none')
@@ -308,15 +262,52 @@ const RadarChart = ({
         const newX = parseFloat(d3.select(this).attr('cx')) + 20;
         const newY = parseFloat(d3.select(this).attr('cy')) - 16;
 
-        tooltip.innerHTML = d.value;
-        tooltip.style.left = `${newX + svgWidth/2}px`;
-        tooltip.style.top = `${newY + svgHeight/2}px`;
+        tooltip.innerHTML = `<div><span>${d.state}</span>: ${d.formatFn(d.value)}</div>`;
+        tooltip.style.left = `${newX + svgWidth / 2}px`;
+        tooltip.style.top = `${newY + svgHeight / 2}px`;
         tooltip.style.opacity = 1;
       })
       .on('mouseout', function () {
         tooltip.style.opacity = 0;
       });
-  }, []);
+  }, [data]);
+
+  function wrap(text, width: number) {
+    text.each(function () {
+      const text = d3.select(this);
+      const words = text.text().split(/\s+/).reverse();
+      const lineHeight = 1.4; // ems
+      const y = text.attr('y');
+      const x = text.attr('x');
+      const dy = parseFloat(text.attr('dy'));
+      let tspan = text
+        .text(null)
+        .append('tspan')
+        .attr('x', x)
+        .attr('y', y)
+        .attr('dy', dy + 'em');
+
+      let word;
+      let line = [];
+      let lineNumber = 0;
+
+      while ((word = words.pop())) {
+        line.push(word);
+        tspan.text(line.join(' '));
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop();
+          tspan.text(line.join(' '));
+          line = [word];
+          tspan = text
+            .append('tspan')
+            .attr('x', x)
+            .attr('y', y)
+            .attr('dy', ++lineNumber * lineHeight + dy + 'em')
+            .text(word);
+        }
+      }
+    });
+  } //wrap
 
   return (
     <div
@@ -342,9 +333,16 @@ const RadarChart = ({
           <g className="axis-grid" />
         </g>
       </svg>
-      <div ref={tooltipRef} className="tooltip" style={{ position: 'absolute', backgroundColor: "black", borderRadius: "8px", border : `0.5px solid ${COLOR_UI_PRIMARY}`  }}>
-        
-      </div>
+      <div
+        ref={tooltipRef}
+        className="tooltip"
+        style={{
+          position: 'absolute',
+          backgroundColor: 'black',
+          borderRadius: '8px',
+          border: `0.5px solid ${COLOR_UI_PRIMARY}`,
+        }}
+      ></div>
     </div>
   );
 };

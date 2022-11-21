@@ -137,7 +137,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .tickSize(5)
       .tickFormat((d) => d.toString());
 
-    const formatFn = yScale.domain()[1].toString().length ? d3.format('.2s') : d3.format('.0f');
+    const formatFn = yScale.domain()[1].toString().length > 5 ?  d3.format('.2s') : d3.format('.0f');
     const yAxis = d3.axisLeft(yScale).tickFormat(formatFn);
 
     svg
@@ -342,8 +342,6 @@ const TopStatesOverTimeMultiLineChart = ({
       topStates.push(selectedStateData);
     }
 
-    console.log('topStates');
-    console.log(topStates);
 
     return topStates;
   }

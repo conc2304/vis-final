@@ -46,6 +46,8 @@ export type GeoJsonFeatureType = Feature<
 
 export type StateDataDimensions = {
   COUNTS_BY_EVENT?: Record<StormEventCategoryType, number>;
+  DEATHS_BY_EVENT?: Record<StormEventCategoryType, number>;
+  DAMAGES_BY_EVENT?: Record<StormEventCategoryType, number>;
   DAMAGE_PROPERTY_EVENT_SUM: number;
   DEATHS_DIRECT_COUNT: number;
   DEATHS_INDIRECT_COUNT: number;
