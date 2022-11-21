@@ -235,4 +235,7 @@ export const COLOR_RANGE = [
   '#02C4DA',
 ];
 
-export const COLOR_GREY = '#495153';
+export const YEAR_RANGE = {
+  min: 1950,
+  max: 2021,
+};

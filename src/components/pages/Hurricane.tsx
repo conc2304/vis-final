@@ -1,11 +1,25 @@
+import * as d3 from 'd3';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Layout from '../ui/Layout';
 import { Routes } from '../../router/router';
+import CircleBarChart from '../visualizers/CircleBarChart';
+import { StormDataType } from '../visualizers/data/types';
 
 const HurricanePage = () => {
+  const [stormData, setStormData] = useState<StormDataType[]>(null);
+
+  useEffect(() => {
+    const promises = [d3.json('/data/Storm_Data_Sums.json')];
+
+    Promise.all(promises).then((data) => {
+      setStormData(data[0] as StormDataType[]);
+    });
+  }, []);
+
   return (
     <Layout>
       <header>
@@ -30,7 +44,7 @@ const HurricanePage = () => {
             </p>
           </Col>
           <Col md={8}>
-            <div className="chart-placeholder">{/* @TODO - hurricane chart */}</div>
+            <CircleBarChart stormData={stormData} id="hurricane-chart" />
           </Col>
         </Row>
       </main>
