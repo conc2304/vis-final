@@ -310,11 +310,7 @@ const RadarChart = ({
   } //wrap
 
   return (
-    <div
-      ref={wrapperRef}
-      style={{ width: '100%', height: '100%', position: 'relative' }}
-      className={`${id}-wrapper event-by-storm-chart`}
-    >
+    <div ref={wrapperRef} className={`${id}-wrapper event-by-storm-chart position-relative`}>
       <svg ref={svgRef}>
         <defs>
           <clipPath id={`${id}`}>

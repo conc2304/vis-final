@@ -122,7 +122,7 @@ const StormsPage = () => {
           Home &#9651;
         </Link>
       </header>
-      <main className="p-3 flex-grow-1 d-flex flex-column">
+      <main className="p-2 flex-grow-1 d-flex flex-column">
         <Row className="flex-grow-1">
           <Col xs={12} md={8} className="flex-grow-1 d-flex flex-column">
             <h1 className="p-2 pb-4 fs-2">Severe Weather Events in the USA</h1>
@@ -173,45 +173,49 @@ const StormsPage = () => {
                 </Col>
               </Row>
             </FormGroup>
-            <Row className="flex-grow-1" style={{ flexBasis: '25%', border: '2xp solid blue' }}>
-              <Col xs={12} md={6}>
-                <RadarChart
-                  id="radar-chart-top-states"
-                  data={radarDataTopStates}
-                  areValuesNormalized={false}
-                  lineType="curved"
-                  labelFactor={1.4}
-                  margin={{ top: 60, right: 0, bottom: 80, left: 0 }}
-                />
-              </Col>
-              <Col xs={12} md={6}>
-                <RadarChart
-                  id="radar-chart-state-storms"
-                  data={radarDataStormEvents}
-                  areValuesNormalized={true}
-                  lineType="curved"
-                  labelFactor={1.2}
-                  margin={{ top: 60, right: 0, bottom: 80, left: 0 }}
-                />
-              </Col>
-            </Row>
             <Row className="flex-grow-1">
-              <HeatMap
-                yearFilter={selectedBrushYears}
-                stormData={stormData}
-                regionSelected={selectedGeoRegion}
-                margin={{
-                  top: 0,
-                  bottom: 0,
-                  right: 0,
-                  left: 0,
-                }}
-                id="storm-data-heatmap"
-                selectedDimension={selectedDimension}
-                eventFilter={selectedStormType}
-                colorsRange={COLOR_RANGE}
-                handleOnStateSelect={handleOnStateSelect}
-              />
+              <Col xs={12} lg={4} xl={3}>
+                <Row className="justify-content-around d-flex flex-column h-100">
+                  <Col xs={6} lg={12}>
+                    <RadarChart
+                      id="radar-chart-top-states"
+                      data={radarDataTopStates}
+                      areValuesNormalized={false}
+                      lineType="curved"
+                      labelFactor={1.4}
+                      margin={{ top: 70, right: 0, bottom: 30, left: 0 }}
+                    />
+                  </Col>
+                  <Col xs={6} lg={12}>
+                    <RadarChart
+                      id="radar-chart-state-storms"
+                      data={radarDataStormEvents}
+                      areValuesNormalized={true}
+                      lineType="curved"
+                      labelFactor={1}
+                      margin={{ top: 40, right: 0, bottom: 60, left: 0 }}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+              <Col xs={12} lg={8} xl={9}>
+                <HeatMap
+                  yearFilter={selectedBrushYears}
+                  stormData={stormData}
+                  regionSelected={selectedGeoRegion}
+                  margin={{
+                    top: 0,
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                  }}
+                  id="storm-data-heatmap"
+                  selectedDimension={selectedDimension}
+                  eventFilter={selectedStormType}
+                  colorsRange={COLOR_RANGE}
+                  handleOnStateSelect={handleOnStateSelect}
+                />
+              </Col>
             </Row>
           </Col>
           <Col xs={12} md={4} className="d-flex flex-column justify-content-between">
