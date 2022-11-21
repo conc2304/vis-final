@@ -2,6 +2,8 @@ import { Routes } from '../../../router/router';
 
 import NavigationLink, { NavigationLinkProps } from './NavigationLink';
 
+import './Navigation.scss';
+
 const Navigation = (): JSX.Element => {
   const links: NavigationLinkProps[] = [
     { linkTo: Routes.home, label: 'Home' },

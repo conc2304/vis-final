@@ -39,7 +39,7 @@ const HomePage = () => {
               during that time.
             </p>
             <Link to={Routes.storms} className="btn btn-outline-light btn-lg">
-              Explore more &gt;
+              Explore &#9655;
             </Link>
           </Col>
         </Row>
