@@ -195,20 +195,20 @@ export const STORM_EVENT_REGIONS = [
   'WYOMING',
   'STATE',
   'NEVADA',
-  // 'ATLANTIC NORTH',  // Don't need?
-  // 'ATLANTIC SOUTH',
-  // 'E PACIFIC',
-  // 'GULF OF ALASKA',
-  // 'GULF OF MEXICO',
-  // 'HAWAII WATERS',
-  // 'LAKE ERIE',
-  // 'LAKE HURON',
-  // 'LAKE MICHIGAN',
-  // 'LAKE ONTARIO',
-  // 'LAKE ST CLAIR',
-  // 'LAKE SUPERIOR',
-  // 'ST LAWRENCE R',
-  // 'Kentucky',
+  'ATLANTIC NORTH',
+  'ATLANTIC SOUTH',
+  'E PACIFIC',
+  'GULF OF ALASKA',
+  'GULF OF MEXICO',
+  'HAWAII WATERS',
+  'LAKE ERIE',
+  'LAKE HURON',
+  'LAKE MICHIGAN',
+  'LAKE ONTARIO',
+  'LAKE ST CLAIR',
+  'LAKE SUPERIOR',
+  'ST LAWRENCE R',
+  'Kentucky',
 ] as const;
 
 // HEAT MAP
@@ -223,10 +223,8 @@ export const STORM_EVENT_REGIONS = [
 //   '#FE2222', // red
 // ];
 
-export const COLOR_ACCCENT = '#ffb703'; // yellow
-export const COLOR_UI_PRIMARY = '#61efff'; // cyan
-export const COLOR_UI_HIGHLIGHT = '#1cfc3a'; // green
-
+export const COLOR_ACCCENT = '#ffb703'; // yello
+export const COLOR_UI_PRIMARY = '#61efff';
 export const COLOR_UI_ERROR ="#E34D94"; // magenta 
 export const COLOR_RANGE = [
   // "#0E1625",
@@ -237,6 +235,7 @@ export const COLOR_RANGE = [
   '#02C4DA',
 ];
 
+export const COLOR_GREY = '#495153';
 export const YEAR_RANGE = {
   min: 1950,
   max: 2021,
