@@ -13,7 +13,7 @@ const HomePage = () => {
   const [stormData, setStormData] = useState<StormDataType[]>(null);
 
   useEffect(() => {
-    const promises = [d3.json('/data/Storm_Data_Sums.json')];
+    const promises = [d3.json('/vis-final/data/Storm_Data_Sums.json')];
 
     Promise.all(promises).then((data) => {
       setStormData(data[0] as StormDataType[]);

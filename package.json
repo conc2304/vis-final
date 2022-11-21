@@ -1,7 +1,7 @@
 {
   "name": "vis-final",
   "version": "0.1.0",
-  "homepage": "/vis-final/storms#",
+  "homepage": "https://conc2304.github.io/vis-final",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
