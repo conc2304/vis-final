@@ -186,7 +186,7 @@ const StormsPage = () => {
                       margin={{ top: 80, right: 0, bottom: 80, left: 0 }}
                     />
                   </Col>
-                  <Col xs={6} lg={12} className="h-50">
+                  <Col xs={6} lg={12} className="h-50 mb-10">
                     <RadarChart
                       id="radar-chart-state-storms"
                       data={radarDataStormEvents}
@@ -194,7 +194,7 @@ const StormsPage = () => {
                       lineType="curved"
                       labelFactor={1.25}
                       wrapWidth={120}
-                      margin={{ top: 80, right: 0, bottom: 80, left: 0 }}
+                      margin={{ top: 80, right: 0, bottom: 100, left: 0 }}
                     />
                   </Col>
                 </Row>
