@@ -1,10 +1,15 @@
-.state-axis {
+.axis {
+  text-anchor: middle;
+  font-size: 8px;
+
   text {
     fill: #ddd;
-    font-size: 8px;
-    text-anchor: middle;
   }
-  line {
+  line,
+  circle {
     stroke: #ddd;
+  }
+  circle {
+    stroke-opacity: 0.3;
   }
 }

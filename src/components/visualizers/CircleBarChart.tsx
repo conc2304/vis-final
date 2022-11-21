@@ -134,7 +134,7 @@ const CircleBarChart = ({
       .padRadius(80);
 
     const stateAxis = (g) =>
-      g.attr('class', 'state-axis').call((g) =>
+      g.attr('class', 'axis state-axis').call((g) =>
         g
           .selectAll('g')
           .data(allStates)
@@ -164,7 +164,36 @@ const CircleBarChart = ({
           )
       );
 
+    const eventsAxis = (g) =>
+      g
+        .attr('class', 'axis event-axis')
+        .call((g) =>
+          g
+            .append('text')
+            .attr('class', 'title')
+            .attr('y', () => -eventsScale(eventsScale.ticks(5).pop()))
+            .attr('dy', '-1em')
+            .text('Total Storm Events')
+        )
+        .call((g) =>
+          g
+            .selectAll('g')
+            .data(eventsScale.ticks(5).slice(1))
+            .join('g')
+            .attr('fill', 'none')
+            .call((g) => g.append('circle').attr('r', eventsScale))
+            .call((g) =>
+              g
+                .append('text')
+                .attr('y', (d) => -eventsScale(d))
+                .attr('dy', '0.35em')
+                .attr('stroke', '#fff')
+                .text(eventsScale.tickFormat(5, 's'))
+            )
+        );
+
     svgContent.current.append('g').call(stateAxis);
+    svgContent.current.append('g').call(eventsAxis);
 
     setStormDataByStateAndYear(stormCountByYear);
   }, [stormData]);
@@ -218,7 +247,7 @@ const CircleBarChart = ({
         }
         return prevState + 1;
       });
-    }, 500);
+    }, 400);
     return () => window.clearInterval(interval);
   }, [stormData, margin, id]);
 
