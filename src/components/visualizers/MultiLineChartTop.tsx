@@ -25,7 +25,7 @@ type Props = {
   numberOfTopStates?: number;
   colorsRange?: string[];
   eventFilter?: StormEventCategoryType | 'ALL';
-  regionSelected?: GeoRegionUSType | 'ALL';
+  stateSelected?: GeoRegionUSType | 'ALL';
 };
 
 const TopStatesOverTimeMultiLineChart = ({
@@ -34,7 +34,7 @@ const TopStatesOverTimeMultiLineChart = ({
   yearFilter = null,
   numberOfTopStates = 3,
   selectedDimension = null,
-  regionSelected = 'ALL',
+  stateSelected = 'ALL',
   id,
   title,
   eventFilter = 'ALL',
@@ -85,6 +85,8 @@ const TopStatesOverTimeMultiLineChart = ({
     // yscale for density of metric
     let dimensionMax = 0;
     let dimensionMin = Infinity;
+    console.log('TOP displayData')
+    console.log(displayData)
     displayData.forEach((eventData) => {
       const eventMax = d3.max(eventData.values, (d) => {
         return d[selectedDimension];
@@ -108,7 +110,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .y((d: StateDataDimensions) => yScale(d[selectedDimension]))
       .curve(d3.curveBasis);
 
-    const isSelectedRegion = (d) => regionSelected.toLowerCase() === d[0].STATE.toLowerCase();
+    const isSelectedRegion = (d) => stateSelected.toLowerCase() === d[0].STATE.toLowerCase();
 
     // Render the Area Paths for each of the storm events
     svgContent
@@ -154,7 +156,7 @@ const TopStatesOverTimeMultiLineChart = ({
     svg.select('.y-axis text').attr('text-anchor', 'end');
 
     // done
-  }, [stormData, yearFilter, eventFilter, selectedDimension, regionSelected]);
+  }, [stormData, yearFilter, eventFilter, selectedDimension, stateSelected]);
 
   /**
    * Get the sum of the counts for each event and aggregate them per year
@@ -328,18 +330,18 @@ const TopStatesOverTimeMultiLineChart = ({
 
     stateData.sort((a, b) => b[selectedDimension] - a[selectedDimension]);
 
+    const topStates = stateData.slice(0, numberOfTopStates); // top states cumulative values
     // add in the selected state for comparision
-    // regionSelected
-    const isRegionSelectedAccounted = stateData.some(
-      (entry) => entry.STATE.toLowerCase() === regionSelected.toLowerCase()
+    // stateSelected
+    const isStateSelectedAccounted = topStates.some(
+      (entry) => entry.STATE.toLowerCase() === stateSelected.toLowerCase()
     );
 
-    const topStates = stateData.slice(0, numberOfTopStates); // top states cumulative values
 
-    if (isRegionSelectedAccounted && regionSelected !== 'ALL') {
+    if (!isStateSelectedAccounted && stateSelected !== 'ALL') {
       // if we dont have them accounted for find them and add them;
       const selectedStateData = stateData.find(
-        (entry) => entry.STATE.toLowerCase() === regionSelected.toLowerCase()
+        (entry) => entry.STATE.toLowerCase() === stateSelected.toLowerCase()
       );
       topStates.push(selectedStateData);
     }
@@ -348,8 +350,8 @@ const TopStatesOverTimeMultiLineChart = ({
   }
 
   const isSelectedStateIncluded =
-    regionSelected !== 'ALL' &&
-    topStateAsNameList.includes(regionSelected.toUpperCase() as GeoRegionUSType);
+    stateSelected !== 'ALL' &&
+    topStateAsNameList.includes(stateSelected.toUpperCase() as GeoRegionUSType);
   const stateNamesMatch = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
 
   return (
@@ -366,14 +368,14 @@ const TopStatesOverTimeMultiLineChart = ({
           <div>
             {topStateAsNameList.map((stateName, i) => (
               <small
-                className={`d-block ${stateNamesMatch(stateName, regionSelected) ? 'active' : ''}`}
+                className={`d-block ${stateNamesMatch(stateName, stateSelected) ? 'active' : ''}`}
                 key={stateName}
               >
                 {i + 1}. {stateName}
               </small>
             ))}
-            {regionSelected !== 'ALL' && !isSelectedStateIncluded ? (
-              <small className="d-block active">{regionSelected.toUpperCase()}</small>
+            {stateSelected !== 'ALL' && !isSelectedStateIncluded ? (
+              <small className="d-block active">{stateSelected.toUpperCase()}</small>
             ) : (
               ''
             )}

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { STORM_EVENT_CATEGORIES } from '../data/constants';
+import { STORM_EVENT_CATEGORIES, STORM_EVENT_REGIONS } from '../data/constants';
 import {
   GeoRegionUSType,
   SelectedDimensionsType,
@@ -44,6 +44,7 @@ export const wrangleDataByTopXStates = ({
   // get the top states by selected metric
 
   const filteredData = filterData({ stormData: data, yearFilter });
+
   const dataGroupedByState = Array.from(
     d3.group(filteredData, (d) => d.STATE),
     ([key, value]) => ({ key, value })
@@ -76,7 +77,11 @@ export const filterData = ({
 
   // if there is a region selected
   if (yearFilter || eventFilter || stateSelected) {
+
     stormData.forEach((row) => {
+      
+      if (!STORM_EVENT_REGIONS.includes(row.STATE)) return;
+
       const [yearMin, yearMax] = !!yearFilter ? yearFilter : [1950, 2022];
 
       // if 'ALL' then the condition is true ef not then check to see if we match
@@ -182,16 +187,16 @@ export const getTopStatesByDimension = ({
   }); // end foreach
 
   stateData.sort((a, b) => b[selectedDimension] - a[selectedDimension]);
+  
+  const topStates = stateData.slice(0, numberOfStates); // top states cumulative values
 
   // add in the selected state for comparision
   // regionSelected
-  const isStateSelectedAccounted = stateData.some(
+  const isStateSelectedAccounted = topStates.some(
     (entry) => entry.STATE.toLowerCase() === stateSelected.toLowerCase()
   );
 
-  const topStates = stateData.slice(0, numberOfStates); // top states cumulative values
-
-  if (isStateSelectedAccounted && stateSelected !== 'ALL') {
+  if (!isStateSelectedAccounted && stateSelected !== 'ALL') {
     // if we dont have them accounted for find them and add them;
     const stateSelectedData = stateData.find(
       (entry) => entry.STATE.toLowerCase() === stateSelected.toLowerCase()

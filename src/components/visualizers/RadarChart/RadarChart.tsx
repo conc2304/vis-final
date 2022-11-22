@@ -4,6 +4,7 @@ import set from 'lodash.set';
 import { Margin } from '../types';
 import useResizeObserver from '../useResizeObserver';
 import { COLOR_ACCCENT, COLOR_UI_PRIMARY } from '../data/constants';
+import { GeoRegionUSType } from '../data/types';
 import { RadarData } from './WrangleRadarData';
 
 type Props = {
@@ -21,6 +22,7 @@ type Props = {
   color?: readonly string[]; //Color array
   lineType?: 'curved' | 'linear';
   areValuesNormalized?: boolean;
+  selectedState?: GeoRegionUSType | 'ALL';
 };
 
 const RadarChart = ({
@@ -37,6 +39,7 @@ const RadarChart = ({
   color = d3.schemeCategory10, //Color function
   lineType = 'linear',
   areValuesNormalized = true,
+  selectedState = null,
 }: Props) => {
   const svgRef = useRef(null);
   const tooltipRef = useRef(null);
@@ -44,6 +47,7 @@ const RadarChart = ({
   const dimensions = useResizeObserver(wrapperRef);
   const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
 
+  console.log(selectedState);
   useEffect(() => {
     // if we dont have data yet dont render
     // console.log(data);
@@ -179,7 +183,9 @@ const RadarChart = ({
       .merge(radarWrapper)
       // @ts-ignore
       .attr('d', radarLineGenerator)
-      .style('fill', COLOR_UI_PRIMARY)
+      .style('fill', (d) =>
+        d[0].state.toLowerCase() === selectedState.toLowerCase() ? COLOR_ACCCENT : COLOR_UI_PRIMARY
+      )
       .style('fill-opacity', opacityArea)
       .on('mouseover', function (d, i) {
         //Dim all blobs
@@ -201,7 +207,11 @@ const RadarChart = ({
       // @ts-ignore
       .attr('d', radarLineGenerator)
       .style('stroke-width', strokeWidth + 'px')
-      .style('stroke', COLOR_UI_PRIMARY)
+      .style('stroke', (d) =>
+        d[0].state.toLocaleLowerCase() === selectedState.toLocaleLowerCase()
+          ? COLOR_ACCCENT
+          : COLOR_UI_PRIMARY
+      )
       .style('fill', 'none')
       .style('filter', 'url(#glow)');
 
@@ -225,7 +235,9 @@ const RadarChart = ({
         const scale = areValuesNormalized ? rScale : axisScaleMap[axisName];
         return scale(d.value) * Math.sin(angleSize * i - Math.PI / 2);
       })
-      .style('fill', COLOR_UI_PRIMARY)
+      .style('fill', (d) =>
+        d.state.toLowerCase() === selectedState.toLowerCase() ? COLOR_ACCCENT : COLOR_UI_PRIMARY
+      )
       .style('fill-opacity', 0.8);
 
     // Radar tooltip
@@ -269,7 +281,7 @@ const RadarChart = ({
       .on('mouseout', function () {
         tooltip.style.opacity = 0;
       });
-  }, [data]);
+  }, [data, selectedState]);
 
   function wrap(text, width: number) {
     text.each(function () {

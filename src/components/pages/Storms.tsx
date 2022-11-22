@@ -184,6 +184,7 @@ const StormsPage = () => {
                       lineType="curved"
                       labelFactor={1.25}
                       margin={{ top: 80, right: 0, bottom: 80, left: 0 }}
+                      selectedState={selectedGeoRegion}
                     />
                   </Col>
                   <Col xs={6} lg={12} className="h-50 mb-10">
@@ -195,6 +196,7 @@ const StormsPage = () => {
                       labelFactor={1.25}
                       wrapWidth={120}
                       margin={{ top: 80, right: 0, bottom: 100, left: 0 }}
+                      selectedState={selectedGeoRegion}
                     />
                   </Col>
                 </Row>
@@ -252,7 +254,7 @@ const StormsPage = () => {
                 title={selectedDimensionTitle}
                 eventFilter={selectedStormType}
                 colorsRange={COLOR_RANGE}
-                regionSelected={selectedGeoRegion}
+                stateSelected={selectedGeoRegion}
               />
             </Row>
             <Row className="data-display-wrapper">
