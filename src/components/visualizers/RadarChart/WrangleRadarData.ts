@@ -263,8 +263,6 @@ export const wrangleDataByStormEvents = ({
     ([key, value]) => ({ key, value })
   );
 
-  console.log(dataGroupedByState);
-
   const topStatesAggregateValues = getTopStatesByDimension({
     dataGroupedByState,
     selectedDimension,
@@ -274,7 +272,6 @@ export const wrangleDataByStormEvents = ({
 
   // now get the same info again but without the event filters
   const displayDataStatesNameArr = topStatesAggregateValues.map((stateData) => stateData.STATE);
-  console.log(displayDataStatesNameArr);
 
   const displayDataStatesFiltered = filterData({ stormData: data, yearFilter });
   const displayDataStatesGrouped = Array.from(
@@ -298,6 +295,9 @@ export const wrangleDataByStormEvents = ({
     data: displayDataAggregateValues,
     selectedDimension,
   });
+
+  // sort each of the state's storms to have consistency in the order of storms everytime
+
 
   console.log('radarData');
   console.log(radarData);
@@ -411,8 +411,16 @@ const formatStormEventsForRadar = ({ data, selectedDimension }: FormatFnProps): 
           state: d.STATE,
           formatFn: getFormat({ value: metric }),
         };
-      });
+      })
+      .sort((a,b) => {
+        if (a.axis < b.axis) return -1;
+        if (a.axis > b.axis) return 1;
+        return 0
+      })
   });
+
+
+
   return radarData;
 };
 
