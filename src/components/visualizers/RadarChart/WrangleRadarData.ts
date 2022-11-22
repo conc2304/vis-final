@@ -43,7 +43,7 @@ export const wrangleDataByTopXStates = ({
 }: RadarWrangleProps) => {
   // get the top states by selected metric
 
-  const filteredData = filterData({ stormData: data, yearFilter });
+  const filteredData = filterData({ stormData: data, yearFilter, eventFilter });
 
   const dataGroupedByState = Array.from(
     d3.group(filteredData, (d) => d.STATE),
