@@ -77,9 +77,7 @@ export const filterData = ({
 
   // if there is a region selected
   if (yearFilter || eventFilter || stateSelected) {
-
     stormData.forEach((row) => {
-      
       if (!STORM_EVENT_REGIONS.includes(row.STATE)) return;
 
       const [yearMin, yearMax] = !!yearFilter ? yearFilter : [1950, 2022];
@@ -110,6 +108,7 @@ type GetTopStatesFnProps = {
   numberOfStates: number;
   stateSelected?: GeoRegionUSType | 'ALL';
 };
+
 export const getTopStatesByDimension = ({
   dataGroupedByState,
   selectedDimension,
@@ -187,7 +186,7 @@ export const getTopStatesByDimension = ({
   }); // end foreach
 
   stateData.sort((a, b) => b[selectedDimension] - a[selectedDimension]);
-  
+
   const topStates = stateData.slice(0, numberOfStates); // top states cumulative values
 
   // add in the selected state for comparision
@@ -256,12 +255,15 @@ export const wrangleDataByStormEvents = ({
   // get the top states for selected metric
   console.log('here');
 
-  const filteredData = filterData({ stormData: data, yearFilter });
+  // Find out who has the highest ranking
+  const filteredDataByStormAndYear = filterData({ stormData: data, yearFilter, eventFilter });
 
   const dataGroupedByState = Array.from(
-    d3.group(filteredData, (d) => d.STATE),
+    d3.group(filteredDataByStormAndYear, (d) => d.STATE),
     ([key, value]) => ({ key, value })
   );
+
+  console.log(dataGroupedByState);
 
   const topStatesAggregateValues = getTopStatesByDimension({
     dataGroupedByState,
@@ -270,10 +272,35 @@ export const wrangleDataByStormEvents = ({
     numberOfStates,
   });
 
+  // now get the same info again but without the event filters
+  const displayDataStatesNameArr = topStatesAggregateValues.map((stateData) => stateData.STATE);
+  console.log(displayDataStatesNameArr);
+
+  const displayDataStatesFiltered = filterData({ stormData: data, yearFilter });
+  const displayDataStatesGrouped = Array.from(
+    d3.group(displayDataStatesFiltered, (d) => d.STATE),
+    ([key, value]) => ({ key, value })
+  );
+
+  const displayDataFilteredByTopStates = displayDataStatesGrouped.filter((entry) =>
+    [...displayDataStatesNameArr, stateSelected.toUpperCase()].includes(entry.key.toUpperCase())
+  );
+
+
+  const displayDataAggregateValues = getTopStatesByDimension({
+    dataGroupedByState: displayDataFilteredByTopStates,
+    selectedDimension,
+    stateSelected,
+    numberOfStates,
+  });
+
   const radarData = formatStormEventsForRadar({
-    data: topStatesAggregateValues,
+    data: displayDataAggregateValues,
     selectedDimension,
   });
+
+  console.log('radarData');
+  console.log(radarData);
 
   return radarData;
 };

@@ -47,7 +47,6 @@ const RadarChart = ({
   const dimensions = useResizeObserver(wrapperRef);
   const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
 
-  console.log(selectedState);
   useEffect(() => {
     // if we dont have data yet dont render
     // console.log(data);

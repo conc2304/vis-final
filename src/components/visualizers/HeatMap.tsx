@@ -211,7 +211,9 @@ const HeatMap = ({
       .classed('state', true)
       .attr('stroke-width', '0.5px')
       .attr('stroke', 'white')
+      .classed("invalid-state", (feature) => getFillColor(feature, stateDataDisplay) === COLOR_GREY  )
       .attr('data', (feature) => getFillColor(feature, stateDataDisplay));
+
 
     statePaths
       .transition()
