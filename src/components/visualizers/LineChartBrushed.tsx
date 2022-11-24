@@ -4,7 +4,7 @@ import { GlobalTempDataType } from './data/types';
 import { Margin } from './types';
 import useResizeObserver from './useResizeObserver';
 
-import "./LineChartBrushed.scss"
+import './LineChartBrushed.scss';
 import { COLOR_UI_ERROR } from './data/constants';
 
 type Props = {
@@ -93,9 +93,9 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         [innerWidth, innerHeight],
       ])
       .on('brush end', (event) => {
-        const {
-          selection: [left, right],
-        } = event;
+        const { selection } = event;
+        const [left, right] = selection || [0, innerWidth ];
+
         onBrush([xScale.invert(left), xScale.invert(right)]);
       });
 
@@ -103,8 +103,12 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
   }, [data, margin]);
 
   return (
-    <div ref={wrapperRef} style={{ width: '100%', height: '100%', position: 'relative' }} className={`${id}-wrapper global-temp-chart`}>
-      <div className='title' style={{ position: 'absolute', top: -10, left: margin.left + 20}}>
+    <div
+      ref={wrapperRef}
+      style={{ width: '100%', height: '100%', position: 'relative' }}
+      className={`${id}-wrapper global-temp-chart`}
+    >
+      <div className="title" style={{ position: 'absolute', top: -10, left: margin.left + 20 }}>
         <p className="m-0">{title}</p>
       </div>
 

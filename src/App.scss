@@ -8,6 +8,21 @@ $theme-colors: (
 
 @import '~bootstrap/scss/bootstrap.scss';
 
+@font-face {
+  font-family: 'Mechanization';
+  src: url('./fonts/Mechanization.ttf');
+}
+
+@font-face {
+  font-family: 'Oxanium';
+  src: url('./fonts/Oxanium-ExtraLight.ttf');
+}
+
+@font-face {
+  font-family: 'Oxanium Semi Bold';
+  src: url('./fonts//Oxanium-SemiBold.ttf');
+}
+
 h1,
 h2,
 h3,
@@ -15,7 +30,21 @@ h4,
 h5,
 h6 {
   margin: 0;
+  font-family: 'Mechanization';
 }
+
+p,
+span,
+text,
+tspan,
+div {
+  font-family: 'Oxanium';
+}
+
+strong {
+  font-family: 'Oxanium Semi Bold';
+}
+
 body,
 html,
 #root {
@@ -99,6 +128,7 @@ body {
 #root {
   // MATERIAL OVERRIDES
   .MuiSelect-select {
+    font-family: 'Oxanium';
     color: $color-ui-primary;
 
     .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
@@ -114,6 +144,7 @@ body {
     color: $color-ui-primary;
   }
   .MuiFormLabel-root {
+    font-family: 'Oxanium Semi Bold';
     color: $color-ui-primary;
   }
 

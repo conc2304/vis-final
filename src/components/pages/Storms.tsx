@@ -37,13 +37,17 @@ import {
   wrangleDataByStormEvents,
   wrangleDataByTopXStates,
 } from '../visualizers/RadarChart/WrangleRadarData';
+import UiDataDisplay from '../visualizers/UiDataDisplay';
 
 import './Storms.scss';
+import getUSAggregateData from '../visualizers/data/USAggregateData';
 
 const StormsPage = () => {
   // State Handlers
   const [selectedGeoRegion, setSelectedGeoRegion] = useState<GeoRegionUSType | 'ALL'>('ALL');
-  const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>(null);
+  const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>([
+    1950, 2022,
+  ]);
   const [selectedStormType, setSelectedStormType] = useState<StormEventCategoryType | 'ALL'>('ALL');
   const [selectedDimensionTitle, setSelectedDimensionTitle] = useState(
     STORM_UI_SELECT_VALUES[0].label
@@ -54,6 +58,11 @@ const StormsPage = () => {
   const [stormData, setStormData] = useState<StormDataType[]>(null);
   const [radarDataTopStates, setRadarDataTopStates] = useState<RadarData>(null);
   const [radarDataStormEvents, setRadarDataStormEvents] = useState<RadarData>(null);
+  const [uiMetrics, setUiMetrics] = useState<{
+    deaths: number;
+    eventCount: number;
+    propertyDamage: number;
+  }>(null);
 
   // Event Handlers
   const onDataDimensionChange = (event: SelectChangeEvent) => {
@@ -97,6 +106,22 @@ const StormsPage = () => {
       eventFilter: selectedStormType,
     });
 
+    if (selectedGeoRegion !== 'ALL') {
+      console.log('HERE');
+      const selectedStateMetrics = radarChartDataTopStates.find((entry) => {
+        return entry[0].state.toUpperCase() === selectedGeoRegion.toUpperCase();
+      });
+
+      const uiMetrics = {
+        deaths: selectedStateMetrics.find((entry) => entry.axis === 'Deaths').value,
+        eventCount: selectedStateMetrics.find((entry) => entry.axis === 'Total Storms').value,
+        propertyDamage: selectedStateMetrics.find((entry) => entry.axis === 'Property Damage')
+          .value,
+      };
+
+      setUiMetrics(uiMetrics);
+    }
+
     const radarChartDataStateByStorms = wrangleDataByStormEvents({
       data: stormData,
       stateSelected: selectedGeoRegion,
@@ -106,11 +131,18 @@ const StormsPage = () => {
       numberOfStates: 3,
     });
 
-    console.log(radarChartDataStateByStorms);
 
     setRadarDataTopStates(radarChartDataTopStates);
     setRadarDataStormEvents(radarChartDataStateByStorms);
   }, [stormData, selectedGeoRegion, selectedBrushYears, selectedStormType, selectedDimension]);
+
+  useEffect(() => {
+
+    if (!!stormData && selectedGeoRegion === 'ALL') {
+      const UsAggregateData = getUSAggregateData(stormData)
+      setUiMetrics(UsAggregateData)
+    }
+  }, [selectedGeoRegion, stormData])
 
   return (
     <Layout>
@@ -201,7 +233,14 @@ const StormsPage = () => {
                   </Col>
                 </Row>
               </Col>
-              <Col xs={12} lg={6} xl={7} className="justify-content-around d-flex flex-column">
+              <Col xs={12} lg={6} xl={7} className="justify-content-start d-flex flex-column">
+                <div style={{ height: '20%' }}>
+                  <UiDataDisplay
+                    timeRangeSelected={selectedBrushYears}
+                    locationSelected={selectedGeoRegion}
+                    metrics={uiMetrics}
+                  />
+                </div>
                 <div style={{ height: '60%' }}>
                   <HeatMap
                     yearFilter={selectedBrushYears}

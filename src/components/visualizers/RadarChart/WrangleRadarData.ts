@@ -229,7 +229,7 @@ export const formatStatesCountDataForRadarDisplay = (data: StateDataDimensions[]
         formatFn: getFormat({ value: stateData.DEATHS_TOTAL_COUNT }),
       },
       {
-        axis: 'Property Damage ',
+        axis: 'Property Damage',
         value: stateData.DAMAGE_PROPERTY_EVENT_SUM,
         state: stateData.STATE,
         formatFn: getFormat({ value: stateData.DAMAGE_PROPERTY_EVENT_SUM, isMoney: true }),
@@ -253,7 +253,7 @@ export const wrangleDataByStormEvents = ({
   numberOfStates = 3,
 }: RadarWrangleProps) => {
   // get the top states for selected metric
-  console.log('here');
+
 
   // Find out who has the highest ranking
   const filteredDataByStormAndYear = filterData({ stormData: data, yearFilter, eventFilter });
@@ -295,12 +295,6 @@ export const wrangleDataByStormEvents = ({
     data: displayDataAggregateValues,
     selectedDimension,
   });
-
-  // sort each of the state's storms to have consistency in the order of storms everytime
-
-
-  console.log('radarData');
-  console.log(radarData);
 
   return radarData;
 };

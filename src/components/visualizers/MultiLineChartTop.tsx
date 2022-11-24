@@ -85,8 +85,7 @@ const TopStatesOverTimeMultiLineChart = ({
     // yscale for density of metric
     let dimensionMax = 0;
     let dimensionMin = Infinity;
-    console.log('TOP displayData')
-    console.log(displayData)
+    
     displayData.forEach((eventData) => {
       const eventMax = d3.max(eventData.values, (d) => {
         return d[selectedDimension];
