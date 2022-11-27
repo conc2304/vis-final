@@ -38,9 +38,9 @@ import {
   wrangleDataByTopXStates,
 } from '../visualizers/RadarChart/WrangleRadarData';
 import UiDataDisplay from '../visualizers/UiDataDisplay';
+import getUSAggregateData from '../visualizers/data/USAggregateData';
 
 import './Storms.scss';
-import getUSAggregateData from '../visualizers/data/USAggregateData';
 
 const StormsPage = () => {
   // State Handlers
@@ -82,6 +82,10 @@ const StormsPage = () => {
   };
 
   const handleOnBrush = ([start, end]) => {
+    console.log(start, end)
+    if (Math.abs(start - end) < 1) {
+      
+    }
     setSeletedBrushYears(end > start ? [start, end] : [end, start]);
   };
 

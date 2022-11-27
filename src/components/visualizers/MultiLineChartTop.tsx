@@ -85,7 +85,7 @@ const TopStatesOverTimeMultiLineChart = ({
     // yscale for density of metric
     let dimensionMax = 0;
     let dimensionMin = Infinity;
-    
+
     displayData.forEach((eventData) => {
       const eventMax = d3.max(eventData.values, (d) => {
         return d[selectedDimension];
@@ -191,6 +191,8 @@ const TopStatesOverTimeMultiLineChart = ({
 
     // filtered for time and for top X States by cumulative storm dimension (event count, property damage ...)
     const topStatesTotalValues = getTopNthStatesByDimension(stormDataByState);
+
+    // BUG 
     const topStatesNameArr = topStatesTotalValues.map((stateData) => stateData.STATE);
     setTopStatesAsNameList(topStatesNameArr.slice(0, numberOfTopStates));
     // get the yearly values for each state in our time period

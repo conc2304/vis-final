@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { GlobalTempDataType } from './data/types';
 import { Margin } from './types';
 import useResizeObserver from './useResizeObserver';
@@ -22,6 +22,8 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
+  const [innerDimensions, setInnerDimensions] = useState({width: 0, height: 0});
+  const [coverIsActive, setCoverIsActive] = useState(true);
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
@@ -30,6 +32,10 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       dimensions || wrapperRef.current.getBoundingClientRect();
     const innerWidth = svgWidth - margin.left - margin.right;
     const innerHeight = svgHeight - margin.top - margin.bottom;
+    setInnerDimensions({
+      width: innerWidth,
+      height: innerHeight
+    })
 
     svg.attr('width', svgWidth).attr('height', svgHeight);
     const svgContent = svg
@@ -94,7 +100,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       ])
       .on('brush end', (event) => {
         const { selection } = event;
-        const [left, right] = selection || [0, innerWidth ];
+        const [left, right] = selection || [0, innerWidth];
 
         onBrush([xScale.invert(left), xScale.invert(right)]);
       });
@@ -102,12 +108,27 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
     brushElem.call(brush);
   }, [data, margin]);
 
+  const handleCoverEnter = () => {
+    setCoverIsActive(false)
+  }
+
   return (
     <div
       ref={wrapperRef}
       style={{ width: '100%', height: '100%', position: 'relative' }}
       className={`${id}-wrapper global-temp-chart`}
     >
+      <div className={`cover ${coverIsActive ? 'active' : 'inactive'}`} style={{
+        width: innerDimensions.width + 5,
+        height: innerDimensions.height + 2,
+        left: margin.right,
+        top: margin.top - 2,
+      }}>
+        <div className="cover-text" onMouseEnter={handleCoverEnter}>
+          <strong>Click and Drag
+          <br /> to zoom in on a time range</strong>
+        </div>
+      </div>
       <div className="title" style={{ position: 'absolute', top: -10, left: margin.left + 20 }}>
         <p className="m-0">{title}</p>
       </div>
