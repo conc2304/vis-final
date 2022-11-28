@@ -20,7 +20,12 @@ $theme-colors: (
 
 @font-face {
   font-family: 'Oxanium Semi Bold';
-  src: url('./fonts//Oxanium-SemiBold.ttf');
+  src: url('./fonts/Oxanium-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'Glitch';
+  src: url('./fonts/Glitch inside.otf');
 }
 
 h1,
@@ -30,7 +35,8 @@ h4,
 h5,
 h6 {
   margin: 0;
-  font-family: 'Mechanization';
+  font-family: 'Glitch';
+  // font-family: 'Mechanization';
 }
 
 p,

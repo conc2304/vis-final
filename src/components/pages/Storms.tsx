@@ -33,6 +33,7 @@ import StormsTypesOverTimeSeries from '../visualizers/MultiLineChart';
 import TopStatesOverTimeMultiLineChart from '../visualizers/MultiLineChartTop';
 import RadarChart from '../visualizers/RadarChart/RadarChart';
 import {
+  fillGlobalData,
   RadarData,
   wrangleDataByStormEvents,
   wrangleDataByTopXStates,
@@ -82,10 +83,6 @@ const StormsPage = () => {
   };
 
   const handleOnBrush = ([start, end]) => {
-    console.log(start, end)
-    if (Math.abs(start - end) < 1) {
-      
-    }
     setSeletedBrushYears(end > start ? [start, end] : [end, start]);
   };
 
@@ -93,7 +90,12 @@ const StormsPage = () => {
     const promises = [d3.json('/vis-final/data/Storm_Data_Sums.json')];
 
     Promise.all(promises).then((data) => {
-      setStormData(data[0] as StormDataType[]);
+      const filledData = fillGlobalData(data[0] as StormDataType[]);
+    
+      console.log(filledData)
+      console.log(data[0])
+      // console.log(filledData.length, data[0].length)
+      setStormData(filledData);
     });
   }, []);
 
@@ -111,7 +113,6 @@ const StormsPage = () => {
     });
 
     if (selectedGeoRegion !== 'ALL') {
-      console.log('HERE');
       const selectedStateMetrics = radarChartDataTopStates.find((entry) => {
         return entry[0].state.toUpperCase() === selectedGeoRegion.toUpperCase();
       });

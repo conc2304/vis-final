@@ -126,7 +126,7 @@ const RadarChart = ({
       )
       .style('font-size', '12px')
       .style('fill', COLOR_UI_PRIMARY)
-      .style('fill-opacity', 0.6)
+      .style('fill-opacity', 0.8)
       .text(function (d) {
         return d;
       })

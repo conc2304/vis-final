@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { STORM_EVENT_CATEGORIES, STORM_EVENT_REGIONS } from '../data/constants';
+import { STORM_EVENT_CATEGORIES, STORM_EVENT_REGIONS, YEAR_RANGE } from '../data/constants';
 import {
   GeoRegionUSType,
   SelectedDimensionsType,
@@ -215,6 +215,7 @@ export const getFormat = ({ value, isMoney = false, maxLength = 5 }) => {
 
 export const formatStatesCountDataForRadarDisplay = (data: StateDataDimensions[]): RadarData => {
   const radarData = data.map((stateData) => {
+    if (!stateData) return;
     return [
       {
         axis: 'Total Storms',
@@ -254,7 +255,6 @@ export const wrangleDataByStormEvents = ({
 }: RadarWrangleProps) => {
   // get the top states for selected metric
 
-
   // Find out who has the highest ranking
   const filteredDataByStormAndYear = filterData({ stormData: data, yearFilter, eventFilter });
 
@@ -282,7 +282,6 @@ export const wrangleDataByStormEvents = ({
   const displayDataFilteredByTopStates = displayDataStatesGrouped.filter((entry) =>
     [...displayDataStatesNameArr, stateSelected.toUpperCase()].includes(entry.key.toUpperCase())
   );
-
 
   const displayDataAggregateValues = getTopStatesByDimension({
     dataGroupedByState: displayDataFilteredByTopStates,
@@ -406,16 +405,38 @@ const formatStormEventsForRadar = ({ data, selectedDimension }: FormatFnProps): 
           formatFn: getFormat({ value: metric }),
         };
       })
-      .sort((a,b) => {
+      .sort((a, b) => {
         if (a.axis < b.axis) return -1;
         if (a.axis > b.axis) return 1;
-        return 0
-      })
+        return 0;
+      });
   });
-
-
 
   return radarData;
 };
 
-// get the top 3 states and plot their storms by selected metic
+export const fillGlobalData = (stormData: StormDataType[]): StormDataType[] => {
+  const filledData = [...stormData];
+  console.log('fillGlobalData', stormData.length);
+  // every state for every year for every storm
+  for (const state of STORM_EVENT_REGIONS) {
+    for (const stormName of STORM_EVENT_CATEGORIES) {
+      for (let year = YEAR_RANGE.min; year < YEAR_RANGE.max; year++) {
+        filledData.push(getEmptyStormMetric({ state, stormName, year }));
+      }
+    }
+  }
+
+  return filledData;
+};
+
+export const getEmptyStormMetric = ({ state, stormName, year }) => ({
+  EVENT: stormName,
+  STATE: state.toUpperCase(),
+  YEAR: year,
+  DAMAGE_PROPERTY_EVENT_SUM: 0,
+  DEATHS_DIRECT_COUNT: 0,
+  DEATHS_INDIRECT_COUNT: 0,
+  EVENT_COUNT: 0,
+  INJURIES_DIRECT_COUNT: 0,
+});

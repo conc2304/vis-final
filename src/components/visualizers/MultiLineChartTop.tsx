@@ -192,8 +192,11 @@ const TopStatesOverTimeMultiLineChart = ({
     // filtered for time and for top X States by cumulative storm dimension (event count, property damage ...)
     const topStatesTotalValues = getTopNthStatesByDimension(stormDataByState);
 
-    // BUG 
-    const topStatesNameArr = topStatesTotalValues.map((stateData) => stateData.STATE);
+    // BUG
+    const topStatesNameArr = topStatesTotalValues.map((stateData) => {
+      if (!stateData) return;
+      return stateData.STATE;
+    });
     setTopStatesAsNameList(topStatesNameArr.slice(0, numberOfTopStates));
     // get the yearly values for each state in our time period
     const topStatesData = getStormDataPerStatePerYear(stormDataByState, topStatesNameArr);
@@ -338,7 +341,6 @@ const TopStatesOverTimeMultiLineChart = ({
       (entry) => entry.STATE.toLowerCase() === stateSelected.toLowerCase()
     );
 
-
     if (!isStateSelectedAccounted && stateSelected !== 'ALL') {
       // if we dont have them accounted for find them and add them;
       const selectedStateData = stateData.find(
@@ -360,7 +362,7 @@ const TopStatesOverTimeMultiLineChart = ({
       <div ref={wrapperRef} className={`${id}-wrapper top-states-chart`}>
         <div className="title" style={{ position: 'absolute', top: 8, left: margin.left + 20 }}>
           Top {numberOfTopStates} Most Impacted States:
-          <br /> {eventFilter === 'ALL' ? 'All Storms' :  `${eventFilter}s`} : {title}
+          <br /> {eventFilter === 'ALL' ? 'All Storms' : `${eventFilter}s`} : {title}
         </div>
         <div
           className="state-list-container"

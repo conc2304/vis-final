@@ -40,9 +40,11 @@
     opacity: 1;
     border: 1px dotted rgba($color: $color-ui-primary, $alpha: 0.8);
     border-top-right-radius: 8px;
+    border-left: none;
+    border-bottom: none;
 
     transition: opacity 300ms ease-in;
-    
+
     &.inactive {
       opacity: 0;
       z-index: -1;

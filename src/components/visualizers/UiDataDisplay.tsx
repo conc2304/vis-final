@@ -38,7 +38,7 @@ const UiDataDisplay = ({
       <div className="d-flex justify-content-between align-items-center">
         <h3 style={{ width: '50%', color: COLOR_ACCCENT }}>{displayLocation}</h3>
         <h5>
-          {Math.round(startTime)} - {Math.round(endTime)}
+          <span>Time Range:</span> {Math.round(startTime)} - {Math.round(endTime)}
         </h5>
         {/* <div sty></div> */}
       </div>
