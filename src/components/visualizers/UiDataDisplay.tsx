@@ -40,7 +40,6 @@ const UiDataDisplay = ({
         <h5>
           {Math.round(startTime)} - {Math.round(endTime)}
         </h5>
-        {/* <div sty></div> */}
       </div>
       {metrics && (
         <div className="d-flex justify-content-between" style={{ marginTop: '0.5em' }}>

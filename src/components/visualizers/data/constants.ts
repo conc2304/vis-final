@@ -207,23 +207,10 @@ export const STORM_EVENT_REGIONS = [
   // 'LAKE ST CLAIR',
   // 'LAKE SUPERIOR',
   // 'ST LAWRENCE R',
-  // 'Kentucky',
 ] as const;
 
-// HEAT MAP
-// export const COLOR_RANGE = [
-//   '#010002', // blackish
-//   '#7C30FC', // purple
-//   '#1233E4', // blue
-//   '#22FCE1', // aqua
-//   '#17CE26', // green
-//   '#EAFF06', // yellow
-//   '#FFB508', // orange
-//   '#FE2222', // red
-// ];
-
-export const COLOR_ACCCENT = '#ffb703'; // yello
-export const COLOR_UI_PRIMARY = '#61efff';
+export const COLOR_ACCCENT = '#ffb703'; // yellow
+export const COLOR_UI_PRIMARY = '#61efff'; // cyan
 export const COLOR_UI_ERROR ="#E34D94"; // magenta 
 export const COLOR_RANGE = [
   // "#0E1625",
