@@ -36,9 +36,9 @@ const UiDataDisplay = ({
   return (
     <div className="p-2">
       <div className="d-flex justify-content-between align-items-center">
-        <h3 style={{ color: COLOR_ACCCENT }}>{displayLocation}</h3>
+        <h3 style={{  }}>{displayLocation}</h3>
         <h5>
-          <span>Time Range:</span> {Math.round(startTime)} - {Math.round(endTime)}
+          {Math.round(startTime)} - {Math.round(endTime)}
         </h5>
         {/* <div sty></div> */}
       </div>

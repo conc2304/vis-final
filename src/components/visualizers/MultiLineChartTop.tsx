@@ -79,7 +79,10 @@ const TopStatesOverTimeMultiLineChart = ({
     // xScale for Years
     const xScale = d3
       .scaleLinear()
-      .domain([yearFilter ? yearFilter[0] : YEAR_RANGE.min, yearFilter ? yearFilter[1] : YEAR_RANGE.max])
+      .domain([
+        yearFilter ? yearFilter[0] : YEAR_RANGE.min,
+        yearFilter ? yearFilter[1] : YEAR_RANGE.max,
+      ])
       .range([0, innerWidth]);
 
     // yscale for density of metric
