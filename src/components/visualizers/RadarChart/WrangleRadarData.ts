@@ -9,21 +9,21 @@ import {
 } from '../data/types';
 import { fillMissingYears } from '../helpers';
 
-export type RadarData = Array<
-  {
-    axis: string;
-    value: number;
-    state?: GeoRegionUSType;
-    stormType?: StormEventCategoryType;
-    formatFn?: (
-      n:
-        | number
-        | {
-            valueOf(): number;
-          }
-    ) => string;
-  }[]
->;
+export type RadarDataEntry = {
+  axis: string;
+  value: number;
+  state?: GeoRegionUSType;
+  stormType?: StormEventCategoryType;
+  formatFn?: (
+    n:
+      | number
+      | {
+          valueOf(): number;
+        }
+  ) => string;
+};
+
+export type RadarData = Array<RadarDataEntry[]>;
 
 type RadarWrangleProps = {
   data: StormDataType[];
@@ -115,7 +115,6 @@ export const getTopStatesByDimension = ({
   stateSelected,
   numberOfStates,
 }: GetTopStatesFnProps): StateDataDimensions[] => {
-
   const stateData: StateDataDimensions[] = [];
 
   dataGroupedByState.forEach((state) => {

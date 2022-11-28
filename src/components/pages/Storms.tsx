@@ -218,7 +218,7 @@ const StormsPage = () => {
                       data={radarDataTopStates}
                       areValuesNormalized={false}
                       lineType="curved"
-                      labelFactor={1.25}
+                      labelFactor={1.28}
                       margin={{ top: 80, right: 0, bottom: 80, left: 0 }}
                       selectedState={selectedGeoRegion}
                     />
@@ -227,9 +227,9 @@ const StormsPage = () => {
                     <RadarChart
                       id="radar-chart-state-storms"
                       data={radarDataStormEvents}
-                      areValuesNormalized={true}
+                      areValuesNormalized={false}
                       lineType="curved"
-                      labelFactor={1.25}
+                      labelFactor={1.15}
                       wrapWidth={120}
                       margin={{ top: 80, right: 0, bottom: 100, left: 0 }}
                       selectedState={selectedGeoRegion}

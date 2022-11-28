@@ -309,7 +309,7 @@ const HeatMap = ({
   return (
     <div
       ref={wrapperRef}
-      style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}
+      style={{ width: '100%', height: '100%', position: 'relative', zIndex: 0 }}
       className={`${id}-wrapper`}
     >
       <svg ref={svgRef} className={`heatmap ${stateIsSelected && svgIsHovered && !stateIsHovered ? 'hover' : ''}`}>

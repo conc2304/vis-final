@@ -5,7 +5,7 @@ import { Margin } from '../types';
 import useResizeObserver from '../useResizeObserver';
 import { COLOR_ACCCENT, COLOR_UI_PRIMARY } from '../data/constants';
 import { GeoRegionUSType } from '../data/types';
-import { RadarData } from './WrangleRadarData';
+import { RadarData, RadarDataEntry } from './WrangleRadarData';
 
 type Props = {
   data?: RadarData;
@@ -60,6 +60,8 @@ const RadarChart = ({
     const innerHeight = svgHeight - margin.top - margin.bottom;
     setInnerDimensions({ w: innerWidth, h: innerHeight });
 
+    const tooltip = tooltipRef.current;
+
     svg.attr('width', svgWidth).attr('height', svgHeight);
     const svgContent = svg.select('.content').attr('transform', `translate(${0}, ${0})`);
 
@@ -109,12 +111,26 @@ const RadarChart = ({
       .style('filter', 'url(#glow)');
 
     // Label the Axis Markers
+    const getTextAnchorValue = (d, i) => {
+      // if x is between
+      // if ()
+      const x = Math.cos(angleSize * i - Math.PI / 2);
+      const y = Math.sin(angleSize * i - Math.PI / 2);
+
+      if (y === 1 || y === -1) return 'middle';
+      if (x > 0) return 'start';
+      if (x < 0) return 'end';
+      console.log(d);
+      console.log('x: ', Math.cos(angleSize * i - Math.PI / 2));
+      console.log('y: ', Math.sin(angleSize * i - Math.PI / 2));
+      return 'middle';
+    };
     axisGrid
       .selectAll('.axis-label')
       .data(axisNames)
       .join('text')
       .attr('class', 'axis-label')
-      .attr('text-anchor', 'middle')
+      .attr('text-anchor', getTextAnchorValue)
       .attr('dy', '0.35em')
       .attr(
         'x',
@@ -186,15 +202,41 @@ const RadarChart = ({
         d[0].state.toLowerCase() === selectedState.toLowerCase() ? COLOR_ACCCENT : COLOR_UI_PRIMARY
       )
       .style('fill-opacity', opacityArea)
-      .on('mouseover', function (d, i) {
+      .on('mouseover', function (event: MouseEvent, d) {
         //Dim all blobs
+
+        console.log(this);
         d3.selectAll('.radar-area').transition().duration(200).style('fill-opacity', 0.1);
         //Bring back the hovered over blob
         d3.select(this).transition().duration(200).style('fill-opacity', 0.5);
+        console.log(event);
+
+        // const newX = parseFloat(d3.select(this).attr('cx')) + 20;
+        // const newY = parseFloat(d3.select(this).attr('cy')) - 16;
+
+        console.log(innerWidth, event.offsetX, event.offsetY);
+
+        const state = d[0].state;
+
+        tooltip.innerHTML = backgroundAreaTooltip(state, d);
+
+        const tWidth = tooltip.getBoundingClientRect().width;
+        const tHeight = tooltip.getBoundingClientRect().height;
+        // const tooltipXPos = event.offsetX < innerWidth / 2 ? innerWidth - tWidth + 100 : 0;
+        const adjustX = tHeight > innerHeight / 2 ? 50: 0;
+        const tooltipXPos = innerWidth - tWidth + 50 + adjustX;
+
+        tooltip.style.left = `${tooltipXPos}px`;
+        tooltip.style.top = `${0}px`;
+        tooltip.style.opacity = 1;
+        tooltip.style.width = '240px';
+        tooltip.style.zIndex = 110;
       })
       .on('mouseout', function () {
         //Bring back all blobs
         d3.selectAll('.radar-area').transition().duration(200).style('fill-opacity', opacityArea);
+        tooltip.style.opacity = 0;
+        tooltip.style.zIndex = -10;
       });
 
     //  add outline of shape
@@ -248,8 +290,6 @@ const RadarChart = ({
       .attr('class', 'circle-wrapper')
       .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
 
-    const tooltip = tooltipRef.current;
-
     circleWrapper
       .selectAll('.invisible-circle')
       .data((d) => d)
@@ -275,12 +315,32 @@ const RadarChart = ({
         tooltip.innerHTML = `<div><span>${d.state}</span>: ${d.formatFn(d.value)}</div>`;
         tooltip.style.left = `${newX + svgWidth / 2}px`;
         tooltip.style.top = `${newY + svgHeight / 2}px`;
+        tooltip.style.width = '150px'
+        tooltip.style.zIndex = 110;
         tooltip.style.opacity = 1;
       })
       .on('mouseout', function () {
+        tooltip.style.zIndex = -1;
         tooltip.style.opacity = 0;
       });
   }, [data, selectedState]);
+
+  function backgroundAreaTooltip(state: string, data: RadarDataEntry[]) {
+    const lineItem = (entry) => `
+    <div>
+      <strong>${entry.axis}:</strong>
+      <span>${entry.formatFn(entry.value)}</span>
+    </div>`;
+
+    const tableData = data.map(lineItem).toString().replaceAll('</div>,', '');
+    return (
+      `
+      <div>
+        <div class="text-center"><strong >${state}</strong></div>` +
+      tableData +
+      `</div>`
+    );
+  }
 
   function wrap(text, width: number) {
     text.each(function () {
@@ -350,6 +410,8 @@ const RadarChart = ({
           backgroundColor: 'black',
           borderRadius: '8px',
           border: `0.5px solid ${COLOR_UI_PRIMARY}`,
+          zIndex: -1,
+          boxShadow: `0px 0px 94px -4px rgba(30,242,229,0.75);`,
         }}
       ></div>
     </div>
