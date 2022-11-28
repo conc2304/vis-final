@@ -1,15 +1,19 @@
 {
   "files": {
-    "main.css": "/vis-final/static/css/main.94dd2e05.css",
-    "main.js": "/vis-final/static/js/main.07a57a4f.js",
+    "main.css": "/vis-final/static/css/main.1b6aca74.css",
+    "main.js": "/vis-final/static/js/main.dba5d8b8.js",
     "static/js/787.44888680.chunk.js": "/vis-final/static/js/787.44888680.chunk.js",
+    "static/media/Oxanium-ExtraLight.ttf": "/vis-final/static/media/Oxanium-ExtraLight.ff80b254cacf17e95950.ttf",
+    "static/media/Mechanization.ttf": "/vis-final/static/media/Mechanization.a08ba13578ec125650d4.ttf",
+    "static/media/Oxanium-SemiBold.ttf": "/vis-final/static/media/Oxanium-SemiBold.11dad28c0c082972d309.ttf",
+    "static/media/Glitch inside.otf": "/vis-final/static/media/Glitch inside.3f7b15ff85feaffa9dad.otf",
     "index.html": "/vis-final/index.html",
-    "main.94dd2e05.css.map": "/vis-final/static/css/main.94dd2e05.css.map",
-    "main.07a57a4f.js.map": "/vis-final/static/js/main.07a57a4f.js.map",
+    "main.1b6aca74.css.map": "/vis-final/static/css/main.1b6aca74.css.map",
+    "main.dba5d8b8.js.map": "/vis-final/static/js/main.dba5d8b8.js.map",
     "787.44888680.chunk.js.map": "/vis-final/static/js/787.44888680.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.94dd2e05.css",
-    "static/js/main.07a57a4f.js"
+    "static/css/main.1b6aca74.css",
+    "static/js/main.dba5d8b8.js"
   ]
 }
