@@ -120,9 +120,6 @@ const RadarChart = ({
       if (y === 1 || y === -1) return 'middle';
       if (x > 0) return 'start';
       if (x < 0) return 'end';
-      console.log(d);
-      console.log('x: ', Math.cos(angleSize * i - Math.PI / 2));
-      console.log('y: ', Math.sin(angleSize * i - Math.PI / 2));
       return 'middle';
     };
     axisGrid
@@ -219,17 +216,16 @@ const RadarChart = ({
         const state = d[0].state;
 
         tooltip.innerHTML = backgroundAreaTooltip(state, d);
+        tooltip.style.width = '240px';
 
         const tWidth = tooltip.getBoundingClientRect().width;
         const tHeight = tooltip.getBoundingClientRect().height;
-        // const tooltipXPos = event.offsetX < innerWidth / 2 ? innerWidth - tWidth + 100 : 0;
-        const adjustX = tHeight > innerHeight / 2 ? 50: 0;
-        const tooltipXPos = innerWidth - tWidth + 50 + adjustX;
+        const adjustX = tHeight > innerHeight / 2 ? 50 : 0;
+        const tooltipXPos = innerWidth - tWidth/2;
 
         tooltip.style.left = `${tooltipXPos}px`;
         tooltip.style.top = `${0}px`;
         tooltip.style.opacity = 1;
-        tooltip.style.width = '240px';
         tooltip.style.zIndex = 110;
       })
       .on('mouseout', function () {
@@ -315,7 +311,7 @@ const RadarChart = ({
         tooltip.innerHTML = `<div><span>${d.state}</span>: ${d.formatFn(d.value)}</div>`;
         tooltip.style.left = `${newX + svgWidth / 2}px`;
         tooltip.style.top = `${newY + svgHeight / 2}px`;
-        tooltip.style.width = '150px'
+        tooltip.style.width = '150px';
         tooltip.style.zIndex = 110;
         tooltip.style.opacity = 1;
       })
@@ -411,7 +407,7 @@ const RadarChart = ({
           borderRadius: '8px',
           border: `0.5px solid ${COLOR_UI_PRIMARY}`,
           zIndex: -1,
-          boxShadow: `0px 0px 94px -4px rgba(30,242,229,0.75);`,
+          boxShadow: '0px 0px 10px 2px rgb(66 168 162 / 65%)',
         }}
       ></div>
     </div>
