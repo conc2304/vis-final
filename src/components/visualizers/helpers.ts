@@ -1,3 +1,4 @@
+import { YEAR_RANGE } from './data/constants';
 import { GeoRegionUSType, StateDataDimensions } from './data/types';
 
 export const fillMissingYears = (
@@ -6,7 +7,7 @@ export const fillMissingYears = (
   maxYear: number,
   stateName: GeoRegionUSType = null
 ) => {
-  for (let year = 1950; year < minYear; year++) {
+  for (let year = YEAR_RANGE.min; year < minYear; year++) {
     yearData.push({
       YEAR: year,
       STATE: stateName || null,
@@ -19,7 +20,7 @@ export const fillMissingYears = (
     });
   }
 
-  for (let year = maxYear; year < 2022; year++) {
+  for (let year = maxYear; year <= YEAR_RANGE.max; year++) {
     yearData.push({
       YEAR: year,
       STATE: stateName || null,

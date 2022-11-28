@@ -13,7 +13,7 @@ import {
 } from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
-import { COLOR_GREY, COLOR_RANGE } from './data/constants';
+import { COLOR_GREY, COLOR_RANGE, YEAR_RANGE } from './data/constants';
 
 import './HeatMap.scss';
 
@@ -62,7 +62,7 @@ const HeatMap = ({
     if (yearFilter || eventFilter || regionSelected) {
       stormData.forEach((row) => {
         // if none is set default to our data's range
-        const [yearMin, yearMax] = !!yearFilter ? yearFilter : [1950, 2022];
+        const [yearMin, yearMax] = !!yearFilter ? yearFilter : [YEAR_RANGE.min, YEAR_RANGE.max];
 
         // if 'ALL' then the condition is true ef not then check to see if we match
         const eventConditionIsTrue = eventFilter === 'ALL' ? true : row.EVENT === eventFilter;

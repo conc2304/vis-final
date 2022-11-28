@@ -1,4 +1,4 @@
-import { COLOR_ACCCENT } from './data/constants';
+import { COLOR_ACCCENT, YEAR_RANGE } from './data/constants';
 import { GeoRegionUSType } from './data/types';
 import { getFormat } from './RadarChart/WrangleRadarData';
 
@@ -13,7 +13,7 @@ type Props = {
 };
 
 const UiDataDisplay = ({
-  timeRangeSelected = [1950, 2022],
+  timeRangeSelected = [YEAR_RANGE.min, YEAR_RANGE.max],
   locationSelected,
   metrics = {
     deaths: 0,
@@ -36,7 +36,7 @@ const UiDataDisplay = ({
   return (
     <div className="p-2">
       <div className="d-flex justify-content-between align-items-center">
-        <h3 style={{ width: '50%', color: COLOR_ACCCENT }}>{displayLocation}</h3>
+        <h3 style={{ color: COLOR_ACCCENT }}>{displayLocation}</h3>
         <h5>
           <span>Time Range:</span> {Math.round(startTime)} - {Math.round(endTime)}
         </h5>

@@ -28,6 +28,7 @@ import {
   COLOR_RANGE,
   STORM_EVENT_CATEGORIES,
   STORM_UI_SELECT_VALUES,
+  YEAR_RANGE,
 } from '../visualizers/data/constants';
 import StormsTypesOverTimeSeries from '../visualizers/MultiLineChart';
 import TopStatesOverTimeMultiLineChart from '../visualizers/MultiLineChartTop';
@@ -47,7 +48,7 @@ const StormsPage = () => {
   // State Handlers
   const [selectedGeoRegion, setSelectedGeoRegion] = useState<GeoRegionUSType | 'ALL'>('ALL');
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>([
-    1950, 2022,
+    YEAR_RANGE.min, YEAR_RANGE.max,
   ]);
   const [selectedStormType, setSelectedStormType] = useState<StormEventCategoryType | 'ALL'>('ALL');
   const [selectedDimensionTitle, setSelectedDimensionTitle] = useState(

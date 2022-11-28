@@ -10,7 +10,7 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import { COLOR_ACCCENT, COLOR_UI_PRIMARY, STORM_EVENT_CATEGORIES } from './data/constants';
+import { COLOR_ACCCENT, COLOR_UI_PRIMARY, STORM_EVENT_CATEGORIES, YEAR_RANGE } from './data/constants';
 
 import './MultiLineChart.scss';
 
@@ -67,7 +67,7 @@ const MultiLineChart = ({
     // xScale for Years
     const xScale = d3
       .scaleLinear()
-      .domain([yearFilter ? yearFilter[0] : 1950, yearFilter ? yearFilter[1] : 2022])
+      .domain([yearFilter ? yearFilter[0] : YEAR_RANGE.min, yearFilter ? yearFilter[1] : YEAR_RANGE.max])
       .range([0, innerWidth]);
 
     // yscale for density of metric
@@ -154,7 +154,7 @@ const MultiLineChart = ({
     // Filter
     if (yearFilter || regionSelected) {
       stormData.forEach((row) => {
-        const [yearMin, yearMax] = !!yearFilter ? yearFilter : [1950, 2022];
+        const [yearMin, yearMax] = !!yearFilter ? yearFilter : [YEAR_RANGE.min, YEAR_RANGE.max];
 
         // if 'ALL' then the condition is true ef not then check to see if we match
 

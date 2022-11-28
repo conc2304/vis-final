@@ -80,7 +80,7 @@ export const filterData = ({
     stormData.forEach((row) => {
       if (!STORM_EVENT_REGIONS.includes(row.STATE)) return;
 
-      const [yearMin, yearMax] = !!yearFilter ? yearFilter : [1950, 2022];
+      const [yearMin, yearMax] = !!yearFilter ? yearFilter : [YEAR_RANGE.min, YEAR_RANGE.max];
 
       // if 'ALL' then the condition is true ef not then check to see if we match
       const regionConditionIsTrue =
