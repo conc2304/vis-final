@@ -235,7 +235,6 @@ const HeatMap = ({
       const cleanedName = (name as string).replace('(United States)', '').trim();
       const stateName = cleanedName as GeoRegionUSType;
       const stateInfo = getStateInfoByStateName(stateName, stateData);
-      console.log('here')
 
       if (stateInfo)
         return colorScale(stateInfo[selectedDimension]);

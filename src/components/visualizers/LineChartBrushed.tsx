@@ -22,7 +22,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
-  const [innerDimensions, setInnerDimensions] = useState({width: 0, height: 0});
+  const [innerDimensions, setInnerDimensions] = useState({ width: 0, height: 0 });
   const [coverIsActive, setCoverIsActive] = useState(true);
 
   useEffect(() => {
@@ -34,8 +34,8 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
     const innerHeight = svgHeight - margin.top - margin.bottom;
     setInnerDimensions({
       width: innerWidth,
-      height: innerHeight
-    })
+      height: innerHeight,
+    });
 
     svg.attr('width', svgWidth).attr('height', svgHeight);
     const svgContent = svg
@@ -101,16 +101,19 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .on('brush end', (event) => {
         const { selection } = event;
         const [left, right] = selection || [0, innerWidth];
-
-        onBrush([xScale.invert(left), xScale.invert(right)]);
+        const start = xScale.invert(left);
+        const end = xScale.invert(right);
+        if (Math.abs(start - end) < 1) return;
+        
+        onBrush(end > start ? [start, end] : [end, start]);
       });
 
     brushElem.call(brush);
   }, [data, margin]);
 
   const handleCoverEnter = () => {
-    setCoverIsActive(false)
-  }
+    setCoverIsActive(false);
+  };
 
   return (
     <div
@@ -118,15 +121,20 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       style={{ width: '100%', height: '100%', position: 'relative' }}
       className={`${id}-wrapper global-temp-chart`}
     >
-      <div className={`cover ${coverIsActive ? 'active' : 'inactive'}`} style={{
-        width: innerDimensions.width + 5,
-        height: innerDimensions.height + 2,
-        left: margin.right,
-        top: margin.top - 2,
-      }}>
+      <div
+        className={`cover ${coverIsActive ? 'active' : 'inactive'}`}
+        style={{
+          width: innerDimensions.width + 5,
+          height: innerDimensions.height + 2,
+          left: margin.right,
+          top: margin.top - 2,
+        }}
+      >
         <div className="cover-text" onMouseEnter={handleCoverEnter}>
-          <strong>Click and Drag
-          <br /> to zoom in on a time range</strong>
+          <strong>
+            Click and Drag
+            <br /> to zoom in on a time range
+          </strong>
         </div>
       </div>
       <div className="title" style={{ position: 'absolute', top: -10, left: margin.left + 20 }}>

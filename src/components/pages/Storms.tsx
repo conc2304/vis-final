@@ -83,7 +83,7 @@ const StormsPage = () => {
   };
 
   const handleOnBrush = ([start, end]) => {
-    setSeletedBrushYears(end > start ? [start, end] : [end, start]);
+    setSeletedBrushYears([start, end]);
   };
 
   useEffect(() => {
@@ -92,9 +92,6 @@ const StormsPage = () => {
     Promise.all(promises).then((data) => {
       const filledData = fillGlobalData(data[0] as StormDataType[]);
     
-      console.log(filledData)
-      console.log(data[0])
-      // console.log(filledData.length, data[0].length)
       setStormData(filledData);
     });
   }, []);
@@ -112,8 +109,9 @@ const StormsPage = () => {
       eventFilter: selectedStormType,
     });
 
-    if (selectedGeoRegion !== 'ALL') {
+    if (selectedGeoRegion !== 'ALL' && radarChartDataTopStates !== undefined) {
       const selectedStateMetrics = radarChartDataTopStates.find((entry) => {
+        if (!entry || !entry[0]) return
         return entry[0].state.toUpperCase() === selectedGeoRegion.toUpperCase();
       });
 

@@ -43,7 +43,7 @@ export const wrangleDataByTopXStates = ({
 }: RadarWrangleProps) => {
   // get the top states by selected metric
 
-  const filteredData = filterData({ stormData: data, yearFilter, eventFilter });
+  const filteredData = [...filterData({ stormData: data, yearFilter, eventFilter })];
 
   const dataGroupedByState = Array.from(
     d3.group(filteredData, (d) => d.STATE),
@@ -115,6 +115,7 @@ export const getTopStatesByDimension = ({
   stateSelected,
   numberOfStates,
 }: GetTopStatesFnProps): StateDataDimensions[] => {
+
   const stateData: StateDataDimensions[] = [];
 
   dataGroupedByState.forEach((state) => {
@@ -417,7 +418,6 @@ const formatStormEventsForRadar = ({ data, selectedDimension }: FormatFnProps): 
 
 export const fillGlobalData = (stormData: StormDataType[]): StormDataType[] => {
   const filledData = [...stormData];
-  console.log('fillGlobalData', stormData.length);
   // every state for every year for every storm
   for (const state of STORM_EVENT_REGIONS) {
     for (const stormName of STORM_EVENT_CATEGORIES) {
