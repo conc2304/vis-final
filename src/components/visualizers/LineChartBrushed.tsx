@@ -24,6 +24,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
   const dimensions = useResizeObserver(wrapperRef);
   const [innerDimensions, setInnerDimensions] = useState({ width: 0, height: 0 });
   const [coverIsActive, setCoverIsActive] = useState(true);
+  const [modalIsActive, setModalIsActive] = useState(false);
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
@@ -104,16 +105,12 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         const start = xScale.invert(left);
         const end = xScale.invert(right);
         if (Math.abs(start - end) < 1) return;
-        
+
         onBrush(end > start ? [start, end] : [end, start]);
       });
 
     brushElem.call(brush);
   }, [data, margin]);
-
-  const handleCoverEnter = () => {
-    setCoverIsActive(false);
-  };
 
   return (
     <div
@@ -130,7 +127,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
           top: margin.top - 2,
         }}
       >
-        <div className="cover-text" onMouseEnter={handleCoverEnter}>
+        <div className="cover-text" onMouseEnter={() => setCoverIsActive(false)}>
           <strong>
             Click and Drag
             <br /> to zoom in on a time range
@@ -138,7 +135,27 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         </div>
       </div>
       <div className="title" style={{ position: 'absolute', top: -10, left: margin.left + 20 }}>
-        <p className="m-0">{title}</p>
+        <p className="m-0">
+          {title}{' '}
+          <span className={`question ${modalIsActive ? 'active' : 'inactie'}`} onClick={() => setModalIsActive(!modalIsActive)}>
+            ?
+          </span>
+        </p>
+      </div>
+      <div
+        className={`global-temp-modal ${modalIsActive ? 'active' : 'inactive'}`}
+        style={{
+          width: innerDimensions.width + 5,
+          height: innerDimensions.height + 2,
+          left: margin.right,
+          top: margin.top - 2,
+        }}
+      >
+        <div className="modal-text" >
+          "Temperature anomaly" means a departure from a reference value or long-term average. A
+          positive anomaly indicates the temperature was warmer than the reference value, while a
+          negative anomaly indicates the temperature was cooler.
+        </div>
       </div>
 
       <svg ref={svgRef}>

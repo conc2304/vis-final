@@ -206,21 +206,14 @@ const RadarChart = ({
         d3.selectAll('.radar-area').transition().duration(200).style('fill-opacity', 0.1);
         //Bring back the hovered over blob
         d3.select(this).transition().duration(200).style('fill-opacity', 0.5);
-        console.log(event);
 
-        // const newX = parseFloat(d3.select(this).attr('cx')) + 20;
-        // const newY = parseFloat(d3.select(this).attr('cy')) - 16;
-
-        console.log(innerWidth, event.offsetX, event.offsetY);
-
+        // prep the tooltip 
         const state = d[0].state;
 
         tooltip.innerHTML = backgroundAreaTooltip(state, d);
         tooltip.style.width = '240px';
 
         const tWidth = tooltip.getBoundingClientRect().width;
-        const tHeight = tooltip.getBoundingClientRect().height;
-        const adjustX = tHeight > innerHeight / 2 ? 50 : 0;
         const tooltipXPos = innerWidth - tWidth/2;
 
         tooltip.style.left = `${tooltipXPos}px`;

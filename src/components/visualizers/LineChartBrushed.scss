@@ -2,18 +2,18 @@
 
 @keyframes pulse {
   0% {
-      transform: scale(.5);
-      background-color: green;
-      border-radius: 100%;
+    transform: scale(0.5);
+    background-color: green;
+    border-radius: 100%;
   }
 
   50% {
-      background-color: orange;
+    background-color: orange;
   }
 
   100% {
-      transform: scale(2.0);
-      background-color: red;
+    transform: scale(2);
+    background-color: red;
   }
 }
 
@@ -25,7 +25,37 @@
     }
   }
 
-  .cover {
+  .title {
+  }
+
+  .question {
+    border: 0.5px solid rgba($color: $color-ui-primary, $alpha: 0.8);
+    border-radius: 50%;
+    width: 10px;
+    padding: 4px 7px 3px 7px;
+    margin-left: 10px;
+    height: 10px;
+    align-self: baseline;
+    cursor: pointer;
+
+    &.active {
+      border: 1px solid rgba($color: magenta, $alpha: 0.8);
+    }
+
+    &:hover {
+      border: 1px solid rgba($color: $color-ui-accent, $alpha: 1);
+
+      // border-color: rgba($color: $color-ui-accent, $alpha: 1);
+    }
+  }
+
+  .modal-text {
+    color: $color-ui-primary;
+    font-weight: bold;
+  }
+
+  .cover,
+  .global-temp-modal {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -45,10 +75,17 @@
 
     transition: opacity 300ms ease-in;
 
+    &.global-temp-modal {
+      background-color: rgba($color: #000, $alpha: 0.9);
+    }
     &.inactive {
       opacity: 0;
       z-index: -1;
     }
+  }
+
+  .modal-text {
+    font-size: 14px;
   }
 
   .area-path {
