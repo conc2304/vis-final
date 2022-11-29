@@ -3,7 +3,7 @@ import { useRef, useEffect, useState, MutableRefObject } from 'react';
 import { GeoRegionUSType, StormDataType } from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
-import { COLOR_RANGE, YEAR_RANGE } from './data/constants';
+import { COLOR_RANGE, COLOR_UI_ERROR, COLOR_UI_PRIMARY, YEAR_RANGE } from './data/constants';
 import GlobalTempData from './data/Global_Temp_Data';
 import { allStates, stateNameToAbbreviation } from './data/states';
 
@@ -52,7 +52,8 @@ const CircleBarChart = ({
   const svgContent: MutableRefObject<d3.Selection<d3.BaseType, unknown, null, undefined>> =
     useRef();
   const arcGenerator: MutableRefObject<d3.Arc<unknown, DisplayData>> = useRef();
-  const tempScale: MutableRefObject<any> = useRef();
+  const tempRadiusScale: MutableRefObject<any> = useRef();
+  const tempColorScale: MutableRefObject<any> = useRef();
   const timeScale: MutableRefObject<any> = useRef();
 
   useEffect(() => {
@@ -108,23 +109,41 @@ const CircleBarChart = ({
       .select('.content')
       .attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
 
-    d3.select('.clock-hand-group').attr('transform', `translate(${svgWidth / 2}, ${svgHeight / 2})`);
+    d3.select('.clock-hand-group').attr(
+      'transform',
+      `translate(${svgWidth / 2}, ${svgHeight / 2})`
+    );
+
+    d3.select('.temp-anomaly-group').attr(
+      'transform',
+      `translate(${svgWidth / 2}, ${svgHeight / 2})`
+    );
+
     const eventsScale = d3.scaleRadial().range([innerRadius, radiusMax]).domain([0, eventsMax]);
     const stateBandScale = d3
       .scaleBand()
       .domain(allStates)
       .range([0, 2 * Math.PI]);
     const getTemp = (d) => d.smoothed;
+
     timeScale.current = d3
       .scaleBand()
       // @ts-ignore
       .domain(d3.range(YEAR_RANGE.min, YEAR_RANGE.max, 1))
       .range([0, 360]);
-    tempScale.current = d3
+
+    const tempDomain = [d3.min(GlobalTempData, getTemp), d3.max(GlobalTempData, getTemp)];
+    tempColorScale.current = d3
       .scaleLinear()
-      .domain([d3.min(GlobalTempData, getTemp), d3.max(GlobalTempData, getTemp)])
+      .domain(tempDomain)
       // @ts-ignore
       .range(COLOR_RANGE.slice(1));
+
+    tempRadiusScale.current = d3
+      .scaleLinear()
+      .domain([-1, 1])
+      // @ts-ignore
+      .range([innerRadius, radiusMax]);
 
     arcGenerator.current = d3
       .arc<DisplayData>()
@@ -166,6 +185,10 @@ const CircleBarChart = ({
           )
       );
 
+    d3.select('.temp-circle-zero').attr('r', tempRadiusScale.current(0));
+    d3.select('.temp-circle-zero-background').attr("cx", tempRadiusScale.current(0))
+    d3.select('.temp-circle-zero-value').attr("x", tempRadiusScale.current(0))
+
     const eventsAxis = (g) =>
       g
         .attr('class', 'axis event-axis')
@@ -206,7 +229,6 @@ const CircleBarChart = ({
     }
     const displayData = stormDataByStateAndYear.get(yearFilter);
 
-    
     d3.select('.clock-hand')
       .datum(yearFilter)
       .style('stroke', 'white')
@@ -217,6 +239,39 @@ const CircleBarChart = ({
       .attr('y1', innerRadius - 50)
       .transition()
       .attr('transform', (d) => `rotate(${timeScale.current(d)})`);
+
+    // Add Circle for the temperature anomaly scale
+    d3.select('.temp-circle')
+      .datum(yearFilter)
+      .style('stroke', COLOR_UI_ERROR)
+      .style('stroke-width', 2)
+      .style('fill', 'none')
+      .transition()
+      .attr('r', (d) => {
+        const tempForYear = GlobalTempData.find((entry) => entry.year === d).smoothed;
+        return tempRadiusScale.current(tempForYear);
+      });
+
+    const rectWidth = 60;
+    const rectHeight = 30;
+
+    d3.select('.temp-background')
+      .datum(yearFilter)
+      .attr('x', 0)
+      .transition()
+      .attr('cy', (d) => {
+        const tempForYear = GlobalTempData.find((entry) => entry.year === d).smoothed;
+        return tempRadiusScale.current(tempForYear);
+      });
+
+    d3.select('.temp-anomaly-value')
+      .datum(yearFilter)
+      .text((d) => GlobalTempData.find((entry) => entry.year === d).smoothed)
+      .transition()
+      .attr('y', (d) => {
+        const tempForYear = GlobalTempData.find((entry) => entry.year === d).smoothed;
+        return tempRadiusScale.current(tempForYear);
+      });
 
     const arcs = svgContent.current
       .selectAll<SVGPathElement, DisplayData>('path')
@@ -234,7 +289,7 @@ const CircleBarChart = ({
         }
         return arcGenerator.current(d);
       })
-      .attr('fill', tempScale.current(tempDataMapped[yearFilter]));
+      .attr('fill', tempColorScale.current(tempDataMapped[yearFilter]));
     arcs.exit().remove();
   }, [stormDataByStateAndYear, yearFilter]);
 
@@ -253,6 +308,11 @@ const CircleBarChart = ({
     }, 400);
     return () => window.clearInterval(interval);
   }, [stormData, margin, id]);
+
+  useEffect(() => {
+    // draw a cirlce to represent the change in temperature over the years
+    // console.log('yearFilter ', yearFilter);
+  }, [yearFilter]);
 
   return (
     <div
@@ -282,6 +342,65 @@ const CircleBarChart = ({
           >
             {yearFilter}
           </text>
+        </g>
+        <g className="temp-anomaly-group">
+          <circle cx="0" cy="0" className="temp-circle" />
+          <circle
+            cx="0"
+            cy="0"
+            r="200"
+            className="temp-circle-zero"
+            style={{
+              fill: 'none',
+              stroke: COLOR_UI_PRIMARY,
+              strokeWidth: 1.5,
+            }}
+          />
+
+          <circle
+            className="temp-circle-zero-background"
+            y="0"
+            r="20"
+            style={{
+              fill: '#000',
+              fillOpacity: 0.8,
+              stroke: COLOR_UI_PRIMARY,
+              strokeWidth: 1,
+              strokeOpacity: 0.8
+            }}
+          />
+          <text
+            className="temp-circle-zero-value"
+            y="0"
+            style={{
+              fill: '#fff',
+              textAnchor: 'middle',
+              dominantBaseline: 'mathematical',
+              fontWeight: 'bold',
+            }}
+          >0</text>
+
+          <circle
+            className="temp-background"
+            x="0"
+            r="25"
+            style={{
+              fill: '#000',
+              fillOpacity: 0.8,
+              stroke: COLOR_UI_ERROR,
+              strokeWidth: 1.5,
+            }}
+          />
+          <text
+            className="temp-anomaly-value"
+            x="0"
+            style={{
+              fill: '#fff',
+              textAnchor: 'middle',
+              dominantBaseline: 'mathematical',
+              fontWeight: 'bold',
+            }}
+          />
         </g>
       </svg>
     </div>
