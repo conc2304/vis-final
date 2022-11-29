@@ -1,7 +1,5 @@
-import { duration } from '@mui/material';
 import { useSpring, animated } from 'react-spring';
-import { number } from 'yargs';
-import { COLOR_ACCCENT, YEAR_RANGE } from './data/constants';
+import { YEAR_RANGE } from './data/constants';
 import { GeoRegionUSType } from './data/types';
 import { getFormat } from './RadarChart/WrangleRadarData';
 
