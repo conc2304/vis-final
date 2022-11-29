@@ -63,19 +63,26 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .y((d: GlobalTempDataType) => yScale(d.smoothed))
       .curve(d3.curveMonotoneX);
 
+    d3.select('.baseline-temp')
+      .data([
+        [
+          { year: 1950, smoothed: 0 },
+          { year: 2021, smoothed: 0 },
+        ],
+      ])
+      .attr('stroke', COLOR_UI_PRIMARY)
+      .attr('stroke-width', '1')
+      .attr('stroke-opacity', '0.7')
+      .attr('fill', 'none')
+      // @ts-ignore
+      .attr('d', lineGenerator);
 
-    d3
-      .select('.baseline-temp')
-      .data([[
-        { year: 1950, smoothed: 0 },
-        { year: 2021, smoothed: 0 },
-      ]])
-    .attr('stroke', COLOR_UI_PRIMARY)
-    .attr('stroke-width', '1')
-    .attr('stroke-opacity', '0.7')
-    .attr('fill', 'none')
-    // @ts-ignore
-    .attr('d', lineGenerator);
+    d3.select('.baseline-label')
+      .attr('y', yScale(0) - 3)
+      .attr('x', xScale(2022) - 5)
+      .style('fill', COLOR_UI_PRIMARY)
+      .style('font-size', 13)
+      .attr('text-anchor', 'end');
 
     svgContent
       .selectAll('.line-path')
@@ -202,6 +209,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         </defs>
         <g className="content">
           <path className="line-path"></path>
+          <text className="baseline-label">Baseline/Avg. Temp Anomaly </text>
           <path className="baseline-temp"></path>
           <g className="brush-group"></g>
         </g>

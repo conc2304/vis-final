@@ -187,7 +187,7 @@ const CircleBarChart = ({
 
     d3.select('.temp-circle-zero').attr('r', tempRadiusScale.current(0));
     d3.select('.temp-circle-zero-background').attr('cx', tempRadiusScale.current(0));
-    d3.select('.temp-circle-zero-value').attr('x', tempRadiusScale.current(0));
+    d3.select('.temp-circle-zero-value').attr('x', tempRadiusScale.current(0) + 1);
 
     const eventsAxis = (g) =>
       g
@@ -377,6 +377,9 @@ const CircleBarChart = ({
               textAnchor: 'middle',
               dominantBaseline: 'mathematical',
               fontWeight: 'bold',
+              paddingLeft: '2px',
+              position: "relative",
+              left: '10px',
             }}
           >
             0°
@@ -385,7 +388,7 @@ const CircleBarChart = ({
           <circle
             className="temp-background"
             x="0"
-            r="25"
+            r="27"
             style={{
               fill: '#000',
               fillOpacity: 0.95,

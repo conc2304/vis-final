@@ -39,10 +39,10 @@ const HomePage = () => {
               and as temperatures increase so do the occurrences of severe weather.
             </p>
 
+            <p>
+              <strong className="pb-2 text-white">About Temperature Anomalies</strong>
+            </p>
             <p className="text-white">
-              <p>
-                <strong>About Temperature Anomalies</strong>
-              </p>
               In climate change studies, temperature anomalies are more important than absolute
               temperature. A temperature anomaly is the difference from an average, or baseline,
               temperature. The baseline temperature is typically computed by averaging 30 or more
