@@ -13,7 +13,13 @@ import {
 } from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
-import { COLOR_GREY, COLOR_RANGE, COLOR_UI_PRIMARY, STORM_UI_SELECT_VALUES, YEAR_RANGE } from './data/constants';
+import {
+  COLOR_GREY,
+  COLOR_RANGE,
+  COLOR_UI_PRIMARY,
+  STORM_UI_SELECT_VALUES,
+  YEAR_RANGE,
+} from './data/constants';
 
 import './HeatMap.scss';
 import { getFormat } from './RadarChart/WrangleRadarData';
@@ -228,7 +234,7 @@ const HeatMap = ({
 
     d3.select('#legend-title').attr(
       'transform',
-      `translate(${svgWidth / 2 }, ${svgHeight * 0.9 - (legendHeight * 1.2)})`
+      `translate(${svgWidth / 2}, ${svgHeight * 0.9 - legendHeight * 1.2})`
     );
 
     const tickValues = [0, ...[...metricsDomain].slice(1)].map((value, i, arr) =>
@@ -311,20 +317,32 @@ const HeatMap = ({
   function onStateClick(e: MouseEvent, d: GeoJsonFeatureType) {
     e.stopPropagation();
 
-    document.querySelectorAll('path.state').forEach((elem) => {
-      elem.classList.remove('selected');
-      elem.classList.add('unselected');
-    });
-
-    this.classList.remove('unselected');
-    this.classList.add('selected');
-
     const stateVar = isHexGrid ? 'google_name' : 'name';
     const { [stateVar]: name } = d.properties;
     const cleanedName = (name as string).replace('(United States)', '').trim();
     const stateName = cleanedName as GeoRegionUSType;
-    handleOnStateSelect(stateName);
-    setStateIsSelected(true);
+
+    // clicking on the same state again unselects its
+    if (stateName.toLowerCase() === regionSelected.toLowerCase()) {
+      document.querySelectorAll('path.state').forEach((elem) => {
+        elem.classList.remove('selected');
+        elem.classList.remove('unselected');
+      });
+
+      handleOnStateSelect('ALL');
+      setStateIsSelected(false);
+    } else {
+      document.querySelectorAll('path.state').forEach((elem) => {
+        elem.classList.remove('selected');
+        elem.classList.add('unselected');
+      });
+
+      this.classList.remove('unselected');
+      this.classList.add('selected');
+
+      handleOnStateSelect(stateName);
+      setStateIsSelected(true);
+    }
   }
 
   function onCountryClick() {
@@ -374,7 +392,10 @@ const HeatMap = ({
         <g className="content"></g>
         <g className="legend-group">
           <rect id="legend-rect" style={{ fill: 'url("#linear-gradient")' }} />
-          <text id="legend-title" style={{ textAnchor: 'middle', fill: COLOR_UI_PRIMARY, fontSize: 14 }}>
+          <text
+            id="legend-title"
+            style={{ textAnchor: 'middle', fill: COLOR_UI_PRIMARY, fontSize: 14 }}
+          >
             {
               STORM_UI_SELECT_VALUES.find(
                 (elem) => elem.value.toLowerCase() === selectedDimension.toLowerCase()
