@@ -31,13 +31,35 @@ const HomePage = () => {
           </Col>
           <Col md={5}>
             <h1 className="pb-3">Is Earth Fighting Back?</h1>
-            <h2 className="pb-2 text-white">Are we running out of time?</h2>
-            <p className="text-white">
+            <p className="pb-2 text-white">
               As time progresses, Earth is getting warmer and we are seeing more storms every year.
-              The graphic on the left shows the change in storm events over the last 71 years (since
-              1950) in each US state, and the color of the bars represents the global temperature
-              during that time.
+              The graphic on the left shows the change in the number of storm events over the last
+              71 years (since 1950) in each US state and how it relates to that year's global
+              temperature anomaly (in red). Nineteen of the hottest years have occurred since 2000,
+              and as temperatures increase so do the occurrences of severe weather.
             </p>
+
+            <p className="text-white">
+              <p>
+                <strong>About Temperature Anomalies</strong>
+              </p>
+              In climate change studies, temperature anomalies are more important than absolute
+              temperature. A temperature anomaly is the difference from an average, or baseline,
+              temperature. The baseline temperature is typically computed by averaging 30 or more
+              years of temperature data. Using anomalies, the departure from an “average,” allows
+              more accurate descriptions over larger areas than actual temperatures and provides a
+              frame of reference that allows for easier analysis.
+            </p>
+
+            <h2 className="pb-2">Are we running out of time?</h2>
+
+            <p className="text-white">
+              As temperatures change, what does that mean for the state of severe weather in the US?
+              On the next page you can explore how changes in temperature have had effects not only
+              on different types of weather events in the US, but also how these storms distinctly impact
+              particular regions over time.
+            </p>
+
             <Link to={Routes.storms} className="btn btn-outline-light btn-lg">
               Explore &#9655;
             </Link>

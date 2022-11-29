@@ -102,7 +102,7 @@ const CircleBarChart = ({
     const innerWidth = svgWidth - margin.left - margin.right;
     const innerHeight = svgHeight - margin.top - margin.bottom;
 
-    const radiusMax = d3.min([innerWidth / 2, innerHeight / 2]);
+    const radiusMax = d3.min([innerWidth / 2 - 20, innerHeight / 2 - 20]);
 
     svg.attr('width', svgWidth).attr('height', svgHeight);
     svgContent.current = svg
