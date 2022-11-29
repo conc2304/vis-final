@@ -1,3 +1,6 @@
+import { duration } from '@mui/material';
+import { useSpring, animated } from 'react-spring';
+import { number } from 'yargs';
 import { COLOR_ACCCENT, YEAR_RANGE } from './data/constants';
 import { GeoRegionUSType } from './data/types';
 import { getFormat } from './RadarChart/WrangleRadarData';
@@ -12,6 +15,21 @@ type Props = {
   };
 };
 
+function Number({ n, n0 = 0 }) {
+  const { number } = useSpring({
+    from: { number: n0 },
+    number: n,
+    duration: 300,
+    delay: 200,
+    config: {
+      mass: 1,
+      tension: 20,
+      friction: 10,
+    },
+  });
+  return <animated.div>{number.to((n) => n.toFixed(0))}</animated.div>;
+}
+
 const UiDataDisplay = ({
   timeRangeSelected = [YEAR_RANGE.min, YEAR_RANGE.max],
   locationSelected,
@@ -22,21 +40,18 @@ const UiDataDisplay = ({
   },
 }: Props) => {
   if (!metrics) return;
+
+  const propsEvents = useSpring({ val: metrics.eventCount, from: { val: 0 }, duration: 200 });
+  const propsDeaths = useSpring({ val: metrics.deaths, from: { val: 0 }, duration: 200 });
+  const propsDamages = useSpring({ val: metrics.propertyDamage, from: { val: 0 }, duration: 200 });
+
   const [startTime, endTime] = timeRangeSelected;
   const displayLocation = locationSelected === 'ALL' ? 'U.S.A' : locationSelected;
-  const formattedEventCount = getFormat({ value: metrics.eventCount, maxLength: 5 })(
-    metrics.eventCount
-  );
-  const formattedDeathCount = getFormat({ value: metrics.deaths, maxLength: 5 })(metrics.deaths);
-  const formattedDamages = getFormat({
-    value: metrics.propertyDamage,
-    maxLength: 5,
-    isMoney: true,
-  })(metrics.propertyDamage);
+
   return (
     <div className="p-2">
       <div className="d-flex justify-content-between align-items-center">
-        <h3 style={{  }}>{displayLocation}</h3>
+        <h3 style={{}}>{displayLocation}</h3>
         <h5>
           {Math.round(startTime)} - {Math.round(endTime)}
         </h5>
@@ -45,17 +60,29 @@ const UiDataDisplay = ({
         <div className="d-flex justify-content-between" style={{ marginTop: '0.5em' }}>
           <p>
             <strong>Storm Events:</strong> <br />
-            {formattedEventCount}
+            <animated.span>
+              {propsEvents.val.to((val) => {
+                return getFormat({ value: val, maxLength: 5 })(val);
+              })}
+            </animated.span>
           </p>
           <p>
             <strong>Deaths: </strong>
             <br />
-            {formattedDeathCount}
+            <animated.span>
+              {propsDeaths.val.to((val) => {
+                return getFormat({ value: Math.floor(val), maxLength: 5 })(val);
+              })}
+            </animated.span>
           </p>
           <p>
             <strong>Property Damage: </strong>
             <br />
-            {formattedDamages}
+            <animated.span>
+              {propsDamages.val.to((val) => {
+                return getFormat({ value: val, maxLength: 5, isMoney: true })(val);
+              })}
+            </animated.span>
           </p>
         </div>
       )}

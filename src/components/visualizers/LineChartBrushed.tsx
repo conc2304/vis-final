@@ -70,10 +70,6 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         { year: 1950, smoothed: 0 },
         { year: 2021, smoothed: 0 },
       ]])
-      .attr('debug', (d) => {
-        console.log(d);
-        return 'test';
-      })
     .attr('stroke', COLOR_UI_PRIMARY)
     .attr('stroke-width', '1')
     .attr('stroke-opacity', '0.7')
@@ -89,10 +85,6 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .transition()
       .duration(500)
       .ease(d3.easeSinInOut)
-      .attr('debug', (d) => {
-        console.log(d);
-        return 'test';
-      })
       .attr('stroke', COLOR_UI_ERROR)
       .attr('stroke-width', '2')
       .attr('fill', 'none')

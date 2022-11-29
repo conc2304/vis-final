@@ -235,7 +235,6 @@ const HeatMap = ({
       i < arr.length - 1 && value > 1000 ? Math.ceil(value / 1000) * 1000 : value
     );
 
-    console.log(selectedDimension, metricsDomain);
     const legendAxis = d3
       .axisBottom(legendScale)
       .tickSize(7)
