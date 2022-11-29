@@ -10,9 +10,15 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import { COLOR_ACCCENT, COLOR_UI_PRIMARY, STORM_EVENT_CATEGORIES, YEAR_RANGE } from './data/constants';
+import {
+  COLOR_ACCCENT,
+  COLOR_UI_PRIMARY,
+  STORM_EVENT_CATEGORIES,
+  YEAR_RANGE,
+} from './data/constants';
 
 import './MultiLineChart.scss';
+import { getFormat } from './RadarChart/WrangleRadarData';
 
 type Props = {
   stormData: StormDataType[];
@@ -67,7 +73,10 @@ const MultiLineChart = ({
     // xScale for Years
     const xScale = d3
       .scaleLinear()
-      .domain([yearFilter ? yearFilter[0] : YEAR_RANGE.min, yearFilter ? yearFilter[1] : YEAR_RANGE.max])
+      .domain([
+        yearFilter ? yearFilter[0] : YEAR_RANGE.min,
+        yearFilter ? yearFilter[1] : YEAR_RANGE.max,
+      ])
       .range([0, innerWidth]);
 
     // yscale for density of metric
@@ -126,8 +135,7 @@ const MultiLineChart = ({
       .tickSize(5)
       .tickFormat((d) => d.toString());
 
-    const formatFn = yScale.domain()[1].toString().length > 5 ? d3.format('.2s') : d3.format('.0f');
-    const yAxis = d3.axisLeft(yScale).tickFormat(formatFn);
+    const yAxis = d3.axisLeft(yScale).tickFormat(getFormat({ value: yScale.domain()[1] }));
 
     svg
       .select('.x-axis')

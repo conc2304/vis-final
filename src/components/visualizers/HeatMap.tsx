@@ -13,9 +13,10 @@ import {
 } from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
-import { COLOR_GREY, COLOR_RANGE, YEAR_RANGE } from './data/constants';
+import { COLOR_GREY, COLOR_RANGE, COLOR_UI_PRIMARY, STORM_UI_SELECT_VALUES, YEAR_RANGE } from './data/constants';
 
 import './HeatMap.scss';
+import { getFormat } from './RadarChart/WrangleRadarData';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // const uuid = require('react-uuid');
@@ -193,13 +194,67 @@ const HeatMap = ({
 
     const translationValues: [number, number] = isHexGrid
       ? [920, svgHeight]
-      : [svgWidth / 2 + 20, svgHeight / 2];
+      : [svgWidth / 2 + 20, svgHeight / 2 - 35];
     const projectionFn = isHexGrid ? d3.geoMercator : d3.geoAlbersUsa;
     const projection = projectionFn()
       // .translate([svgWidth / 2 + 20, svgHeight / 2])
       .translate([920, svgHeight])
       .translate(translationValues)
       .scale(isHexGrid ? 350 : 600);
+
+    // Map Legend
+    const linearGradient = d3.select('#linear-gradient');
+
+    linearGradient
+      .selectAll('stop')
+      .data(colorScale.range())
+      .enter()
+      .append('stop')
+      .attr('offset', (d, i) => i / (colorScale.range().length - 1))
+      .attr('stop-color', (d) => d);
+
+    const legendWidth = svgWidth / 2;
+    const legendHeight = 10;
+    d3.select('#legend-rect')
+      .attr('height', legendHeight)
+      .attr('width', legendWidth)
+      .attr('x', svgWidth / 2 - legendWidth / 2)
+      .attr('y', svgHeight * 0.9);
+
+    const legendScale = d3
+      .scaleLinear()
+      .domain([0, [...metricsDomain].pop()])
+      .range([0, legendWidth]);
+
+    d3.select('#legend-title').attr(
+      'transform',
+      `translate(${svgWidth / 2 }, ${svgHeight * 0.9 - (legendHeight * 1.2)})`
+    );
+
+    const tickValues = [0, ...[...metricsDomain].slice(1)].map((value, i, arr) =>
+      i < arr.length - 1 && value > 1000 ? Math.ceil(value / 1000) * 1000 : value
+    );
+
+    console.log(selectedDimension, metricsDomain);
+    const legendAxis = d3
+      .axisBottom(legendScale)
+      .tickSize(7)
+      .tickValues(tickValues)
+      .tickFormat(
+        getFormat({
+          value: metricsDomain[1],
+          isMoney: selectedDimension === 'DAMAGE_PROPERTY_EVENT_SUM',
+        })
+      );
+
+    svg
+      .select('.legend-axis')
+      .attr(
+        'transform',
+        `translate(${svgWidth / 2 - legendWidth / 2}, ${svgHeight * 0.9 + legendHeight + 0.5})`
+      )
+      // @ts-ignore
+      .call(legendAxis);
 
     const pathGenerator = geoPath().projection(projection);
 
@@ -211,9 +266,8 @@ const HeatMap = ({
       .classed('state', true)
       .attr('stroke-width', '0.5px')
       .attr('stroke', 'white')
-      .classed("invalid-state", (feature) => getFillColor(feature, stateDataDisplay) === COLOR_GREY  )
+      .classed('invalid-state', (feature) => getFillColor(feature, stateDataDisplay) === COLOR_GREY)
       .attr('data', (feature) => getFillColor(feature, stateDataDisplay));
-
 
     statePaths
       .transition()
@@ -236,8 +290,7 @@ const HeatMap = ({
       const stateName = cleanedName as GeoRegionUSType;
       const stateInfo = getStateInfoByStateName(stateName, stateData);
 
-      if (stateInfo)
-        return colorScale(stateInfo[selectedDimension]);
+      if (stateInfo) return colorScale(stateInfo[selectedDimension]);
       return COLOR_GREY;
     }
 
@@ -312,8 +365,25 @@ const HeatMap = ({
       style={{ width: '100%', height: '100%', position: 'relative', zIndex: 0 }}
       className={`${id}-wrapper`}
     >
-      <svg ref={svgRef} className={`heatmap ${stateIsSelected && svgIsHovered && !stateIsHovered ? 'hover' : ''}`}>
+      <svg
+        ref={svgRef}
+        className={`heatmap ${stateIsSelected && svgIsHovered && !stateIsHovered ? 'hover' : ''}`}
+      >
+        <defs>
+          <linearGradient id="linear-gradient"></linearGradient>
+        </defs>
         <g className="content"></g>
+        <g className="legend-group">
+          <rect id="legend-rect" style={{ fill: 'url("#linear-gradient")' }} />
+          <text id="legend-title" style={{ textAnchor: 'middle', fill: COLOR_UI_PRIMARY, fontSize: 14 }}>
+            {
+              STORM_UI_SELECT_VALUES.find(
+                (elem) => elem.value.toLowerCase() === selectedDimension.toLowerCase()
+              ).label
+            }
+          </text>
+          <g className="legend-axis axis" />
+        </g>
       </svg>
       {/* {!hideHex && (
         <FormControlLabel

@@ -252,14 +252,12 @@ const CircleBarChart = ({
         return tempRadiusScale.current(tempForYear);
       });
 
-    const rectWidth = 60;
-    const rectHeight = 30;
 
     d3.select('.temp-background')
       .datum(yearFilter)
       .attr('x', 0)
       .transition()
-      .attr('cy', (d) => {
+      .attr('cx', (d) => {
         const tempForYear = GlobalTempData.find((entry) => entry.year === d).smoothed;
         return tempRadiusScale.current(tempForYear);
       });
@@ -268,9 +266,9 @@ const CircleBarChart = ({
       .datum(yearFilter)
       .text((d) => GlobalTempData.find((entry) => entry.year === d).smoothed)
       .transition()
-      .attr('y', (d) => {
+      .attr('x', (d) => {
         const tempForYear = GlobalTempData.find((entry) => entry.year === d).smoothed;
-        return tempRadiusScale.current(tempForYear);
+        return tempRadiusScale.current(tempForYear)
       });
 
     const arcs = svgContent.current
@@ -371,14 +369,14 @@ const CircleBarChart = ({
           />
           <text
             className="temp-circle-zero-value"
-            y="0"
+            x="0"
             style={{
               fill: '#fff',
               textAnchor: 'middle',
               dominantBaseline: 'mathematical',
               fontWeight: 'bold',
             }}
-          >0</text>
+          >0°</text>
 
           <circle
             className="temp-background"
@@ -386,14 +384,14 @@ const CircleBarChart = ({
             r="25"
             style={{
               fill: '#000',
-              fillOpacity: 0.8,
+              fillOpacity: 0.95,
               stroke: COLOR_UI_ERROR,
               strokeWidth: 1.5,
             }}
           />
           <text
             className="temp-anomaly-value"
-            x="0"
+            y="0"
             style={{
               fill: '#fff',
               textAnchor: 'middle',

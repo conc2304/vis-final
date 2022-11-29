@@ -22,6 +22,20 @@ svg.heatmap {
 
     border: 0.5px solid $color-ui-accent;
   }
+
+  .legend-axis {
+    font-size: 10px;
+
+    text {
+      font-size: 10px;
+      fill: $color-ui-primary;
+    }
+
+    path,
+    line {
+      stroke: $color-ui-primary;
+    }
+  }
 }
 
 path.state {

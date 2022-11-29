@@ -209,7 +209,7 @@ export const getTopStatesByDimension = ({
 export const getFormat = ({ value, isMoney = false, maxLength = 5 }) => {
   const prefix = isMoney ? '$' : '';
   return value.toString().length > maxLength
-    ? d3.format(`${prefix},.2s`)
+    ? d3.format(`${prefix},.3s`)
     : d3.format(`${prefix},.0f`);
 };
 

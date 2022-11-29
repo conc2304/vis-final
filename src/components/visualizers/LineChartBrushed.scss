@@ -2,18 +2,16 @@
 
 @keyframes pulse {
   0% {
-    transform: scale(0.5);
-    background-color: green;
-    border-radius: 100%;
+    transform: scale(0.97);
+    opacity: 0.8;
+    // background-color: green;
   }
 
-  50% {
-    background-color: orange;
-  }
 
   100% {
-    transform: scale(2);
-    background-color: red;
+    transform: scale(1);
+    opacity: 1;
+    // background-color: red;
   }
 }
 
@@ -25,14 +23,15 @@
     }
   }
 
-  .title {
-  }
+
 
   .question {
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
     border: 0.5px solid rgba($color: $color-ui-primary, $alpha: 0.8);
     border-radius: 50%;
     width: 10px;
-    padding: 4px 7px 3px 7px;
+    padding: 3px 8px 3px 8px;
     margin-left: 10px;
     height: 10px;
     align-self: baseline;
@@ -55,6 +54,7 @@
   .cover,
   .global-temp-modal {
     position: absolute;
+    z-index: 200;
     top: 0;
     bottom: 0;
     left: 0;
@@ -64,14 +64,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba($color: #000, $alpha: 0.5);
+    background-color: rgba($color: #000, $alpha: 0.8);
     opacity: 1;
-    border: 1px dotted rgba($color: $color-ui-accent, $alpha: 0.8);
     border-top-right-radius: 8px;
     border-left: none;
     border-bottom: none;
 
-    transition: opacity 300ms ease-in;
+    transition: opacity 300ms linear;
 
     &.global-temp-modal {
       background-color: rgba($color: #000, $alpha: 0.9);
@@ -80,10 +79,35 @@
       opacity: 0;
       z-index: -1;
     }
+
+    .arrow-box {
+      opacity: 0.9;
+      height: 60px;
+      width: 30px;
+      margin: 0 40px;
+      animation: pulse 1.1s infinite alternate;
+
+      .arrow {
+        width: 100%;
+        height: 100%;
+      }
+
+      .left {
+        transform: scaleX(-1);
+      }
+    }
   }
 
   .cover-text {
-    color : $color-ui-accent;
+    color: $color-ui-accent;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100;
+
+    p {
+      margin: 0;
+    }
   }
 
   .modal-text {

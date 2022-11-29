@@ -3,9 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { GlobalTempDataType } from './data/types';
 import { Margin } from './types';
 import useResizeObserver from './useResizeObserver';
+import { COLOR_UI_ERROR } from './data/constants';
+import chevronRightSvg from './svg/chevron-arrow-right.svg';
 
 import './LineChartBrushed.scss';
-import { COLOR_UI_ERROR } from './data/constants';
 
 type Props = {
   // data: StormDataColumns;
@@ -25,6 +26,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
   const [innerDimensions, setInnerDimensions] = useState({ width: 0, height: 0 });
   const [coverIsActive, setCoverIsActive] = useState(true);
   const [modalIsActive, setModalIsActive] = useState(false);
+  const [userHasBrushed, setUserHasBrushed] = useState(false);
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
@@ -106,6 +108,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         const end = xScale.invert(right);
         if (Math.abs(start - end) < 1) return;
 
+        setUserHasBrushed(true);
         onBrush(end > start ? [start, end] : [end, start]);
       });
 
@@ -117,6 +120,11 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       ref={wrapperRef}
       style={{ width: '100%', height: '100%', position: 'relative' }}
       className={`${id}-wrapper global-temp-chart`}
+      onMouseLeave={(event) => {
+        console.log('leave');
+        event.stopPropagation();
+        if (!userHasBrushed) setCoverIsActive(true);
+      }}
     >
       <div
         className={`cover ${coverIsActive ? 'active' : 'inactive'}`}
@@ -127,18 +135,38 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
           top: margin.top - 2,
         }}
       >
-        <div className="cover-text" onMouseEnter={() => setCoverIsActive(false)}>
-          <strong>
+        <div
+          className="cover-text"
+          onMouseEnter={(event) => {
+            event.stopPropagation();
+            setCoverIsActive(false);
+          }}
+        >
+          {/* <strong>
             Click and Drag
             <br /> to zoom in on a time range
-          </strong>
+          </strong> */}
+
+          <div className="arrow-box">
+            <img src={chevronRightSvg} className="arrow left" />
+          </div>
+          <div>
+            <p>Click and Drag</p>
+            <small>over the temperature chart <br />to zoom in on a time range</small>
+          </div>
+          <div className="arrow-box">
+            <img src={chevronRightSvg} className="arrow right" height="10%" width="10%" />
+          </div>
         </div>
       </div>
       <div className="title" style={{ position: 'absolute', top: -10, left: margin.left + 20 }}>
         <p className="m-0">
-          {title}{' '}
-          <span className={`question ${modalIsActive ? 'active' : 'inactie'}`} onClick={() => setModalIsActive(!modalIsActive)}>
-            ?
+          {title}
+          <span
+            className={`question ${modalIsActive ? 'active' : 'inactie'}`}
+            onClick={() => setModalIsActive(!modalIsActive)}
+          >
+            i
           </span>
         </p>
       </div>
@@ -151,7 +179,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
           top: margin.top - 2,
         }}
       >
-        <div className="modal-text" >
+        <div className="modal-text">
           "Temperature anomaly" means a departure from a reference value or long-term average. A
           positive anomaly indicates the temperature was warmer than the reference value, while a
           negative anomaly indicates the temperature was cooler.

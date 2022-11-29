@@ -13,6 +13,7 @@ import { fillMissingYears } from './helpers';
 import { COLOR_ACCCENT, COLOR_UI_PRIMARY, STORM_EVENT_REGIONS, YEAR_RANGE } from './data/constants';
 
 import './MultiLineChartTop.scss';
+import { getFormat } from './RadarChart/WrangleRadarData';
 
 type Props = {
   stormData: StormDataType[];
@@ -140,8 +141,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .tickSize(5)
       .tickFormat((d) => d.toString());
 
-    const formatFn = yScale.domain()[1].toString().length > 5 ? d3.format('.2s') : d3.format('.0f');
-    const yAxis = d3.axisLeft(yScale).tickFormat(formatFn);
+    const yAxis = d3.axisLeft(yScale).tickFormat(getFormat({value:  yScale.domain()[1] }));
 
     svg
       .select('.x-axis')
