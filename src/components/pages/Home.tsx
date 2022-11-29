@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Link } from 'react-router-dom';
@@ -48,7 +48,10 @@ const HomePage = () => {
               temperature. The baseline temperature is typically computed by averaging 30 or more
               years of temperature data. Using anomalies, the departure from an “average,” allows
               more accurate descriptions over larger areas than actual temperatures and provides a
-              frame of reference that allows for easier analysis.
+              frame of reference that allows for easier analysis. Here we see that our
+              <span className="text-ui-primary"> baseline</span> is
+              <span className="text-ui-primary"> 0 degrees Celsius</span> which we quickly surpass
+              around 1970.
             </p>
 
             <h2 className="pb-2">Are we running out of time?</h2>
@@ -56,8 +59,8 @@ const HomePage = () => {
             <p className="text-white">
               As temperatures change, what does that mean for the state of severe weather in the US?
               On the next page you can explore how changes in temperature have had effects not only
-              on different types of weather events in the US, but also how these storms distinctly impact
-              particular regions over time.
+              on different types of weather events in the US, but also how these storms distinctly
+              impact particular regions over time.
             </p>
 
             <Link to={Routes.storms} className="btn btn-outline-light btn-lg">

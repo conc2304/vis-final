@@ -186,8 +186,8 @@ const CircleBarChart = ({
       );
 
     d3.select('.temp-circle-zero').attr('r', tempRadiusScale.current(0));
-    d3.select('.temp-circle-zero-background').attr("cx", tempRadiusScale.current(0))
-    d3.select('.temp-circle-zero-value').attr("x", tempRadiusScale.current(0))
+    d3.select('.temp-circle-zero-background').attr('cx', tempRadiusScale.current(0));
+    d3.select('.temp-circle-zero-value').attr('x', tempRadiusScale.current(0));
 
     const eventsAxis = (g) =>
       g
@@ -252,7 +252,6 @@ const CircleBarChart = ({
         return tempRadiusScale.current(tempForYear);
       });
 
-
     d3.select('.temp-background')
       .datum(yearFilter)
       .attr('x', 0)
@@ -264,11 +263,14 @@ const CircleBarChart = ({
 
     d3.select('.temp-anomaly-value')
       .datum(yearFilter)
-      .text((d) => GlobalTempData.find((entry) => entry.year === d).smoothed)
+      .text((d) => {
+        const temp = GlobalTempData.find((entry) => entry.year === d).smoothed;
+        return `${temp > 0 ? '+' : ''}${temp}°`;
+      })
       .transition()
       .attr('x', (d) => {
         const tempForYear = GlobalTempData.find((entry) => entry.year === d).smoothed;
-        return tempRadiusScale.current(tempForYear)
+        return tempRadiusScale.current(tempForYear);
       });
 
     const arcs = svgContent.current
@@ -364,7 +366,7 @@ const CircleBarChart = ({
               fillOpacity: 0.8,
               stroke: COLOR_UI_PRIMARY,
               strokeWidth: 1,
-              strokeOpacity: 0.8
+              strokeOpacity: 0.8,
             }}
           />
           <text
@@ -376,7 +378,9 @@ const CircleBarChart = ({
               dominantBaseline: 'mathematical',
               fontWeight: 'bold',
             }}
-          >0°</text>
+          >
+            0°
+          </text>
 
           <circle
             className="temp-background"

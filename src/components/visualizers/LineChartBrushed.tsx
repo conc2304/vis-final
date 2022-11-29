@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { GlobalTempDataType } from './data/types';
 import { Margin } from './types';
 import useResizeObserver from './useResizeObserver';
-import { COLOR_UI_ERROR } from './data/constants';
+import { COLOR_UI_ERROR, COLOR_UI_PRIMARY, YEAR_RANGE } from './data/constants';
 import chevronRightSvg from './svg/chevron-arrow-right.svg';
 
 import './LineChartBrushed.scss';
@@ -63,6 +63,24 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .y((d: GlobalTempDataType) => yScale(d.smoothed))
       .curve(d3.curveMonotoneX);
 
+
+    d3
+      .select('.baseline-temp')
+      .data([[
+        { year: 1950, smoothed: 0 },
+        { year: 2021, smoothed: 0 },
+      ]])
+      .attr('debug', (d) => {
+        console.log(d);
+        return 'test';
+      })
+    .attr('stroke', COLOR_UI_PRIMARY)
+    .attr('stroke-width', '1')
+    .attr('stroke-opacity', '0.7')
+    .attr('fill', 'none')
+    // @ts-ignore
+    .attr('d', lineGenerator);
+
     svgContent
       .selectAll('.line-path')
       .data([data])
@@ -71,6 +89,10 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .transition()
       .duration(500)
       .ease(d3.easeSinInOut)
+      .attr('debug', (d) => {
+        console.log(d);
+        return 'test';
+      })
       .attr('stroke', COLOR_UI_ERROR)
       .attr('stroke-width', '2')
       .attr('fill', 'none')
@@ -121,7 +143,6 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       style={{ width: '100%', height: '100%', position: 'relative' }}
       className={`${id}-wrapper global-temp-chart`}
       onMouseLeave={(event) => {
-        console.log('leave');
         event.stopPropagation();
         if (!userHasBrushed) setCoverIsActive(true);
       }}
@@ -142,17 +163,12 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
             setCoverIsActive(false);
           }}
         >
-          {/* <strong>
-            Click and Drag
-            <br /> to zoom in on a time range
-          </strong> */}
-
           <div className="arrow-box">
             <img src={chevronRightSvg} className="arrow left" />
           </div>
-          <div>
+          <div className="prompt">
             <p>Click and Drag</p>
-            <small>over the temperature chart <br />to zoom in on a time range</small>
+            <small>over the temperature chart to zoom in on a time range</small>
           </div>
           <div className="arrow-box">
             <img src={chevronRightSvg} className="arrow right" height="10%" width="10%" />
@@ -163,7 +179,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         <p className="m-0">
           {title}
           <span
-            className={`question ${modalIsActive ? 'active' : 'inactie'}`}
+            className={`info ${modalIsActive ? 'active' : 'inactie'}`}
             onClick={() => setModalIsActive(!modalIsActive)}
           >
             i
@@ -194,6 +210,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         </defs>
         <g className="content">
           <path className="line-path"></path>
+          <path className="baseline-temp"></path>
           <g className="brush-group"></g>
         </g>
         <g className="x-axis axis" />

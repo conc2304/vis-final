@@ -36,8 +36,8 @@ h5,
 h6 {
   margin: 0;
   font-family: 'Glitch';
-  // font-family: 'Mechanization';
 }
+
 
 p,
 span,
@@ -67,6 +67,9 @@ body {
   color: $color-ui-primary;
 }
 
+.text-ui-primary {
+  color: $color-ui-primary;
+}
 .custom-footer {
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
