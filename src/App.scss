@@ -92,6 +92,17 @@ body {
     border-bottom: none;
     opacity: 0.9;
   }
+
+  &.home-page {
+    animation: pulse 1.5s infinite alternate;
+    animation-timing-function: ease-in-out;
+    width: 20%;
+
+    &:hover {
+      animation: none;
+      opacity: 1;
+    }
+  }
 }
 
 .custom-header {
@@ -207,5 +218,18 @@ body {
       color: $color-ui-primary;
       border: 1px solid $color-ui-primary;
     }
+  }
+}
+
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.98);
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
   }
 }

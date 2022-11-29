@@ -29,7 +29,7 @@ const HomePage = () => {
               <CircleBarChart stormData={stormData} id="hurricane-chart" />
             </Row>
           </Col>
-          <Col md={5}>
+          <Col md={5} className="d-flex justify-content-center flex-column">
             <h1 className="pb-3">Is Earth Fighting Back?</h1>
             <p className="pb-2 text-white">
               As time progresses, Earth is getting warmer and we are seeing more storms every year.
@@ -62,13 +62,25 @@ const HomePage = () => {
               on different types of weather events in the US, but also how these storms distinctly
               impact particular regions over time.
             </p>
-
-            <Link to={Routes.storms} className="btn btn-outline-light btn-lg">
-              Explore &#9655;
-            </Link>
           </Col>
         </Row>
       </main>
+      <footer
+        className="d-flex justify-content-center"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+        }}
+      >
+        <Link
+          to={Routes.storms}
+          className="btn btn-primary btn-lg border-radius-0 d-block p-4 pb-3 custom-footer home-page"
+        >
+          <strong style={{width: '200px'}}>Explore &#9661;</strong>
+        </Link>
+      </footer>
     </Layout>
   );
 };

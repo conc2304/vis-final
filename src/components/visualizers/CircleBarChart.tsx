@@ -246,10 +246,7 @@ const CircleBarChart = ({
       .style('stroke', COLOR_UI_ERROR)
       .style('stroke-width', 2)
       .style('fill', 'none')
-      .style("stroke-opacity", 0)
       .transition()
-      .duration(200)
-      .style("stroke-opacity", 1)
       .attr('r', (d) => {
         const tempForYear = GlobalTempData.find((entry) => entry.year === d).smoothed;
         return tempRadiusScale.current(tempForYear);
