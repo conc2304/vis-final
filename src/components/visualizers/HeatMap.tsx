@@ -17,6 +17,7 @@ import {
   COLOR_GREY,
   COLOR_RANGE,
   COLOR_UI_PRIMARY,
+  STORM_EVENT_REGIONS,
   STORM_UI_SELECT_VALUES,
   YEAR_RANGE,
 } from './data/constants';
@@ -94,6 +95,8 @@ const HeatMap = ({
 
     stormDataByState.forEach((state) => {
       const { key: stateName } = state;
+      if (!STORM_EVENT_REGIONS.includes(stateName)) return;
+      console.log(stateName)
 
       let DAMAGE_PROPERTY_EVENT_SUM = 0;
       let DEATHS_DIRECT_COUNT = 0;
