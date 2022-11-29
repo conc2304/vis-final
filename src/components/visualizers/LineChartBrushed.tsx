@@ -66,8 +66,8 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
     d3.select('.baseline-temp')
       .data([
         [
-          { year: 1950, smoothed: 0 },
-          { year: 2021, smoothed: 0 },
+          { year: YEAR_RANGE.min, smoothed: 0 },
+          { year: YEAR_RANGE.max, smoothed: 0 },
         ],
       ])
       .attr('stroke', COLOR_UI_PRIMARY)

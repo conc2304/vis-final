@@ -26,6 +26,7 @@ import {
 } from '../visualizers/data/types';
 import {
   COLOR_RANGE,
+  COLOR_UI_PRIMARY,
   STORM_EVENT_CATEGORIES,
   STORM_UI_SELECT_VALUES,
   YEAR_RANGE,
@@ -41,6 +42,7 @@ import {
 } from '../visualizers/RadarChart/WrangleRadarData';
 import UiDataDisplay from '../visualizers/UiDataDisplay';
 import getUSAggregateData from '../visualizers/data/USAggregateData';
+import SevereWeatherSvg from '../visualizers/svg/bad-weather.svg';
 
 import './Storms.scss';
 
@@ -48,7 +50,8 @@ const StormsPage = () => {
   // State Handlers
   const [selectedGeoRegion, setSelectedGeoRegion] = useState<GeoRegionUSType | 'ALL'>('ALL');
   const [selectedBrushYears, setSeletedBrushYears] = useState<[number, number] | null>([
-    YEAR_RANGE.min, YEAR_RANGE.max,
+    YEAR_RANGE.min,
+    YEAR_RANGE.max,
   ]);
   const [selectedStormType, setSelectedStormType] = useState<StormEventCategoryType | 'ALL'>('ALL');
   const [selectedDimensionTitle, setSelectedDimensionTitle] = useState(
@@ -92,7 +95,7 @@ const StormsPage = () => {
 
     Promise.all(promises).then((data) => {
       const filledData = fillGlobalData(data[0] as StormDataType[]);
-    
+
       setStormData(filledData);
     });
   }, []);
@@ -112,7 +115,7 @@ const StormsPage = () => {
 
     if (selectedGeoRegion !== 'ALL' && radarChartDataTopStates !== undefined) {
       const selectedStateMetrics = radarChartDataTopStates.find((entry) => {
-        if (!entry || !entry[0]) return
+        if (!entry || !entry[0]) return;
         return entry[0].state.toUpperCase() === selectedGeoRegion.toUpperCase();
       });
 
@@ -135,18 +138,16 @@ const StormsPage = () => {
       numberOfStates: 3,
     });
 
-
     setRadarDataTopStates(radarChartDataTopStates);
     setRadarDataStormEvents(radarChartDataStateByStorms);
   }, [stormData, selectedGeoRegion, selectedBrushYears, selectedStormType, selectedDimension]);
 
   useEffect(() => {
-
     if (!!stormData && selectedGeoRegion === 'ALL') {
-      const UsAggregateData = getUSAggregateData(stormData)
-      setUiMetrics(UsAggregateData)
+      const UsAggregateData = getUSAggregateData(stormData);
+      setUiMetrics(UsAggregateData);
     }
-  }, [selectedGeoRegion, stormData])
+  }, [selectedGeoRegion, stormData]);
 
   return (
     <Layout>
@@ -161,7 +162,13 @@ const StormsPage = () => {
       <main className="p-2 flex-grow-1 d-flex flex-column">
         <Row className="flex-grow-1">
           <Col xs={12} md={8} className="flex-grow-1 d-flex flex-column">
-            <h1 className="p-2 pb-4 fs-2">Severe Weather Events in the USA</h1>
+            <div className="d-flex align-items-center">
+              <img
+                style={{  height: '40px', width: '40px', marginRight: '15px', marginBottom: '15px', opacity: 0.8 }}
+                src={SevereWeatherSvg}
+              />
+              <h1 className="p-2 pb-4 fs-2">Severe Weather Events in the USA</h1>
+            </div>
             <FormGroup className="form-group">
               <Row className="ui-form-container">
                 <Col>
