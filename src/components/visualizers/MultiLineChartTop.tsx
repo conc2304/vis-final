@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, MutableRefObject } from 'react';
 import {
   GeoRegionUSType,
   SelectedDimensionsType,
@@ -10,7 +10,7 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import { COLOR_ACCCENT, COLOR_UI_PRIMARY, STORM_EVENT_REGIONS, YEAR_RANGE } from './data/constants';
+import { COLOR_ACCCENT, STORM_EVENT_REGIONS, YEAR_RANGE } from './data/constants';
 
 import './MultiLineChartTop.scss';
 import { getFormat } from './RadarChart/WrangleRadarData';
@@ -46,6 +46,8 @@ const TopStatesOverTimeMultiLineChart = ({
 
   const [topStateAsNameList, setTopStatesAsNameList] = useState<GeoRegionUSType[]>([]);
   const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
+
+  const colorScale: MutableRefObject<d3.ScaleOrdinal<string, unknown, never>> = useRef();
 
   let displayData: DisplayData[] = [];
 
@@ -86,6 +88,9 @@ const TopStatesOverTimeMultiLineChart = ({
       ])
       .range([0, innerWidth]);
 
+    const colorSeries = ['#0086fc', '#6d26fc', '#00e7ff'];
+    colorScale.current = d3.scaleOrdinal().range(colorSeries);
+
     // yscale for density of metric
     let dimensionMax = 0;
     let dimensionMin = Infinity;
@@ -105,35 +110,67 @@ const TopStatesOverTimeMultiLineChart = ({
     // yscale for density of metric
     const yScale = d3.scaleLinear().range([innerHeight, 0]).domain([dimensionMin, dimensionMax]); // height of the individual lines
 
+    // const generator = d3
+    //   .line()
+    //   // @ts-ignore
+    //   .x((d: StateDataDimensions) => xScale(d.YEAR))
+    //   // @ts-ignore
+    //   .y((d: StateDataDimensions) => yScale(d[selectedDimension]))
+    //   .curve(d3.curveBasis);
+
     const generator = d3
-      .line()
+      .area()
       // @ts-ignore
       .x((d: StateDataDimensions) => xScale(d.YEAR))
       // @ts-ignore
-      .y((d: StateDataDimensions) => yScale(d[selectedDimension]))
+      .y0(innerHeight)
+      // @ts-ignore
+      .y1((d: StateDataDimensions) => yScale(d[selectedDimension]))
       .curve(d3.curveBasis);
 
-    const isSelectedRegion = (d) => stateSelected.toLowerCase() === d[0].STATE.toLowerCase();
+    const isSelectedState = (state) => {
+      return stateSelected.toLowerCase() === state.toLowerCase();
+    };
 
+    // color domain should not include the selected state since it is always accent orange
+    colorScale.current.domain(
+      displayData
+        .filter((entry) => {
+          // filter out the selectected state if its not one of the top 3
+          if (displayData.length > numberOfTopStates && !isSelectedState(entry.key) ) {
+            return true;
+          }
+          return false;
+        })
+        .map((entry) => entry.key)
+    );
     // Render the Area Paths for each of the storm events
-    svgContent
-      .selectAll('.area-path')
-      .data(displayData)
-      .join('path')
-      .attr('class', (d) => `area-path path-for-${d.key.replace(' ', '-')}`)
+
+    // plot the path
+    const lines = svgContent.selectAll('path').data(displayData, (d: DisplayData) => d.key);
+
+    lines
+      .enter()
+      .append('path')
+      .attr('class', (d) => `area-path`)
       // @ts-ignore
-      .datum((d: DisplayData) => d.values)
-      .attr('fill', 'none')
-      .attr('mix-blend-mode', 'multiply')
+      .merge(lines)
+      .attr('fill-opacity', 0.2)
+      .style('mix-blend-mode', 'multiply')
+      .attr('stroke-linejoin', 'round')
+      .attr('stroke-opacity', 1)
       .transition()
       .duration(500)
-      .attr('stroke', (d) => (isSelectedRegion(d) ? COLOR_ACCCENT : COLOR_UI_PRIMARY))
-      .attr('stroke-width', (d) => (isSelectedRegion(d) ? 2 : 1))
-      .attr('opacity', (d) => (isSelectedRegion(d) ? 1 : 0.6))
+      .attr('stroke', (d) =>
+        isSelectedState(d.key) ? COLOR_ACCCENT : (colorScale.current(d.key) as string)
+      )
+      .attr('fill', (d) =>
+        isSelectedState(d.key) ? COLOR_ACCCENT : (colorScale.current(d.key) as string)
+      )
+      .attr('stroke-width', (d) => (isSelectedState(d.key) ? 3 : 1.5))
       // @ts-ignore
-      .attr('d', generator);
-
-    svgContent.exit().remove();
+      .attr('d', (d) => generator(d.values));
+    lines.exit().remove();
 
     // axes
     const xAxis = d3
@@ -141,7 +178,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .tickSize(5)
       .tickFormat((d) => d.toString());
 
-    const yAxis = d3.axisLeft(yScale).tickFormat(getFormat({value:  yScale.domain()[1] }));
+    const yAxis = d3.axisLeft(yScale).tickFormat(getFormat({ value: yScale.domain()[1] }));
 
     svg
       .select('.x-axis')
@@ -195,7 +232,6 @@ const TopStatesOverTimeMultiLineChart = ({
     // filtered for time and for top X States by cumulative storm dimension (event count, property damage ...)
     const topStatesTotalValues = getTopNthStatesByDimension(stormDataByState);
 
-    // BUG
     const topStatesNameArr = topStatesTotalValues.map((stateData) => {
       if (!stateData) return;
       return stateData.STATE;
@@ -376,6 +412,12 @@ const TopStatesOverTimeMultiLineChart = ({
               <small
                 className={`d-block ${stateNamesMatch(stateName, stateSelected) ? 'active' : ''}`}
                 key={stateName}
+                style={{
+                  fontWeight: 'bold',
+                  color: stateNamesMatch(stateName, stateSelected)
+                    ? COLOR_ACCCENT
+                    : (colorScale.current(stateName) as string),
+                }}
               >
                 {i + 1}. {stateName}
               </small>
