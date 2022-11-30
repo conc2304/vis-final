@@ -288,14 +288,24 @@ const MultiLineChart = ({
       });
     }); // end events by category loop
 
-    // sort the display data by density of data
-    displayData.sort((a, b) => {
-      if (a.values.length < b.values.length) return 1;
-      if (a.values.length > b.values.length) return -1;
-      return 0;
+    // sort by the average metric value
+    // selectedDimension
+    const displayDataWithAverages = [...displayData].map((eventData) => {
+      const sum = eventData.values.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue[selectedDimension];
+      }, 0);
+      return {
+        ...eventData,
+        averageValue: sum / eventData.values.length,
+      };
     });
 
-    return displayData;
+    // sort so that we render them from biggest to smallest so we can hover on them more easily
+    const sortedByAvgValue = [...displayDataWithAverages].sort((a, b) => {
+      return b.averageValue - a.averageValue;
+    })
+
+    return sortedByAvgValue;
   }
 
   return (
