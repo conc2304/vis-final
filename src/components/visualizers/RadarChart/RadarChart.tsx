@@ -23,6 +23,7 @@ type Props = {
   lineType?: 'curved' | 'linear';
   areValuesNormalized?: boolean;
   selectedState?: GeoRegionUSType | 'ALL';
+  title: string;
 };
 
 const RadarChart = ({
@@ -40,6 +41,7 @@ const RadarChart = ({
   lineType = 'linear',
   areValuesNormalized = true,
   selectedState = null,
+  title = '',
 }: Props) => {
   const svgRef = useRef(null);
   const tooltipRef = useRef(null);
@@ -207,14 +209,14 @@ const RadarChart = ({
         //Bring back the hovered over blob
         d3.select(this).transition().duration(200).style('fill-opacity', 0.5);
 
-        // prep the tooltip 
+        // prep the tooltip
         const state = d[0].state;
 
         tooltip.innerHTML = backgroundAreaTooltip(state, d);
         tooltip.style.width = '240px';
 
         const tWidth = tooltip.getBoundingClientRect().width;
-        const tooltipXPos = innerWidth - tWidth/2;
+        const tooltipXPos = innerWidth - tWidth / 2;
 
         tooltip.style.left = `${tooltipXPos}px`;
         tooltip.style.top = `${0}px`;
@@ -374,6 +376,12 @@ const RadarChart = ({
       style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}
       className={`${id}-wrapper event-by-storm-chart position-relative`}
     >
+      <div
+        className="radar-title"
+        style={{ position: 'absolute', top: 0, left: 10, width: '200px', fontSize: '14px' }}
+      >
+        {title}
+      </div>
       <svg ref={svgRef}>
         <defs>
           <clipPath id={`${id}`}>
