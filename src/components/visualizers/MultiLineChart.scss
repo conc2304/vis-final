@@ -1,6 +1,8 @@
 @import 'src/variables';
 
 .event-by-storm-chart {
+
+
   .axis {
     text {
       font-size: 10px;
@@ -16,4 +18,25 @@
   .y-axis text {
     text-anchor: end;
   }
+
+}
+
+.storm-legend {
+  width: 90%;
+  height: 20%;
+  position: relative;
+  font-size: 14px;
+
+  .legend-elem {
+    margin-right: 10px;;
+  }
+
+  .legend-color {
+    width: 9px;
+    height: 9px;
+    margin-right: 5px;
+    display: inline-block;
+    border-radius: 50%;;
+  }
+
 }

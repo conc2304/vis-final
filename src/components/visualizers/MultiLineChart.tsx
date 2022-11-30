@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, MutableRefObject } from 'react';
 import {
   GeoRegionUSType,
   SelectedDimensionsType,
@@ -45,9 +45,25 @@ const MultiLineChart = ({
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
+  const colorScale: MutableRefObject<d3.ScaleOrdinal<string, unknown, never>> = useRef();
+
   const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
 
   let displayData: DisplayData[] = [];
+
+  const stormColorMap = {
+    'Extreme Temperature': '#f27fff', // magenta 
+    'Flood': '#2ef8ff', // cyan 
+    'Hurricane': '#43f1b7', // green 
+    'Landslide': '#fccc6c', // orange 
+    'Thunderstorm': '#59adf6', // blue 
+    'Tornado': '#9d94ff', // purple 
+    'Wildfire': '#ff6961', // red 
+    'Winter Storm': '#fff'  // white
+  };
+
+  const isSelectedStorm = (stormName: StormEventCategoryType) =>
+    stormTypeSelected.toLowerCase() === stormName.toLocaleLowerCase();
 
   useEffect(() => {
     // if we dont have data yet dont renter
@@ -96,36 +112,95 @@ const MultiLineChart = ({
 
     const yScale = d3.scaleLinear().range([innerHeight, 0]).domain([dimensionMin, dimensionMax]); // height of the individual lines
 
+    // const colorSeries = [
+    //   '#00fa5a', // green
+    //   '#2afb9d', // seafoam
+    //   '#00e7ff', // light blue
+    //   '#329fff', // blue
+    //   '#a87efd', // dark purple
+    //   '#9d2afb', // purple
+    //   '#dd32fb', // magenta
+    // ];
+
+    // const colorSeries = [
+    //   '#f27fff', // magenta extreme temp
+    //   '#2ef8ff', // cyan // flood
+    //   '#43f1b7', // green // hurricane
+    //   '#fccc6c', // orange // landslide
+    //   '#59adf6', // blue // thunderstorm
+    //   '#9d94ff', // purple // Tornado
+    //   '#ff6961', // red // wildfire
+    //   '#fff'  // winter storm
+    // ];
+
+    // const stormColorMap = {
+    //   'Extreme Temperature': '#f27fff', // magenta 
+    //   'Flood': '#2ef8ff', // cyan 
+    //   'Hurricane': '#43f1b7', // green 
+    //   'Landslide': '#fccc6c', // orange 
+    //   'Thunderstorm': '#59adf6', // blue 
+    //   'Tornado': '#9d94ff', // purple 
+    //   'Wildfire': '#ff6961', // red 
+    //   'Winter Storm': '#fff'  // white
+    // };
+
+    // colorScale.current = d3.scaleOrdinal().range(colorSeries);
+
+    // colorScale.current.domain(
+    //   displayData
+    //     .filter((entry) => {
+    //       // filter out the selectected state if its not one of the top 3
+    //       if (isSelectedStorm(entry.key)) {
+    //         return false;
+    //       }
+    //       return true;
+    //     })
+    //     .map((entry) => entry.key)
+    // );
+
     const generator = d3
-      .line()
+      .area()
       // @ts-ignore
       .x((d: StateDataDimensions) => xScale(d.YEAR))
       // @ts-ignore
-      .y((d: StateDataDimensions) => yScale(d[selectedDimension]))
+      .y0(innerHeight)
+      // @ts-ignore
+      .y1((d: StateDataDimensions) => yScale(d[selectedDimension]))
       .curve(d3.curveBasis);
 
-    const isSelectedRegion = (index: number) => stormTypeSelected === STORM_EVENT_CATEGORIES[index];
     // Render the Area Paths for each of the storm events
-    svgContent
-      .selectAll('.area-path')
-      .data(displayData)
-      .join('path')
-      .attr('class', (d) => `area-path path-for-${d.key.replace(' ', '-')}`)
+    const lines = svgContent.selectAll('path').data(displayData, (d: DisplayData) => d.key);
+
+    lines
+      .enter()
+      .append('path')
+      .attr('class', (d) => `area-path`)
       // @ts-ignore
-      .datum((d: DisplayData) => d.values)
-      .attr('fill', 'none')
-      .attr('mix-blend-mode', 'multiply')
+      .merge(lines)
+      .attr('fill-opacity', 0.05)
+      .style('mix-blend-mode', 'multiply')
+      .style('filter', 'url(#glow-line)')
+      .attr('stroke-linejoin', 'round')
+      .attr('stroke-opacity', 1)
       .transition()
       .duration(500)
-      .attr('stroke', (d, i) => (isSelectedRegion(i) ? COLOR_ACCCENT : COLOR_UI_PRIMARY))
-      .attr('stroke-width', (d, i) => (isSelectedRegion(i) ? 2 : 1))
-      .attr('stroke-opacity', (d, i) => (isSelectedRegion(i) ? 1 : 0.5))
+      .attr('stroke', (d) =>
+        isSelectedStorm(d.key) ? COLOR_ACCCENT : (stormColorMap[d.key])
+      )
+      .attr('fill', (d) =>
+        isSelectedStorm(d.key) ? COLOR_ACCCENT : (stormColorMap[d.key])
+      )
+      .attr('fill-opacity', (d) => (isSelectedStorm(d.key) ? 0.1 : 0.05))
+      .attr('stroke-width', (d) => (isSelectedStorm(d.key) ? 2 : 1))
       // @ts-ignore
-      .attr('d', generator);
+      .attr('d', (d) => generator(d.values));
+    lines.exit().remove();
 
-    svgContent.on('mouseenter', function () {
-      console.log(this);
-    });
+    lines.on("mouseenter", lineEnter)
+
+    function lineEnter(event: MouseEvent, d: DisplayData) {
+      console.log(d)
+    }
 
     svgContent.exit().remove();
 
@@ -254,32 +329,51 @@ const MultiLineChart = ({
   }
 
   return (
-    <div
-      ref={wrapperRef}
-      style={{ width: '100%', height: '100%', position: 'relative' }}
-      className={`${id}-wrapper event-by-storm-chart`}
-    >
-      <p className="title" style={{ position: 'absolute', top: 0, left: margin.left + 20 }}>
-        {title} by Storm Type
-        <small className="ms-1">
-          (
-          {regionSelected === 'ALL'
-            ? 'USA'
-            : (regionSelected as string).replace('(United States)', '').trim()}
-        </small>
-        )
-      </p>
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <div
+        ref={wrapperRef}
+        style={{ width: '100%', height: '80%', position: 'relative' }}
+        className={`${id}-wrapper event-by-storm-chart`}
+      >
+        <div className="title" style={{ position: 'absolute', top: 0, left: margin.left + 20 }}>
+          {title} by Storm Type
+          <p className="mt-1" style={{ color: COLOR_ACCCENT }}>
+            {regionSelected === 'ALL'
+              ? 'USA'
+              : (regionSelected as string).replace('(United States)', '').trim().toUpperCase()}
+          </p>
+        </div>
 
-      <svg ref={svgRef}>
-        <defs>
-          <clipPath id={`${id}`}>
-            <rect x="0" y="0" width={innerDimension.w} height="100%" />
-          </clipPath>
-        </defs>
-        <g className="content" clipPath={`url(#${id})`}></g>
-        <g className="x-axis axis" />
-        <g className="y-axis axis" />
-      </svg>
+        <svg ref={svgRef}>
+          <defs>
+            <clipPath id={`${id}`}>
+              <rect x="0" y="0" width={innerDimension.w} height="100%" />
+            </clipPath>
+          </defs>
+          <g className="content" clipPath={`url(#${id})`}></g>
+          <g className="x-axis axis" />
+          <g className="y-axis axis" />
+        </svg>
+      </div>
+
+      <div
+        className="storm-legend d-flex justify-content-between flex-wrap"
+        style={{left: margin.left / 2 }}
+      >
+        {STORM_EVENT_CATEGORIES.map((stormName) => {
+          const color = isSelectedStorm(stormName) ? COLOR_ACCCENT : stormColorMap[stormName]
+          return (
+            <div className='legend-elem' key={stormName}>
+              <div className='legend-color'
+                style={{
+                  backgroundColor: `${color}`,
+                }}
+              ></div>
+              <span>{stormName}</span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

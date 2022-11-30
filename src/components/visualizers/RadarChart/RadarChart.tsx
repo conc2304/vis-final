@@ -92,7 +92,10 @@ const RadarChart = ({
     });
 
     const domainMax = d3.max(data, (i) => d3.max(i.map((j) => j.value)));
-    const rScale = d3.scaleLinear().range([0, radius]).domain([0, domainMax === 0 ? 100 : domainMax]);
+    const rScale = d3
+      .scaleLinear()
+      .range([0, radius])
+      .domain([0, domainMax === 0 ? 100 : domainMax]);
 
     //Draw the background circles
     const axisGrid = svg.select('.axis-grid');
@@ -314,7 +317,7 @@ const RadarChart = ({
   }, [data, selectedState]);
 
   function backgroundAreaTooltip(state: string, data: RadarDataEntry[]) {
-    const lineItem = (entry) => `
+    const lineItem = (entry: RadarDataEntry) => `
     <div>
       <strong>${entry.axis}:</strong>
       <span>${entry.formatFn(entry.value)}</span>
@@ -396,10 +399,7 @@ const RadarChart = ({
           <g className="axis-grid" />
         </g>
       </svg>
-      <div
-        ref={tooltipRef}
-        className="tooltip-ui"
-      ></div>
+      <div ref={tooltipRef} className="tooltip-ui"></div>
     </div>
   );
 };
