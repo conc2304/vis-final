@@ -137,10 +137,13 @@ const TopStatesOverTimeMultiLineChart = ({
       displayData
         .filter((entry) => {
           // filter out the selectected state if its not one of the top 3
-          if (displayData.length > numberOfTopStates && !isSelectedState(entry.key) ) {
-            return true;
+          console.log(entry.key, stateSelected)
+          const isSelected = isSelectedState(entry.key);
+          const dL = displayData.length;
+          if (displayData.length > numberOfTopStates && isSelectedState(entry.key)) {
+            return false;
           }
-          return false;
+          return true;
         })
         .map((entry) => entry.key)
     );
@@ -148,7 +151,7 @@ const TopStatesOverTimeMultiLineChart = ({
 
     // plot the path
     const lines = svgContent.selectAll('path').data(displayData, (d: DisplayData) => d.key);
-
+console.log(colorScale.current.domain())
     lines
       .enter()
       .append('path')
@@ -157,6 +160,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .merge(lines)
       .attr('fill-opacity', 0.2)
       .style('mix-blend-mode', 'multiply')
+      .style('filter', 'url(#glow-line)')
       .attr('stroke-linejoin', 'round')
       .attr('stroke-opacity', 1)
       .transition()
@@ -434,6 +438,13 @@ const TopStatesOverTimeMultiLineChart = ({
             <clipPath id={`${id}`}>
               <rect x="0" y="0" width={innerDimension.w} height="100%" />
             </clipPath>
+            <filter id="glow-line">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
           </defs>
           <g className="content" clipPath={`url(#${id})`}></g>
           <g className="x-axis axis" />
