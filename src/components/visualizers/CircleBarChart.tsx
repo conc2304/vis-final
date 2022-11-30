@@ -453,9 +453,9 @@ const CircleBarChart = ({
           </g>
           <g className="thermometer-values">
             <path className="thermometer" fill={COLOR_UI_ERROR} />
-            <circle className="thermo-tick-high" r="8" stroke={COLOR_UI_PRIMARY} />
-            <circle className="thermo-tick-mid" r="8" stroke={COLOR_UI_PRIMARY} />
-            <circle className="thermo-tick-low" r="8" stroke={COLOR_UI_PRIMARY} />
+            <circle className="thermo-tick-high" r="5" stroke={COLOR_UI_PRIMARY} />
+            <circle className="thermo-tick-mid" r="5" stroke={COLOR_UI_PRIMARY} />
+            <circle className="thermo-tick-low" r="5" stroke={COLOR_UI_PRIMARY} />
             <circle className='thermo-value'
               r="27"
               style={{

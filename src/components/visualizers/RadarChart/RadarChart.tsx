@@ -201,8 +201,6 @@ const RadarChart = ({
       .style('fill-opacity', opacityArea)
       .on('mouseover', function (event: MouseEvent, d) {
         //Dim all blobs
-
-        console.log(this);
         d3.selectAll('.radar-area').transition().duration(200).style('fill-opacity', 0.1);
         //Bring back the hovered over blob
         d3.select(this).transition().duration(200).style('fill-opacity', 0.5);
