@@ -92,7 +92,7 @@ const RadarChart = ({
     });
 
     const domainMax = d3.max(data, (i) => d3.max(i.map((j) => j.value)));
-    const rScale = d3.scaleLinear().range([0, radius]).domain([0, domainMax]);
+    const rScale = d3.scaleLinear().range([0, radius]).domain([0, domainMax === 0 ? 100 : domainMax]);
 
     //Draw the background circles
     const axisGrid = svg.select('.axis-grid');
