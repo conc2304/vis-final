@@ -88,7 +88,7 @@ const TopStatesOverTimeMultiLineChart = ({
       ])
       .range([0, innerWidth]);
 
-    const colorSeries = ['#0086fc', '#6d26fc', '#00e7ff'];
+    const colorSeries = ['#329fff', '#a87efd', '#00e7ff'];
     colorScale.current = d3.scaleOrdinal().range(colorSeries);
 
     // yscale for density of metric
@@ -110,14 +110,6 @@ const TopStatesOverTimeMultiLineChart = ({
     // yscale for density of metric
     const yScale = d3.scaleLinear().range([innerHeight, 0]).domain([dimensionMin, dimensionMax]); // height of the individual lines
 
-    // const generator = d3
-    //   .line()
-    //   // @ts-ignore
-    //   .x((d: StateDataDimensions) => xScale(d.YEAR))
-    //   // @ts-ignore
-    //   .y((d: StateDataDimensions) => yScale(d[selectedDimension]))
-    //   .curve(d3.curveBasis);
-
     const generator = d3
       .area()
       // @ts-ignore
@@ -128,7 +120,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .y1((d: StateDataDimensions) => yScale(d[selectedDimension]))
       .curve(d3.curveBasis);
 
-    const isSelectedState = (state) => {
+    const isSelectedState = (state: GeoRegionUSType) => {
       return stateSelected.toLowerCase() === state.toLowerCase();
     };
 
@@ -137,9 +129,6 @@ const TopStatesOverTimeMultiLineChart = ({
       displayData
         .filter((entry) => {
           // filter out the selectected state if its not one of the top 3
-          console.log(entry.key, stateSelected)
-          const isSelected = isSelectedState(entry.key);
-          const dL = displayData.length;
           if (displayData.length > numberOfTopStates && isSelectedState(entry.key)) {
             return false;
           }
@@ -151,14 +140,13 @@ const TopStatesOverTimeMultiLineChart = ({
 
     // plot the path
     const lines = svgContent.selectAll('path').data(displayData, (d: DisplayData) => d.key);
-console.log(colorScale.current.domain())
     lines
       .enter()
       .append('path')
       .attr('class', (d) => `area-path`)
       // @ts-ignore
       .merge(lines)
-      .attr('fill-opacity', 0.2)
+      .attr('fill-opacity', 0.05)
       .style('mix-blend-mode', 'multiply')
       .style('filter', 'url(#glow-line)')
       .attr('stroke-linejoin', 'round')
@@ -171,7 +159,7 @@ console.log(colorScale.current.domain())
       .attr('fill', (d) =>
         isSelectedState(d.key) ? COLOR_ACCCENT : (colorScale.current(d.key) as string)
       )
-      .attr('stroke-width', (d) => (isSelectedState(d.key) ? 3 : 1.5))
+      .attr('stroke-width', (d) => (isSelectedState(d.key) ? 2 : 1))
       // @ts-ignore
       .attr('d', (d) => generator(d.values));
     lines.exit().remove();
@@ -439,7 +427,7 @@ console.log(colorScale.current.domain())
               <rect x="0" y="0" width={innerDimension.w} height="100%" />
             </clipPath>
             <filter id="glow-line">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+              <feGaussianBlur stdDeviation="2.7" result="coloredBlur" />
               <feMerge>
                 <feMergeNode in="coloredBlur" />
                 <feMergeNode in="SourceGraphic" />
