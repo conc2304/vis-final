@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/vis-final/static/css/main.e050fe81.css",
-    "main.js": "/vis-final/static/js/main.3e284a95.js",
+    "main.js": "/vis-final/static/js/main.ad683c8f.js",
     "static/js/787.44888680.chunk.js": "/vis-final/static/js/787.44888680.chunk.js",
     "static/media/Oxanium-ExtraLight.ttf": "/vis-final/static/media/Oxanium-ExtraLight.ff80b254cacf17e95950.ttf",
     "static/media/Mechanization.ttf": "/vis-final/static/media/Mechanization.a08ba13578ec125650d4.ttf",
@@ -11,11 +11,11 @@
     "static/media/chevron-arrow-right.svg": "/vis-final/static/media/chevron-arrow-right.d4b9ff0b4b9c7a8a37da684b7543278f.svg",
     "index.html": "/vis-final/index.html",
     "main.e050fe81.css.map": "/vis-final/static/css/main.e050fe81.css.map",
-    "main.3e284a95.js.map": "/vis-final/static/js/main.3e284a95.js.map",
+    "main.ad683c8f.js.map": "/vis-final/static/js/main.ad683c8f.js.map",
     "787.44888680.chunk.js.map": "/vis-final/static/js/787.44888680.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e050fe81.css",
-    "static/js/main.3e284a95.js"
+    "static/js/main.ad683c8f.js"
   ]
 }
