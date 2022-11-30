@@ -339,6 +339,9 @@ const MultiLineChart = ({
               onMouseEnter={() => {
                 setHoveredStormEvent(stormName);
               }}
+              onMouseLeave={() => {
+                setHoveredStormEvent(null);
+              }}
             >
               <div
                 className="legend-color"
