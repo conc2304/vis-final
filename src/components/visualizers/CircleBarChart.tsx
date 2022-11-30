@@ -186,7 +186,7 @@ const CircleBarChart = ({
       .attr('x', thermoRadius.current * 1.05 * Math.cos(startAngle))
       .attr('y', thermoRadius.current * 1.05 * Math.sin(startAngle));
 
-    d3.select('.thermometer-values circle')
+    d3.select('.thermometer-values circle.thermo-value')
       .attr('cx', (d) => {
         const tempForYear = getTempForYear(YEAR_RANGE.min);
         return thermoRadius.current * Math.sin(tempArcScale.current(tempForYear));
@@ -218,7 +218,7 @@ const CircleBarChart = ({
         .arc()
         .startAngle(Math.PI - tempArcScale.current(getTempForYear(YEAR_RANGE.min)))
         .endAngle(tempArcScale.current.range()[1])
-        .innerRadius(thermoRadius.current) // banana arc
+        .innerRadius(thermoRadius.current)
         .outerRadius(thermoRadius.current + thermoThickness)
     );
 
@@ -319,28 +319,26 @@ const CircleBarChart = ({
 
     // add thermometer guage
 
-    const thermoArc = d3
-      .arc()
-      .startAngle(Math.PI - tempArcScale.current(getTempForYear(YEAR_RANGE.min)))
-      .endAngle(tempArcScale.current.range()[1])
-      .innerRadius(thermoRadius.current) // banana arc
-      .outerRadius(thermoRadius.current + thermoThickness);
 
-    // d3.select('path.thermometer')
-    //   .datum(yearFilter)
-    //   .transition()
-    //   .delay(0)
-    //   .attrTween('d', function (d) {
-    //     console.log(d)
-    //     const [startAngle, endAngle] = tempArcScale.current.range();
-    //     const interpolate = d3.interpolate(tempArcScale.current(getTempForYear(d)), endAngle);
-    //     return (t) => {
-    //       thermoArc.startAngle(interpolate(t));
-    //       return arc(d);
-    //     };
-    //   });
+    d3.select('path.thermometer')
+      .datum(yearFilter)
+      .transition()
+      //@ts-ignore
+      .attrTween('d', function (d, i) {
 
-    d3.select('.thermometer-values circle')
+        const arc = d3.arc()
+          .startAngle(Math.PI - tempArcScale.current(getTempForYear(yearFilter)))
+          .endAngle(tempArcScale.current.range()[1])
+          .innerRadius(thermoRadius.current)
+          .outerRadius(thermoRadius.current + thermoThickness);
+
+        return (t) => {
+          //@ts-ignore
+          return arc();
+        };
+      });
+
+    d3.select('.thermometer-values circle.thermo-value')
       .datum(yearFilter)
       .transition()
       .attr('cx', (d) => {
@@ -442,7 +440,7 @@ const CircleBarChart = ({
             <path className="thermometer-scale" fill={COLOR_UI_PRIMARY}></path>
           </g>
 
-          <g className="thermometer-ticks">
+          <g className="thermometer-ticks-labels">
             <text className="thermo-tick-high-label" fill={COLOR_UI_PRIMARY}>
               +1°
             </text>
@@ -452,13 +450,13 @@ const CircleBarChart = ({
             <text className="thermo-tick-low-label" fill={COLOR_UI_PRIMARY}>
               -1°
             </text>
-            <circle className="thermo-tick-high" r="8" stroke={COLOR_UI_PRIMARY} />
-            <circle className="thermo-tick-mid" r="8" stroke={COLOR_UI_PRIMARY} />
-            <circle className="thermo-tick-low" r="8" stroke={COLOR_UI_PRIMARY} />
           </g>
           <g className="thermometer-values">
             <path className="thermometer" fill={COLOR_UI_ERROR} />
-            <circle
+            <circle className="thermo-tick-high" r="8" stroke={COLOR_UI_PRIMARY} />
+            <circle className="thermo-tick-mid" r="8" stroke={COLOR_UI_PRIMARY} />
+            <circle className="thermo-tick-low" r="8" stroke={COLOR_UI_PRIMARY} />
+            <circle className='thermo-value'
               r="27"
               style={{
                 fill: '#000',
