@@ -63,6 +63,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .y((d: GlobalTempDataType) => yScale(d.smoothed))
       .curve(d3.curveMonotoneX);
 
+    // draw the baseline temp
     d3.select('.baseline-temp')
       .data([
         [
@@ -89,11 +90,12 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .data([data])
       .join('path')
       .classed('line-path', true)
+      .style('filter', 'url(#glow-line-temp)')
       .transition()
       .duration(500)
       .ease(d3.easeSinInOut)
       .attr('stroke', COLOR_UI_ERROR)
-      .attr('stroke-width', '2')
+      .attr('stroke-width', '1.5')
       .attr('fill', 'none')
       // @ts-ignore
       .attr('d', lineGenerator);
@@ -107,6 +109,9 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .attr('transform', `translate(${margin.left}, ${innerHeight + margin.top})`)
       // @ts-ignore
       .call(xAxis);
+
+      svg.select(".selection")
+      .style('filter', 'url(#glow-line-temp)')
 
     svg
       .select('.y-axis')
@@ -206,6 +211,13 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
           <clipPath id={id}>
             <rect x="0" y="0" width="100%" height="100%" />
           </clipPath>
+          <filter id="glow-line-temp">
+            <feGaussianBlur stdDeviation="15" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
         </defs>
         <g className="content">
           <path className="line-path"></path>
@@ -224,16 +236,3 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
 };
 
 export default LineChart;
-
-{
-  /* <g> // todo maybe make this a pop up
-          <text
-            className="description"
-            style={{ fontSize: '12px', lineHeight: '12px', width: '80%', margin: '0 auto' }}
-          >
-            The term temperature anomaly means a departure from a reference value or long-term average. A positive
-            anomaly indicates that the observed temperature was warmer than the reference value, while a negative
-            anomaly indicates that the observed temperature was cooler than the reference value.
-          </text>
-        </g> */
-}

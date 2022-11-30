@@ -3,6 +3,8 @@ import { useState, useRef, useEffect } from 'react';
 import { geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import { Feature, Geometry, FeatureCollection } from 'geojson';
+import { offset } from '@popperjs/core';
+import { hide } from 'yargs';
 import {
   GeoJsonFeatureType,
   GeoRegionUSType,
@@ -54,6 +56,7 @@ const HeatMap = ({
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
+  const tooltipRef = useRef(null);
 
   type MyGeometry = Array<Feature<Geometry | null>> | Array<FeatureCollection> | [];
   const [geographies, setGeographies] = useState<MyGeometry>([]);
@@ -284,6 +287,7 @@ const HeatMap = ({
 
     statePaths.on('click', onStateClick);
     statePaths.on('mouseenter', onStateHover);
+    statePaths.on('mousemove', onStateMove);
     statePaths.on('mouseout', onStateExit);
     svg.on('click', onCountryClick);
     svg.on('mouseenter', onSvgHover);
@@ -361,12 +365,52 @@ const HeatMap = ({
     e.stopPropagation();
     setStateIsHovered(true);
     setSvgIsHovered(true);
+
+    showTooltipData(e, d);
   }
+
+  function onStateMove(e: MouseEvent) {
+    const xPos = e.offsetX + 15;
+    const yPos = e.offsetY;
+
+    const tooltip = tooltipRef.current;
+    const { width, height } = tooltip.getBoundingClientRect();
+
+    tooltip.style.left = `${xPos - width - 25}px`;
+    tooltip.style.top = `${yPos - height}px`;
+  }
+
+  const showTooltipData = (e: MouseEvent, d: GeoJsonFeatureType) => {
+    const stateVar = isHexGrid ? 'google_name' : 'name';
+    const { [stateVar]: name } = d.properties;
+    const cleanedName = (name as string).replace('(United States)', '').trim();
+    const stateName = cleanedName as GeoRegionUSType;
+    const xPos = e.offsetX;
+    const yPos = e.offsetY;
+
+    const tooltip = tooltipRef.current;
+
+    tooltip.innerHTML = `<div>${stateName}<div>`;
+    const { width, height } = tooltip.getBoundingClientRect();
+    tooltip.style.left = `${xPos - width - 25}px`;
+    tooltip.style.top = `${yPos - height}px`;
+    tooltip.style.zIndex = 220;
+    tooltip.style.opacity = 1;
+  };
+
+  const hideTooltipData = () => {
+    const tooltip = tooltipRef.current;
+
+    tooltip.style.zIndex = -1;
+    tooltip.style.opacity = 0;
+  };
 
   function onStateExit(e: MouseEvent, d: GeoJsonFeatureType) {
     e.stopPropagation();
     setStateIsHovered(false);
     setSvgIsHovered(true);
+
+    hideTooltipData();
   }
 
   function onSvgHover(e: MouseEvent, d: GeoJsonFeatureType) {
@@ -414,6 +458,7 @@ const HeatMap = ({
           control={<Switch checked={isHexGrid} onChange={handleOnMapViewToggle} size="small" />}
         />
       )} */}
+      <div ref={tooltipRef} className="tooltip-ui"></div>
     </div>
   );
 };

@@ -23,6 +23,7 @@ type Props = {
   lineType?: 'curved' | 'linear';
   areValuesNormalized?: boolean;
   selectedState?: GeoRegionUSType | 'ALL';
+  title: string;
 };
 
 const RadarChart = ({
@@ -40,6 +41,7 @@ const RadarChart = ({
   lineType = 'linear',
   areValuesNormalized = true,
   selectedState = null,
+  title = '',
 }: Props) => {
   const svgRef = useRef(null);
   const tooltipRef = useRef(null);
@@ -90,7 +92,7 @@ const RadarChart = ({
     });
 
     const domainMax = d3.max(data, (i) => d3.max(i.map((j) => j.value)));
-    const rScale = d3.scaleLinear().range([0, radius]).domain([0, domainMax]);
+    const rScale = d3.scaleLinear().range([0, radius]).domain([0, domainMax === 0 ? 100 : domainMax]);
 
     //Draw the background circles
     const axisGrid = svg.select('.axis-grid');
@@ -112,8 +114,6 @@ const RadarChart = ({
 
     // Label the Axis Markers
     const getTextAnchorValue = (d, i) => {
-      // if x is between
-      // if ()
       const x = Math.cos(angleSize * i - Math.PI / 2);
       const y = Math.sin(angleSize * i - Math.PI / 2);
 
@@ -122,6 +122,7 @@ const RadarChart = ({
       if (x < 0) return 'end';
       return 'middle';
     };
+
     axisGrid
       .selectAll('.axis-label')
       .data(axisNames)
@@ -205,14 +206,14 @@ const RadarChart = ({
         //Bring back the hovered over blob
         d3.select(this).transition().duration(200).style('fill-opacity', 0.5);
 
-        // prep the tooltip 
+        // prep the tooltip
         const state = d[0].state;
 
         tooltip.innerHTML = backgroundAreaTooltip(state, d);
         tooltip.style.width = '240px';
 
         const tWidth = tooltip.getBoundingClientRect().width;
-        const tooltipXPos = innerWidth - tWidth/2;
+        const tooltipXPos = innerWidth - tWidth / 2;
 
         tooltip.style.left = `${tooltipXPos}px`;
         tooltip.style.top = `${0}px`;
@@ -372,6 +373,12 @@ const RadarChart = ({
       style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}
       className={`${id}-wrapper event-by-storm-chart position-relative`}
     >
+      <div
+        className="radar-title"
+        style={{ position: 'absolute', top: 0, left: 10, width: '200px', fontSize: '14px' }}
+      >
+        {title}
+      </div>
       <svg ref={svgRef}>
         <defs>
           <clipPath id={`${id}`}>
@@ -391,15 +398,7 @@ const RadarChart = ({
       </svg>
       <div
         ref={tooltipRef}
-        className="tooltip"
-        style={{
-          position: 'absolute',
-          backgroundColor: 'black',
-          borderRadius: '8px',
-          border: `0.5px solid ${COLOR_UI_PRIMARY}`,
-          zIndex: -1,
-          boxShadow: '0px 0px 10px 2px rgb(66 168 162 / 65%)',
-        }}
+        className="tooltip-ui"
       ></div>
     </div>
   );

@@ -226,8 +226,9 @@ const StormsPage = () => {
                       areValuesNormalized={false}
                       lineType="curved"
                       labelFactor={1.29}
-                      margin={{ top: 80, right: 0, bottom: 80, left: 0 }}
+                      margin={{ top: 90, right: 0, bottom: 80, left: 0 }}
                       selectedState={selectedGeoRegion}
+                      title="Top 3 Most Impacted States (Metrics)"
                     />
                   </Col>
                   <Col xs={6} lg={12} className="h-50 mb-10">
@@ -238,8 +239,9 @@ const StormsPage = () => {
                       lineType="curved"
                       labelFactor={1.18}
                       wrapWidth={120}
-                      margin={{ top: 80, right: 0, bottom: 100, left: 0 }}
+                      margin={{ top: 90, right: 0, bottom: 100, left: 0 }}
                       selectedState={selectedGeoRegion}
+                      title="Top 3 Most Impacted States (Storms)"
                     />
                   </Col>
                 </Row>

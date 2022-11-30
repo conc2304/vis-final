@@ -20,7 +20,7 @@ export const fillMissingYears = (
     });
   }
 
-  for (let year = maxYear; year <= YEAR_RANGE.max; year++) {
+  for (let year = maxYear; year < YEAR_RANGE.max; year++) {
     yearData.push({
       YEAR: year,
       STATE: stateName || null,
