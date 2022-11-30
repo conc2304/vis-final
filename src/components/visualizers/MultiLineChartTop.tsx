@@ -390,7 +390,10 @@ const TopStatesOverTimeMultiLineChart = ({
 
   return (
     <>
-      <div ref={wrapperRef} className={`${id}-wrapper top-states-chart`}>
+      <div ref={wrapperRef} className={`${id}-wrapper top-states-chart`}
+      style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}
+      
+      >
         <div className="title" style={{ position: 'absolute', top: 8, left: margin.left + 20 }}>
           Top {numberOfTopStates} Most Impacted States:
           <br /> {eventFilter === 'ALL' ? 'All Storms' : `${eventFilter}s`} : {title}
@@ -421,7 +424,7 @@ const TopStatesOverTimeMultiLineChart = ({
             )}
           </div>
         </div>
-        <svg ref={svgRef}>
+        <svg ref={svgRef} >
           <defs>
             <clipPath id={`${id}`}>
               <rect x="0" y="0" width={innerDimension.w} height="100%" />

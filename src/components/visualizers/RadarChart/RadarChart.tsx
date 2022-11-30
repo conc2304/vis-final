@@ -114,8 +114,6 @@ const RadarChart = ({
 
     // Label the Axis Markers
     const getTextAnchorValue = (d, i) => {
-      // if x is between
-      // if ()
       const x = Math.cos(angleSize * i - Math.PI / 2);
       const y = Math.sin(angleSize * i - Math.PI / 2);
 
@@ -124,6 +122,7 @@ const RadarChart = ({
       if (x < 0) return 'end';
       return 'middle';
     };
+
     axisGrid
       .selectAll('.axis-label')
       .data(axisNames)
@@ -204,7 +203,6 @@ const RadarChart = ({
       .on('mouseover', function (event: MouseEvent, d) {
         //Dim all blobs
 
-        console.log(this);
         d3.selectAll('.radar-area').transition().duration(200).style('fill-opacity', 0.1);
         //Bring back the hovered over blob
         d3.select(this).transition().duration(200).style('fill-opacity', 0.5);
@@ -401,15 +399,7 @@ const RadarChart = ({
       </svg>
       <div
         ref={tooltipRef}
-        className="tooltip"
-        style={{
-          position: 'absolute',
-          backgroundColor: 'black',
-          borderRadius: '8px',
-          border: `0.5px solid ${COLOR_UI_PRIMARY}`,
-          zIndex: -1,
-          boxShadow: '0px 0px 10px 2px rgb(66 168 162 / 65%)',
-        }}
+        className="tooltip-ui"
       ></div>
     </div>
   );
