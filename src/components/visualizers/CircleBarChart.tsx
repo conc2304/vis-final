@@ -3,11 +3,18 @@ import { useRef, useEffect, useState, MutableRefObject } from 'react';
 import { GeoRegionUSType, StormDataType } from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
-import { COLOR_RANGE, COLOR_UI_ERROR, COLOR_UI_PRIMARY, YEAR_RANGE } from './data/constants';
+import {
+  COLOR_RANGE,
+  COLOR_UI_ERROR,
+  COLOR_UI_PRIMARY,
+  COLOR_UI_SUCESS,
+  YEAR_RANGE,
+} from './data/constants';
 import GlobalTempData from './data/Global_Temp_Data';
 import { allStates, stateNameToAbbreviation } from './data/states';
 
 import './CircleBarChart.scss';
+import { arc } from 'd3';
 
 interface DisplayData {
   state: GeoRegionUSType;
@@ -52,11 +59,15 @@ const CircleBarChart = ({
   const svgContent: MutableRefObject<d3.Selection<d3.BaseType, unknown, null, undefined>> =
     useRef();
   const arcGenerator: MutableRefObject<d3.Arc<unknown, DisplayData>> = useRef();
-  const tempRadiusScale: MutableRefObject<any> = useRef();
   const tempColorScale: MutableRefObject<any> = useRef();
   const timeScale: MutableRefObject<any> = useRef();
+  const tempArcScale: MutableRefObject<d3.ScaleLinear<number, number, never>> = useRef();
+  const thermoArc: MutableRefObject<any> = useRef();
+  const thermoRadius: MutableRefObject<number> = useRef();
+  const thermoThickness = 2;
 
   useEffect(() => {
+    // INIT
     if (!stormData) {
       return;
     }
@@ -102,7 +113,7 @@ const CircleBarChart = ({
     const innerWidth = svgWidth - margin.left - margin.right;
     const innerHeight = svgHeight - margin.top - margin.bottom;
 
-    const radiusMax = d3.min([innerWidth / 2 - 20, innerHeight / 2 - 20]);
+    const radiusMax = d3.min([innerWidth / 2, innerHeight / 2]) * 0.85;
 
     svg.attr('width', svgWidth).attr('height', svgHeight);
     svgContent.current = svg
@@ -114,7 +125,7 @@ const CircleBarChart = ({
       `translate(${svgWidth / 2}, ${svgHeight / 2})`
     );
 
-    d3.select('.temp-anomaly-group').attr(
+    d3.select('.thermometer-group').attr(
       'transform',
       `translate(${svgWidth / 2}, ${svgHeight / 2})`
     );
@@ -139,11 +150,77 @@ const CircleBarChart = ({
       // @ts-ignore
       .range(COLOR_RANGE.slice(1));
 
-    tempRadiusScale.current = d3
-      .scaleLinear()
-      .domain([-1, 1])
-      // @ts-ignore
-      .range([innerRadius, radiusMax]);
+    // add circular thermometer guage
+    const startAngle = Math.PI / 4;
+    const endAngle = (3 * Math.PI) / 4;
+    thermoRadius.current = radiusMax * 1.05;
+
+    tempArcScale.current = d3.scaleLinear().domain([-1, 1]).range([startAngle, endAngle]);
+
+    thermoArc.current = d3
+      .arc()
+      .innerRadius(thermoRadius.current)
+      .outerRadius(thermoRadius.current + thermoThickness)
+      .startAngle(startAngle)
+      .endAngle(endAngle);
+
+    d3.select('path.thermometer-scale').attr('d', thermoArc.current);
+
+    d3.select('.thermo-tick-high')
+      .attr('cx', thermoRadius.current * Math.sin(endAngle))
+      .attr('cy', thermoRadius.current * Math.cos(endAngle));
+    d3.select('.thermo-tick-mid')
+      .attr('cx', thermoRadius.current * Math.sin((startAngle + endAngle) / 2))
+      .attr('cy', thermoRadius.current * Math.cos((startAngle + endAngle) / 2));
+    d3.select('.thermo-tick-low')
+      .attr('cx', thermoRadius.current * Math.cos(startAngle))
+      .attr('cy', thermoRadius.current * Math.sin(startAngle));
+
+    d3.select('.thermo-tick-high-label')
+      .attr('x', thermoRadius.current * 1.05 * Math.sin(endAngle))
+      .attr('y', thermoRadius.current * 1.05 * Math.cos(endAngle));
+    d3.select('.thermo-tick-mid-label')
+      .attr('x', thermoRadius.current * 1.05 * Math.sin((startAngle + endAngle) / 2))
+      .attr('y', thermoRadius.current * 1.05 * Math.cos((startAngle + endAngle) / 2));
+    d3.select('.thermo-tick-low-label')
+      .attr('x', thermoRadius.current * 1.05 * Math.cos(startAngle))
+      .attr('y', thermoRadius.current * 1.05 * Math.sin(startAngle));
+
+    d3.select('.thermometer-values circle')
+      .attr('cx', (d) => {
+        const tempForYear = getTempForYear(YEAR_RANGE.min);
+        return thermoRadius.current * Math.sin(tempArcScale.current(tempForYear));
+      })
+      .attr('cy', (d) => {
+        const tempForYear = getTempForYear(YEAR_RANGE.min);
+        return thermoRadius.current * Math.cos(tempArcScale.current(tempForYear));
+      });
+
+    d3.select('.temp-anomaly-value')
+      .datum(yearFilter)
+      .text((d) => {
+        const temp = getTempForYear(YEAR_RANGE.min);
+        return `${temp > 0 ? '+' : ''}${temp}°`;
+      })
+      .attr('x', (d) => {
+        const tempForYear = getTempForYear(YEAR_RANGE.min);
+        return thermoRadius.current * Math.sin(tempArcScale.current(tempForYear));
+      })
+      .attr('y', (d) => {
+        const tempForYear = getTempForYear(YEAR_RANGE.min);
+        return thermoRadius.current * Math.cos(tempArcScale.current(tempForYear));
+      });
+
+    // the red thermometer line
+    d3.select('path.thermometer').attr(
+      'd',
+      d3
+        .arc()
+        .startAngle(Math.PI - tempArcScale.current(getTempForYear(YEAR_RANGE.min)))
+        .endAngle(tempArcScale.current.range()[1])
+        .innerRadius(thermoRadius.current) // banana arc
+        .outerRadius(thermoRadius.current + thermoThickness)
+    );
 
     arcGenerator.current = d3
       .arc<DisplayData>()
@@ -185,10 +262,6 @@ const CircleBarChart = ({
           )
       );
 
-    d3.select('.temp-circle-zero').attr('r', tempRadiusScale.current(0));
-    d3.select('.temp-circle-zero-background').attr('cx', tempRadiusScale.current(0));
-    d3.select('.temp-circle-zero-value').attr('x', tempRadiusScale.current(0) + 1);
-
     const eventsAxis = (g) =>
       g
         .attr('class', 'axis event-axis')
@@ -196,9 +269,10 @@ const CircleBarChart = ({
           g
             .append('text')
             .attr('class', 'title')
-            .attr('y', () => -eventsScale(eventsScale.ticks(5).pop()))
+            .attr('y', () => -eventsScale(eventsScale.ticks(5).pop()) - 5)
             .attr('dy', '-1em')
-            .text('Total Storm Events')
+            .style('font-size', 18)
+            .text('Total Storm Events Over Time')
         )
         .call((g) =>
           g
@@ -212,7 +286,9 @@ const CircleBarChart = ({
                 .append('text')
                 .attr('y', (d) => -eventsScale(d))
                 .attr('dy', '0.35em')
-                .attr('stroke', '#fff')
+                .attr('fill', '#fff')
+                .attr('font-size', 12)
+                .attr('font-weight', 'bold')
                 .text(eventsScale.tickFormat(5, 's'))
             )
         );
@@ -223,6 +299,7 @@ const CircleBarChart = ({
     setStormDataByStateAndYear(stormCountByYear);
   }, [stormData]);
 
+  // Updates
   useEffect(() => {
     if (!stormDataByStateAndYear.size || !svgContent.current) {
       return;
@@ -240,37 +317,55 @@ const CircleBarChart = ({
       .transition()
       .attr('transform', (d) => `rotate(${timeScale.current(d)})`);
 
-    // Add Circle for the temperature anomaly scale
-    d3.select('.temp-circle')
-      .datum(yearFilter)
-      .style('stroke', COLOR_UI_ERROR)
-      .style('stroke-width', 2)
-      .style('fill', 'none')
-      .transition()
-      .attr('r', (d) => {
-        const tempForYear = GlobalTempData.find((entry) => entry.year === d).smoothed;
-        return tempRadiusScale.current(tempForYear);
-      });
+    // add thermometer guage
 
-    d3.select('.temp-background')
+    const thermoArc = d3
+      .arc()
+      .startAngle(Math.PI - tempArcScale.current(getTempForYear(YEAR_RANGE.min)))
+      .endAngle(tempArcScale.current.range()[1])
+      .innerRadius(thermoRadius.current) // banana arc
+      .outerRadius(thermoRadius.current + thermoThickness);
+
+    // d3.select('path.thermometer')
+    //   .datum(yearFilter)
+    //   .transition()
+    //   .delay(0)
+    //   .attrTween('d', function (d) {
+    //     console.log(d)
+    //     const [startAngle, endAngle] = tempArcScale.current.range();
+    //     const interpolate = d3.interpolate(tempArcScale.current(getTempForYear(d)), endAngle);
+    //     return (t) => {
+    //       thermoArc.startAngle(interpolate(t));
+    //       return arc(d);
+    //     };
+    //   });
+
+    d3.select('.thermometer-values circle')
       .datum(yearFilter)
-      .attr('x', 0)
       .transition()
       .attr('cx', (d) => {
-        const tempForYear = GlobalTempData.find((entry) => entry.year === d).smoothed;
-        return tempRadiusScale.current(tempForYear);
+        const tempForYear = getTempForYear(d);
+        return thermoRadius.current * Math.sin(tempArcScale.current(tempForYear));
+      })
+      .attr('cy', (d) => {
+        const tempForYear = getTempForYear(d);
+        return thermoRadius.current * Math.cos(tempArcScale.current(tempForYear));
       });
 
     d3.select('.temp-anomaly-value')
       .datum(yearFilter)
       .text((d) => {
-        const temp = GlobalTempData.find((entry) => entry.year === d).smoothed;
+        const temp = getTempForYear(d);
         return `${temp > 0 ? '+' : ''}${temp}°`;
       })
       .transition()
       .attr('x', (d) => {
-        const tempForYear = GlobalTempData.find((entry) => entry.year === d).smoothed;
-        return tempRadiusScale.current(tempForYear);
+        const tempForYear = getTempForYear(d);
+        return thermoRadius.current * Math.sin(tempArcScale.current(tempForYear));
+      })
+      .attr('y', (d) => {
+        const tempForYear = getTempForYear(d);
+        return thermoRadius.current * Math.cos(tempArcScale.current(tempForYear));
       });
 
     const arcs = svgContent.current
@@ -309,10 +404,9 @@ const CircleBarChart = ({
     return () => window.clearInterval(interval);
   }, [stormData, margin, id]);
 
-  useEffect(() => {
-    // draw a cirlce to represent the change in temperature over the years
-    // console.log('yearFilter ', yearFilter);
-  }, [yearFilter]);
+  function getTempForYear(year: number): number {
+    return GlobalTempData.find((entry) => entry.year === year).smoothed;
+  }
 
   return (
     <div
@@ -343,69 +437,47 @@ const CircleBarChart = ({
             {yearFilter}
           </text>
         </g>
-        <g className="temp-anomaly-group">
-          <circle cx="0" cy="0" className="temp-circle" />
-          <circle
-            cx="0"
-            cy="0"
-            r="200"
-            className="temp-circle-zero"
-            style={{
-              fill: 'none',
-              stroke: COLOR_UI_PRIMARY,
-              strokeWidth: 1.5,
-            }}
-          />
+        <g className="thermometer-group">
+          <g className="thermometer-axis">
+            <path className="thermometer-scale" fill={COLOR_UI_PRIMARY}></path>
+          </g>
 
-          <circle
-            className="temp-circle-zero-background"
-            y="0"
-            r="20"
-            style={{
-              fill: '#000',
-              fillOpacity: 0.8,
-              stroke: COLOR_UI_PRIMARY,
-              strokeWidth: 1,
-              strokeOpacity: 0.8,
-            }}
-          />
-          <text
-            className="temp-circle-zero-value"
-            x="0"
-            style={{
-              fill: '#fff',
-              textAnchor: 'middle',
-              dominantBaseline: 'mathematical',
-              fontWeight: 'bold',
-              paddingLeft: '2px',
-              position: "relative",
-              left: '10px',
-            }}
-          >
-            0°
-          </text>
-
-          <circle
-            className="temp-background"
-            x="0"
-            r="27"
-            style={{
-              fill: '#000',
-              fillOpacity: 0.95,
-              stroke: COLOR_UI_ERROR,
-              strokeWidth: 1.5,
-            }}
-          />
-          <text
-            className="temp-anomaly-value"
-            y="0"
-            style={{
-              fill: '#fff',
-              textAnchor: 'middle',
-              dominantBaseline: 'mathematical',
-              fontWeight: 'bold',
-            }}
-          />
+          <g className="thermometer-ticks">
+            <text className="thermo-tick-high-label" fill={COLOR_UI_PRIMARY}>
+              +1°
+            </text>
+            <text className="thermo-tick-mid-label" fill={COLOR_UI_PRIMARY}>
+              0°
+            </text>
+            <text className="thermo-tick-low-label" fill={COLOR_UI_PRIMARY}>
+              -1°
+            </text>
+            <circle className="thermo-tick-high" r="8" stroke={COLOR_UI_PRIMARY} />
+            <circle className="thermo-tick-mid" r="8" stroke={COLOR_UI_PRIMARY} />
+            <circle className="thermo-tick-low" r="8" stroke={COLOR_UI_PRIMARY} />
+          </g>
+          <g className="thermometer-values">
+            <path className="thermometer" fill={COLOR_UI_ERROR} />
+            <circle
+              r="27"
+              style={{
+                fill: '#000',
+                fillOpacity: 0.95,
+                stroke: COLOR_UI_ERROR,
+                strokeWidth: 1.5,
+              }}
+            ></circle>
+            <text
+              className="temp-anomaly-value"
+              y="0"
+              style={{
+                fill: '#fff',
+                textAnchor: 'middle',
+                dominantBaseline: 'mathematical',
+                fontWeight: 'bold',
+              }}
+            />
+          </g>
         </g>
       </svg>
     </div>
