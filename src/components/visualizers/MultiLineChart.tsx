@@ -47,19 +47,20 @@ const MultiLineChart = ({
   const dimensions = useResizeObserver(wrapperRef);
   const colorScale: MutableRefObject<d3.ScaleOrdinal<string, unknown, never>> = useRef();
 
+  const [hoveredStormEvent, setHoveredStormEvent] = useState<StormEventCategoryType>(null);
   const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
 
   let displayData: DisplayData[] = [];
 
   const stormColorMap = {
-    'Extreme Temperature': '#f27fff', // magenta 
-    'Flood': '#2ef8ff', // cyan 
-    'Hurricane': '#43f1b7', // green 
-    'Landslide': '#fccc6c', // orange 
-    'Thunderstorm': '#59adf6', // blue 
-    'Tornado': '#9d94ff', // purple 
-    'Wildfire': '#ff6961', // red 
-    'Winter Storm': '#fff'  // white
+    'Extreme Temperature': '#f27fff', // magenta
+    Flood: '#2ef8ff', // cyan
+    Hurricane: '#43f1b7', // green
+    Landslide: '#fccc6c', // orange
+    Thunderstorm: '#59adf6', // blue
+    Tornado: '#9d94ff', // purple
+    Wildfire: '#ff6961', // red
+    'Winter Storm': '#fff', // white
   };
 
   const isSelectedStorm = (stormName: StormEventCategoryType) =>
@@ -112,52 +113,6 @@ const MultiLineChart = ({
 
     const yScale = d3.scaleLinear().range([innerHeight, 0]).domain([dimensionMin, dimensionMax]); // height of the individual lines
 
-    // const colorSeries = [
-    //   '#00fa5a', // green
-    //   '#2afb9d', // seafoam
-    //   '#00e7ff', // light blue
-    //   '#329fff', // blue
-    //   '#a87efd', // dark purple
-    //   '#9d2afb', // purple
-    //   '#dd32fb', // magenta
-    // ];
-
-    // const colorSeries = [
-    //   '#f27fff', // magenta extreme temp
-    //   '#2ef8ff', // cyan // flood
-    //   '#43f1b7', // green // hurricane
-    //   '#fccc6c', // orange // landslide
-    //   '#59adf6', // blue // thunderstorm
-    //   '#9d94ff', // purple // Tornado
-    //   '#ff6961', // red // wildfire
-    //   '#fff'  // winter storm
-    // ];
-
-    // const stormColorMap = {
-    //   'Extreme Temperature': '#f27fff', // magenta 
-    //   'Flood': '#2ef8ff', // cyan 
-    //   'Hurricane': '#43f1b7', // green 
-    //   'Landslide': '#fccc6c', // orange 
-    //   'Thunderstorm': '#59adf6', // blue 
-    //   'Tornado': '#9d94ff', // purple 
-    //   'Wildfire': '#ff6961', // red 
-    //   'Winter Storm': '#fff'  // white
-    // };
-
-    // colorScale.current = d3.scaleOrdinal().range(colorSeries);
-
-    // colorScale.current.domain(
-    //   displayData
-    //     .filter((entry) => {
-    //       // filter out the selectected state if its not one of the top 3
-    //       if (isSelectedStorm(entry.key)) {
-    //         return false;
-    //       }
-    //       return true;
-    //     })
-    //     .map((entry) => entry.key)
-    // );
-
     const generator = d3
       .area()
       // @ts-ignore
@@ -184,22 +139,26 @@ const MultiLineChart = ({
       .attr('stroke-opacity', 1)
       .transition()
       .duration(500)
-      .attr('stroke', (d) =>
-        isSelectedStorm(d.key) ? COLOR_ACCCENT : (stormColorMap[d.key])
-      )
-      .attr('fill', (d) =>
-        isSelectedStorm(d.key) ? COLOR_ACCCENT : (stormColorMap[d.key])
-      )
-      .attr('fill-opacity', (d) => (isSelectedStorm(d.key) ? 0.1 : 0.05))
+      .attr('stroke', (d) => (isSelectedStorm(d.key) ? COLOR_ACCCENT : stormColorMap[d.key]))
+      .attr('fill', (d) => (isSelectedStorm(d.key) ? COLOR_ACCCENT : stormColorMap[d.key]))
+      .attr('fill-opacity', (d) => {
+        if (!isSelectedStorm(d.key) && hoveredStormEvent === d.key) return 0.3;
+        return isSelectedStorm(d.key) ? 0.1 : 0.05;
+      })
       .attr('stroke-width', (d) => (isSelectedStorm(d.key) ? 2 : 1))
       // @ts-ignore
       .attr('d', (d) => generator(d.values));
+
+    lines.on('mouseenter', lineEnter);
+    lines.on('mouseleave', lineLeave);
+
     lines.exit().remove();
-
-    lines.on("mouseenter", lineEnter)
-
     function lineEnter(event: MouseEvent, d: DisplayData) {
-      console.log(d)
+      setHoveredStormEvent(d.key);
+    }
+
+    function lineLeave(event: MouseEvent, d: DisplayData) {
+      setHoveredStormEvent(null);
     }
 
     svgContent.exit().remove();
@@ -225,7 +184,14 @@ const MultiLineChart = ({
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // done
-  }, [stormData, yearFilter, selectedDimension, regionSelected, stormTypeSelected]);
+  }, [
+    stormData,
+    yearFilter,
+    selectedDimension,
+    regionSelected,
+    stormTypeSelected,
+    hoveredStormEvent,
+  ]);
 
   /**
    * Get the sum of the counts for each event and aggregate them per year
@@ -276,8 +242,6 @@ const MultiLineChart = ({
         ([year, value]) => ({ year, value })
       );
 
-      // console.log('eventsByYear', eventCategory, eventsByYear);
-
       const yearData: StateDataDimensions[] = [];
 
       // loop through each years data and aggregate the metrics/dimensions
@@ -324,7 +288,13 @@ const MultiLineChart = ({
       });
     }); // end events by category loop
 
-    // console.log('displayData', displayData);
+    // sort the display data by density of data
+    displayData.sort((a, b) => {
+      if (a.values.length < b.values.length) return 1;
+      if (a.values.length > b.values.length) return -1;
+      return 0;
+    });
+
     return displayData;
   }
 
@@ -358,18 +328,32 @@ const MultiLineChart = ({
 
       <div
         className="storm-legend d-flex justify-content-between flex-wrap"
-        style={{left: margin.left / 2 }}
+        style={{ left: margin.left / 2 }}
       >
         {STORM_EVENT_CATEGORIES.map((stormName) => {
-          const color = isSelectedStorm(stormName) ? COLOR_ACCCENT : stormColorMap[stormName]
+          const color = isSelectedStorm(stormName) ? COLOR_ACCCENT : stormColorMap[stormName];
           return (
-            <div className='legend-elem' key={stormName}>
-              <div className='legend-color'
+            <div
+              className="legend-elem"
+              key={stormName}
+              onMouseEnter={() => {
+                setHoveredStormEvent(stormName);
+              }}
+            >
+              <div
+                className="legend-color"
                 style={{
                   backgroundColor: `${color}`,
+                  fontWeight: hoveredStormEvent === stormName ? 'bold' : 'normal',
                 }}
               ></div>
-              <span>{stormName}</span>
+              <span
+                style={{
+                  fontWeight: hoveredStormEvent === stormName ? 'bold' : 'normal',
+                }}
+              >
+                {stormName}
+              </span>
             </div>
           );
         })}

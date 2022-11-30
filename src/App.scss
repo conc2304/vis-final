@@ -70,6 +70,11 @@ body {
 .text-ui-primary {
   color: $color-ui-primary;
 }
+
+footer {
+  width: 20%;
+  margin: 0 auto;;
+}
 .custom-footer {
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
@@ -79,6 +84,9 @@ body {
   border-bottom: none;
   background-color: rgba($color: #000000, $alpha: 0.4);
   opacity: 0.4;
+  width: 100%;
+  margin: 0 auto;
+
 
   transition: all 300ms ease-in-out;
   transition-property: opacity, background-color;
@@ -96,7 +104,6 @@ body {
   &.home-page {
     animation: pulse 1.5s infinite alternate;
     animation-timing-function: ease-in-out;
-    width: 20%;
 
     &:hover {
       animation: none;

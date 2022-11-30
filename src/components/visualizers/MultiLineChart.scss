@@ -28,7 +28,12 @@
   font-size: 14px;
 
   .legend-elem {
-    margin-right: 10px;;
+    margin-right: 10px;
+
+    &:hover {
+      // font-weight: bold;
+      cursor: default;
+    }
   }
 
   .legend-color {
