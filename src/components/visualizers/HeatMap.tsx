@@ -65,6 +65,11 @@ const HeatMap = ({
   const [svgIsHovered, setSvgIsHovered] = useState(false);
   const [stateIsSelected, setStateIsSelected] = useState(false);
 
+  // TODO: my imports
+  const [innerDimensions, setInnerDimensions] = useState({ width: 0, height: 0 });
+  const [coverIsActive, setCoverIsActive] = useState(true);
+  const [modalIsActive, setModalIsActive] = useState(false);
+
   const wrangleData = (): StateDataDimensions[] => {
     // first, filter according to selectedTimeRange, init empty array
     let filteredData: StormDataType[] = [];
@@ -198,6 +203,15 @@ const HeatMap = ({
       .domain(metricsDomain)
       // @ts-ignore
       .range(colorsRange);
+
+    // TODO: My additions
+    const innerWidth = svgWidth - margin.left - margin.right;
+    const innerHeight = svgHeight - margin.top - margin.bottom;
+    setInnerDimensions({
+      width: innerWidth,
+      height: innerHeight,
+    });
+    // End additions
 
     const svgContent = svg
       .select('.content')
@@ -435,6 +449,7 @@ const HeatMap = ({
         <defs>
           <linearGradient id="linear-gradient"></linearGradient>
         </defs>
+
         <g className="content"></g>
         <g className="legend-group">
           <rect id="legend-rect" style={{ fill: 'url("#linear-gradient")' }} />
@@ -458,6 +473,7 @@ const HeatMap = ({
           control={<Switch checked={isHexGrid} onChange={handleOnMapViewToggle} size="small" />}
         />
       )} */}
+      
       <div ref={tooltipRef} className="tooltip-ui"></div>
     </div>
   );
