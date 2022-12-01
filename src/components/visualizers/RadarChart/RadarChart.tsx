@@ -100,7 +100,7 @@ const RadarChart = ({
       .domain([0, domainMax === 0 ? 100 : domainMax]);
 
     const colorSeries = COLOR_SERIES_TOP_3;
-    colorScale.current = d3.scaleOrdinal().range(colorSeries);
+    colorScale.current = d3.scaleOrdinal().range([colorSeries[2], colorSeries[0], colorSeries[1] ]);
 
     const numberOfTopStates = 3;
     const colorDomain = [...data]
@@ -222,7 +222,7 @@ const RadarChart = ({
       .style('fill', (d) =>
         d[0].state.toLowerCase() === selectedState.toLowerCase()
           ? COLOR_ACCCENT
-          : colorScale.current(d[0].state) as string
+          : (colorScale.current(d[0].state) as string)
       )
       .style('fill-opacity', opacityArea)
       .on('mouseover', function (event: MouseEvent, d) {
@@ -264,7 +264,7 @@ const RadarChart = ({
       .style('stroke', (d) =>
         d[0].state.toLocaleLowerCase() === selectedState.toLocaleLowerCase()
           ? COLOR_ACCCENT
-          : colorScale.current(d[0].state) as string
+          : (colorScale.current(d[0].state) as string)
       )
       .style('fill', 'none')
       .style('filter', 'url(#glow)');
@@ -290,7 +290,9 @@ const RadarChart = ({
         return scale(d.value) * Math.sin(angleSize * i - Math.PI / 2);
       })
       .style('fill', (d) =>
-        d.state.toLowerCase() === selectedState.toLowerCase() ? COLOR_ACCCENT : colorScale.current(d.state) as string
+        d.state.toLowerCase() === selectedState.toLowerCase()
+          ? COLOR_ACCCENT
+          : (colorScale.current(d.state) as string)
       )
       .style('fill-opacity', 0.8);
 
