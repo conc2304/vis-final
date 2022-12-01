@@ -2,6 +2,9 @@
 
 .event-by-storm-chart {
 
+  .storm-selected {
+    font-size: 14px;
+  }
 
   .axis {
     text {
@@ -13,6 +16,10 @@
     line {
       stroke: $color-ui-primary;
     }
+  }
+
+  .area-path {
+    cursor: pointer;
   }
 
   .y-axis text {
@@ -31,8 +38,7 @@
     margin-right: 10px;
 
     &:hover {
-      // font-weight: bold;
-      cursor: default;
+      cursor: pointer;
     }
   }
 

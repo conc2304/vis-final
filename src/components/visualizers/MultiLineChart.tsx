@@ -12,7 +12,6 @@ import { Margin } from './types';
 import { fillMissingYears } from './helpers';
 import {
   COLOR_ACCCENT,
-  COLOR_UI_PRIMARY,
   STORM_EVENT_CATEGORIES,
   YEAR_RANGE,
 } from './data/constants';
@@ -45,13 +44,14 @@ const MultiLineChart = ({
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
-  const colorScale: MutableRefObject<d3.ScaleOrdinal<string, unknown, never>> = useRef();
 
   const [hoveredStormEvent, setHoveredStormEvent] = useState<StormEventCategoryType>(null);
+  const [filteredStormEvent, setFilteredStormEvent] = useState<StormEventCategoryType>(null);
   const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
 
   let displayData: DisplayData[] = [];
 
+  // force the chart to always use these schemes
   const stormColorMap = {
     'Extreme Temperature': '#f27fff', // magenta
     Flood: '#2ef8ff', // cyan
@@ -150,6 +150,11 @@ const MultiLineChart = ({
       .attr('d', (d) => generator(d.values));
 
     lines.on('mouseenter', lineEnter);
+    lines.on('click', (e, d) => {
+      const value = !filteredStormEvent ? d.key : null;
+      setFilteredStormEvent(value);
+    });
+
     lines.on('mouseleave', lineLeave);
 
     lines.exit().remove();
@@ -191,6 +196,7 @@ const MultiLineChart = ({
     regionSelected,
     stormTypeSelected,
     hoveredStormEvent,
+    filteredStormEvent,
   ]);
 
   /**
@@ -206,15 +212,16 @@ const MultiLineChart = ({
         const [yearMin, yearMax] = !!yearFilter ? yearFilter : [YEAR_RANGE.min, YEAR_RANGE.max];
 
         // if 'ALL' then the condition is true ef not then check to see if we match
-
-        // const stateConditionIsTrue = doStateFilter && row.STATE === stateFilter;
         const regionConditionIsTrue =
           regionSelected === 'ALL'
             ? true
             : row.STATE.toLowerCase() === regionSelected.toLowerCase();
         const yearConditionIsTrue = yearMin <= row.YEAR && row.YEAR <= yearMax;
+        const filterByEventIsTrue = !filteredStormEvent
+          ? true
+          : filteredStormEvent.toLowerCase() === row.EVENT.toLowerCase();
 
-        if (yearConditionIsTrue && regionConditionIsTrue) {
+        if (yearConditionIsTrue && regionConditionIsTrue && filterByEventIsTrue) {
           filteredData.push(row);
         }
       });
@@ -303,7 +310,7 @@ const MultiLineChart = ({
     // sort so that we render them from biggest to smallest so we can hover on them more easily
     const sortedByAvgValue = [...displayDataWithAverages].sort((a, b) => {
       return b.averageValue - a.averageValue;
-    })
+    });
 
     return sortedByAvgValue;
   }
@@ -316,7 +323,10 @@ const MultiLineChart = ({
         className={`${id}-wrapper event-by-storm-chart`}
       >
         <div className="title" style={{ position: 'absolute', top: 0, left: margin.left + 20 }}>
-          {title} by Storm Type
+          {title} by Storm Type{' '}
+          <strong className="storm-selected">
+            {filteredStormEvent ? `- ${filteredStormEvent}s` : ''}
+          </strong>
           <p className="mt-1" style={{ color: COLOR_ACCCENT }}>
             {regionSelected === 'ALL'
               ? 'USA'
@@ -351,6 +361,15 @@ const MultiLineChart = ({
               }}
               onMouseLeave={() => {
                 setHoveredStormEvent(null);
+              }}
+              onClick={() => {
+                // when clicking on a new event choose that
+                // when reclicking on the same one turn it off
+                if (filteredStormEvent === stormName) {
+                  setFilteredStormEvent(null);
+                } else {
+                  setFilteredStormEvent(stormName);
+                }
               }}
             >
               <div
