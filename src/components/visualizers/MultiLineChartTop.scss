@@ -8,6 +8,14 @@
   text-align: left;
   color: $color-ui-primary;
 
+  .area-path {
+    cursor: pointer;
+    transition: fill-opacity 300ms ease-in-out;
+    &:hover {
+      fill-opacity: 0.3;
+    }
+  }
+
   .state-list-container {
     color: $color-ui-primary;
     font-weight: 700;

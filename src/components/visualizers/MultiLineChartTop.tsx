@@ -10,7 +10,12 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import { COLOR_ACCCENT, COLOR_SERIES_TOP_3, STORM_EVENT_REGIONS, YEAR_RANGE } from './data/constants';
+import {
+  COLOR_ACCCENT,
+  COLOR_SERIES_TOP_3,
+  STORM_EVENT_REGIONS,
+  YEAR_RANGE,
+} from './data/constants';
 
 import './MultiLineChartTop.scss';
 import { getFormat } from './RadarChart/WrangleRadarData';
@@ -45,6 +50,8 @@ const TopStatesOverTimeMultiLineChart = ({
   const dimensions = useResizeObserver(wrapperRef);
 
   const [topStateAsNameList, setTopStatesAsNameList] = useState<GeoRegionUSType[]>([]);
+  const [focusedState, setFocusedState] = useState<GeoRegionUSType>(null);
+  // const [hoveredState, setHoveredState] = useState<GeoRegionUSType>(null);
   const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
 
   const colorScale: MutableRefObject<d3.ScaleOrdinal<string, unknown, never>> = useRef();
@@ -59,6 +66,7 @@ const TopStatesOverTimeMultiLineChart = ({
       return;
     }
 
+    console.log(displayData);
     const svg = d3.select(svgRef.current);
 
     const { width: svgWidth, height: svgHeight } =
@@ -162,6 +170,25 @@ const TopStatesOverTimeMultiLineChart = ({
       .attr('stroke-width', (d) => (isSelectedState(d.key) ? 2 : 1))
       // @ts-ignore
       .attr('d', (d) => generator(d.values));
+
+    // lines.on('mouseenter', lineEnter);
+    // lines.on('mouseleave', lineLeave);
+
+    lines.on('click', (e, d) => {
+      console.log("click", d.key)
+      const value = !focusedState ? d.key : null;
+      console.log(value);
+      setFocusedState(value);
+    });
+
+    // function lineEnter(event: MouseEvent, d: DisplayData) {
+    //   setHoveredState(d.key);
+    // }
+
+    // function lineLeave(event: MouseEvent, d: DisplayData) {
+    //   setHoveredState(null);
+    // }
+
     lines.exit().remove();
 
     // axes
@@ -187,7 +214,7 @@ const TopStatesOverTimeMultiLineChart = ({
     svg.select('.y-axis text').attr('text-anchor', 'end');
 
     // done
-  }, [stormData, yearFilter, eventFilter, selectedDimension, stateSelected]);
+  }, [stormData, yearFilter, eventFilter, selectedDimension, stateSelected, focusedState]);
 
   /**
    * Get the sum of the counts for each event and aggregate them per year
@@ -203,11 +230,13 @@ const TopStatesOverTimeMultiLineChart = ({
         const [yearMin, yearMax] = !!yearFilter ? yearFilter : [YEAR_RANGE.min, YEAR_RANGE.max];
 
         // if 'ALL' then the condition is true ef not then check to see if we match
-
         const eventConditionIsTrue = eventFilter === 'ALL' ? true : row.EVENT === eventFilter;
         const yearConditionIsTrue = yearMin <= row.YEAR && row.YEAR <= yearMax;
+        const filterByFocusedState = !focusedState
+          ? true
+          : focusedState.toLowerCase() === row.STATE.toLowerCase();
 
-        if (yearConditionIsTrue && eventConditionIsTrue) {
+        if (yearConditionIsTrue && eventConditionIsTrue && filterByFocusedState) {
           filteredData.push(row);
         }
       });
@@ -300,7 +329,24 @@ const TopStatesOverTimeMultiLineChart = ({
       });
     });
 
-    return displayData;
+    // sort by the average metric value
+    // selectedDimension
+    const displayDataWithAverages = [...displayData].map((eventData) => {
+      const sum = eventData.values.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue[selectedDimension];
+      }, 0);
+      return {
+        ...eventData,
+        averageValue: sum / eventData.values.length,
+      };
+    });
+
+    // sort so that we render them from biggest to smallest so we can hover on them more easily
+    const sortedByAvgValue = [...displayDataWithAverages].sort((a, b) => {
+      return b.averageValue - a.averageValue;
+    });
+
+    return sortedByAvgValue;
   }
 
   /**
@@ -386,13 +432,18 @@ const TopStatesOverTimeMultiLineChart = ({
   const isSelectedStateIncluded =
     stateSelected !== 'ALL' &&
     topStateAsNameList.includes(stateSelected.toUpperCase() as GeoRegionUSType);
-  const stateNamesMatch = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
+
+  const stateNamesMatch = (a: string, b: string) => {
+    if (!a || !b) return false;
+    return a.toLowerCase() === b.toLowerCase();
+  };
 
   return (
     <>
-      <div ref={wrapperRef} className={`${id}-wrapper top-states-chart`}
-      style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}
-      
+      <div
+        ref={wrapperRef}
+        className={`${id}-wrapper top-states-chart`}
+        style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}
       >
         <div className="title" style={{ position: 'absolute', top: 8, left: margin.left + 20 }}>
           Top {numberOfTopStates} Most Impacted States:
@@ -424,7 +475,7 @@ const TopStatesOverTimeMultiLineChart = ({
             )}
           </div>
         </div>
-        <svg ref={svgRef} >
+        <svg ref={svgRef}>
           <defs>
             <clipPath id={`${id}`}>
               <rect x="0" y="0" width={innerDimension.w} height="100%" />

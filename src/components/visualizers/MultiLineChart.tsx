@@ -158,6 +158,7 @@ const MultiLineChart = ({
     lines.on('mouseleave', lineLeave);
 
     lines.exit().remove();
+
     function lineEnter(event: MouseEvent, d: DisplayData) {
       setHoveredStormEvent(d.key);
     }
