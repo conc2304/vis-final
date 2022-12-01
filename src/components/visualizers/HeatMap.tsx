@@ -427,6 +427,7 @@ const HeatMap = ({
   function onSvgExit(e: MouseEvent, d: GeoJsonFeatureType) {
     e.stopPropagation();
     setSvgIsHovered(false);
+    if (!userHasInteracted) setCoverIsActive(true);
   }
 
   return (
@@ -434,11 +435,6 @@ const HeatMap = ({
       ref={wrapperRef}
       style={{ width: '100%', height: '100%', position: 'relative' }}
       className={`${id}-wrapper heatmap-chart-wrapper`}
-      onMouseLeave={(event) => {
-        console.log('LEAVE');
-        event.stopPropagation();
-        if (!userHasInteracted) setCoverIsActive(true);
-      }}
     >
       <div
         className={`map-cover ${coverIsActive && !!stormData ? 'active' : 'inactive'}`}
@@ -469,6 +465,7 @@ const HeatMap = ({
           </div>
         </div>
       </div>
+
       <svg
         ref={svgRef}
         className={`heatmap ${stateIsSelected && svgIsHovered && !stateIsHovered ? 'hover' : ''}`}
