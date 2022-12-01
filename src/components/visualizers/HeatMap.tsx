@@ -426,7 +426,6 @@ const HeatMap = ({
 
   function onSvgExit(e: MouseEvent, d: GeoJsonFeatureType) {
     setSvgIsHovered(false);
-    if (!userHasInteracted) setCoverIsActive(true);
   }
 
   return (
@@ -434,6 +433,9 @@ const HeatMap = ({
       ref={wrapperRef}
       style={{ width: '100%', height: '100%', position: 'relative' }}
       className={`${id}-wrapper heatmap-chart-wrapper`}
+      onMouseLeave={() => {
+        if (!userHasInteracted) setCoverIsActive(true);
+      }}
     >
       <div
         className={`map-cover ${coverIsActive && !!stormData ? 'active' : 'inactive'}`}
@@ -446,7 +448,6 @@ const HeatMap = ({
         <div
           className="cover-text"
           onMouseEnter={(event) => {
-            // event.stopPropagation();
             setCoverIsActive(false);
           }}
         >
