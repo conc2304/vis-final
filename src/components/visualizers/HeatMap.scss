@@ -92,7 +92,7 @@ path.state {
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  padding: 10%;
+  align-items: center;
   background-color: rgba($color: #000, $alpha: 0.8);
   background: radial-gradient(
     circle,
@@ -107,14 +107,21 @@ path.state {
   border-left: none;
   border-bottom: none;
   z-index: 100;
-  padding: 20%;
 
-  transition: opacity 500ms ease-in;
 
+  transition: all 500ms ease-in;
   &.inactive {
     opacity: 0;
     z-index: -1;
   }
+
+  .cover-text {
+    color: $color-ui-accent;
+    padding: 20px;
+    text-align: center;
+    z-index: 100;
+  }
+
   .icon-wrapper {
     width: 8vh;
     height: 8vh;
@@ -123,13 +130,7 @@ path.state {
 
     .icon {
       width: 100%;
-      height: 100%;;
+      height: 100%;
     }
   }
-}
-
-.cover-text-map {
-  color: $color-ui-accent;
-  text-align: center;
-  z-index: 100;
 }

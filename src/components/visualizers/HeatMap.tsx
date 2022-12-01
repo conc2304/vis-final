@@ -432,11 +432,10 @@ const HeatMap = ({
   return (
     <div
       ref={wrapperRef}
-      style={{ width: '100%', height: '100%', position: 'relative', zIndex: 0 }}
-      className={`${id}-wrapper`}
+      style={{ width: '100%', height: '100%', position: 'relative' }}
+      className={`${id}-wrapper heatmap-chart-wrapper`}
       onMouseLeave={(event) => {
         console.log('LEAVE');
-        console.log(userHasInteracted);
         event.stopPropagation();
         if (!userHasInteracted) setCoverIsActive(true);
       }}
@@ -447,13 +446,12 @@ const HeatMap = ({
           width: innerDimensions.width,
           height: innerDimensions.height,
           left: margin.right - 2,
-          // top: margin.top,
         }}
       >
         <div
-          className={`cover-text-map ${coverIsActive ? 'active' : 'inactive'}`}
+          className="cover-text"
           onMouseEnter={(event) => {
-            event.stopPropagation();
+            // event.stopPropagation();
             setCoverIsActive(false);
           }}
         >
@@ -467,7 +465,7 @@ const HeatMap = ({
             Click on any US State to begin.
           </p>
           <div className="icon-wrapper">
-            <img src={clickIcon} className="icon"/>
+            <img src={clickIcon} className="icon" />
           </div>
         </div>
       </div>
