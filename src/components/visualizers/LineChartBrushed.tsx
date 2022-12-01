@@ -137,7 +137,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       <div className="title" style={{ position: 'absolute', top: -10, left: margin.left + 20 }}>
         <p className="m-0">
           {title}{' '}
-          <span className={`question ${modalIsActive ? 'active' : 'inactie'}`} onClick={() => setModalIsActive(!modalIsActive)}>
+          <span className={`question ${modalIsActive ? 'active' : 'inactive'}`} onClick={() => setModalIsActive(!modalIsActive)}>
             ?
           </span>
         </p>

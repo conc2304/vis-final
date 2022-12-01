@@ -54,6 +54,11 @@ const HeatMap = ({
   const [svgIsHovered, setSvgIsHovered] = useState(false);
   const [stateIsSelected, setStateIsSelected] = useState(false);
 
+  // TODO: my imports
+  const [innerDimensions, setInnerDimensions] = useState({ width: 0, height: 0 });
+  const [coverIsActive, setCoverIsActive] = useState(true);
+  const [modalIsActive, setModalIsActive] = useState(false);
+
   const wrangleData = (): StateDataDimensions[] => {
     // first, filter according to selectedTimeRange, init empty array
     let filteredData: StormDataType[] = [];
@@ -187,6 +192,15 @@ const HeatMap = ({
       // @ts-ignore
       .range(colorsRange);
 
+    // TODO: My additions
+    const innerWidth = svgWidth - margin.left - margin.right;
+    const innerHeight = svgHeight - margin.top - margin.bottom;
+    setInnerDimensions({
+      width: innerWidth,
+      height: innerHeight,
+    });
+    // End additions
+
     const svgContent = svg
       .select('.content')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
@@ -312,6 +326,25 @@ const HeatMap = ({
       style={{ width: '100%', height: '100%', position: 'relative', zIndex: 0 }}
       className={`${id}-wrapper`}
     >
+      <div
+        className={`map-cover ${coverIsActive ? 'active' : 'inactive'}`}
+        style={{
+          width: innerDimensions.width,
+          height: innerDimensions.height,
+          left: margin.right - 4,
+          top: margin.top,
+        }}
+      >
+        <div className="cover-text-map" onMouseEnter={() => setCoverIsActive(false)}>
+          <strong>
+            Begin Exploring Severe Weather Events in the USA by Clicking on a US State
+            <br/>
+            Clicking on a State Will Update the Visualizations to the Left and Right
+            <br/>
+            Fine Tune Data Exploration Using the Drop Down Menu's (top) Brush-able plot (top right)
+          </strong>
+        </div>
+      </div>
       <svg ref={svgRef} className={`heatmap ${stateIsSelected && svgIsHovered && !stateIsHovered ? 'hover' : ''}`}>
         <g className="content"></g>
       </svg>
