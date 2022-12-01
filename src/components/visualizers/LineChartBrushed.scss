@@ -1,16 +1,6 @@
 @import 'src/variables';
 
-@keyframes pulse {
-  0% {
-    transform: scale(0.97);
-    opacity: 0.8;
-  }
 
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
 
 .global-temp-chart {
   .brush-group {

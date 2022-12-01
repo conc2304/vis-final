@@ -3,8 +3,6 @@ import { useState, useRef, useEffect } from 'react';
 import { geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import { Feature, Geometry, FeatureCollection } from 'geojson';
-import { offset } from '@popperjs/core';
-import { hide } from 'yargs';
 import {
   GeoJsonFeatureType,
   GeoRegionUSType,
@@ -23,9 +21,10 @@ import {
   STORM_UI_SELECT_VALUES,
   YEAR_RANGE,
 } from './data/constants';
+import { getFormat } from './RadarChart/WrangleRadarData';
+import clickIcon from './svg/click-icon.svg';
 
 import './HeatMap.scss';
-import { getFormat } from './RadarChart/WrangleRadarData';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // const uuid = require('react-uuid');
@@ -61,14 +60,12 @@ const HeatMap = ({
   type MyGeometry = Array<Feature<Geometry | null>> | Array<FeatureCollection> | [];
   const [geographies, setGeographies] = useState<MyGeometry>([]);
   const [isHexGrid, setIsHexGrid] = useState(false);
+  const [innerDimensions, setInnerDimensions] = useState({ width: 0, height: 0 });
   const [stateIsHovered, setStateIsHovered] = useState(false);
   const [svgIsHovered, setSvgIsHovered] = useState(false);
   const [stateIsSelected, setStateIsSelected] = useState(false);
-
-  // TODO: my imports
-  const [innerDimensions, setInnerDimensions] = useState({ width: 0, height: 0 });
   const [coverIsActive, setCoverIsActive] = useState(true);
-  const [modalIsActive, setModalIsActive] = useState(false);
+  const [userHasInteracted, setUserHasInteracted] = useState(false);
 
   const wrangleData = (): StateDataDimensions[] => {
     // first, filter according to selectedTimeRange, init empty array
@@ -146,8 +143,6 @@ const HeatMap = ({
       });
     }); // end foreach
 
-    // console.log('stateData');
-    // console.log(stateData);
     return stateData;
   };
 
@@ -185,7 +180,6 @@ const HeatMap = ({
       return;
     }
     if (!geographies) return;
-    // console.log(stateDataDisplay);
 
     // use resized dimensions
     // but fall back to getBoundingClientRect, if no dimensions yet.
@@ -204,7 +198,6 @@ const HeatMap = ({
       // @ts-ignore
       .range(colorsRange);
 
-    // TODO: My additions
     const innerWidth = svgWidth - margin.left - margin.right;
     const innerHeight = svgHeight - margin.top - margin.bottom;
     setInnerDimensions({
@@ -222,7 +215,6 @@ const HeatMap = ({
       : [svgWidth / 2 + 20, svgHeight / 2 - 35];
     const projectionFn = isHexGrid ? d3.geoMercator : d3.geoAlbersUsa;
     const projection = projectionFn()
-      // .translate([svgWidth / 2 + 20, svgHeight / 2])
       .translate([920, svgHeight])
       .translate(translationValues)
       .scale(isHexGrid ? 350 : 600);
@@ -362,6 +354,7 @@ const HeatMap = ({
 
       handleOnStateSelect(stateName);
       setStateIsSelected(true);
+      setUserHasInteracted(true);
     }
   }
 
@@ -441,7 +434,43 @@ const HeatMap = ({
       ref={wrapperRef}
       style={{ width: '100%', height: '100%', position: 'relative', zIndex: 0 }}
       className={`${id}-wrapper`}
+      onMouseLeave={(event) => {
+        console.log('LEAVE');
+        console.log(userHasInteracted);
+        event.stopPropagation();
+        if (!userHasInteracted) setCoverIsActive(true);
+      }}
     >
+      <div
+        className={`map-cover ${coverIsActive && !!stormData ? 'active' : 'inactive'}`}
+        style={{
+          width: innerDimensions.width,
+          height: innerDimensions.height,
+          left: margin.right - 2,
+          // top: margin.top,
+        }}
+      >
+        <div
+          className={`cover-text-map ${coverIsActive ? 'active' : 'inactive'}`}
+          onMouseEnter={(event) => {
+            event.stopPropagation();
+            setCoverIsActive(false);
+          }}
+        >
+          <p className="welcome">
+            <strong>WELCOME</strong>
+          </p>
+
+          <p>
+            Explore Severe Weather Events in the USA
+            <br />
+            Click on any US State to begin.
+          </p>
+          <div className="icon-wrapper">
+            <img src={clickIcon} className="icon"/>
+          </div>
+        </div>
+      </div>
       <svg
         ref={svgRef}
         className={`heatmap ${stateIsSelected && svgIsHovered && !stateIsHovered ? 'hover' : ''}`}
@@ -473,7 +502,7 @@ const HeatMap = ({
           control={<Switch checked={isHexGrid} onChange={handleOnMapViewToggle} size="small" />}
         />
       )} */}
-      
+
       <div ref={tooltipRef} className="tooltip-ui"></div>
     </div>
   );
