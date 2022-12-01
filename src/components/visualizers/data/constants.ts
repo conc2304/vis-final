@@ -227,3 +227,5 @@ export const YEAR_RANGE = {
   min: 1950,
   max: 2021,
 };
+
+export const COLOR_SERIES_TOP_3 = ['#329fff', '#a87efd', '#00e7ff'];

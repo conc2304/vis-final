@@ -425,9 +425,7 @@ const HeatMap = ({
   }
 
   function onSvgExit(e: MouseEvent, d: GeoJsonFeatureType) {
-    // e.stopPropagation();
     setSvgIsHovered(false);
-    console.log('exit')
     if (!userHasInteracted) setCoverIsActive(true);
   }
 

@@ -1,9 +1,9 @@
 import * as d3 from 'd3';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, MutableRefObject } from 'react';
 import set from 'lodash.set';
 import { Margin } from '../types';
 import useResizeObserver from '../useResizeObserver';
-import { COLOR_ACCCENT, COLOR_UI_PRIMARY } from '../data/constants';
+import { COLOR_ACCCENT, COLOR_SERIES_TOP_3, COLOR_UI_PRIMARY } from '../data/constants';
 import { GeoRegionUSType } from '../data/types';
 import { RadarData, RadarDataEntry } from './WrangleRadarData';
 
@@ -47,11 +47,13 @@ const RadarChart = ({
   const tooltipRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
   const dimensions = useResizeObserver(wrapperRef);
+
+  const colorScale: MutableRefObject<d3.ScaleOrdinal<string, unknown, never>> = useRef();
+
   const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
 
   useEffect(() => {
     // if we dont have data yet dont render
-    // console.log(data);
     if (!data || !data.length || !data[0].length) return;
 
     const svg = d3.select(svgRef.current);
@@ -96,6 +98,24 @@ const RadarChart = ({
       .scaleLinear()
       .range([0, radius])
       .domain([0, domainMax === 0 ? 100 : domainMax]);
+
+    const colorSeries = COLOR_SERIES_TOP_3;
+    colorScale.current = d3.scaleOrdinal().range(colorSeries);
+
+    const numberOfTopStates = 3;
+    const colorDomain = [...data]
+      .filter((entry) => {
+        const isStateSelected = selectedState.toLowerCase() === entry[0].state;
+
+        // filter out the selectected state if its not one of the top 3
+        if (data.length > numberOfTopStates && isStateSelected) {
+          return false;
+        }
+        return true;
+      })
+      .map((entry) => entry[0].state);
+
+    colorScale.current.domain(colorDomain);
 
     //Draw the background circles
     const axisGrid = svg.select('.axis-grid');
@@ -200,7 +220,9 @@ const RadarChart = ({
       // @ts-ignore
       .attr('d', radarLineGenerator)
       .style('fill', (d) =>
-        d[0].state.toLowerCase() === selectedState.toLowerCase() ? COLOR_ACCCENT : COLOR_UI_PRIMARY
+        d[0].state.toLowerCase() === selectedState.toLowerCase()
+          ? COLOR_ACCCENT
+          : colorScale.current(d[0].state) as string
       )
       .style('fill-opacity', opacityArea)
       .on('mouseover', function (event: MouseEvent, d) {
@@ -242,7 +264,7 @@ const RadarChart = ({
       .style('stroke', (d) =>
         d[0].state.toLocaleLowerCase() === selectedState.toLocaleLowerCase()
           ? COLOR_ACCCENT
-          : COLOR_UI_PRIMARY
+          : colorScale.current(d[0].state) as string
       )
       .style('fill', 'none')
       .style('filter', 'url(#glow)');
@@ -268,7 +290,7 @@ const RadarChart = ({
         return scale(d.value) * Math.sin(angleSize * i - Math.PI / 2);
       })
       .style('fill', (d) =>
-        d.state.toLowerCase() === selectedState.toLowerCase() ? COLOR_ACCCENT : COLOR_UI_PRIMARY
+        d.state.toLowerCase() === selectedState.toLowerCase() ? COLOR_ACCCENT : colorScale.current(d.state) as string
       )
       .style('fill-opacity', 0.8);
 

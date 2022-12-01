@@ -10,7 +10,7 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import { COLOR_ACCCENT, STORM_EVENT_REGIONS, YEAR_RANGE } from './data/constants';
+import { COLOR_ACCCENT, COLOR_SERIES_TOP_3, STORM_EVENT_REGIONS, YEAR_RANGE } from './data/constants';
 
 import './MultiLineChartTop.scss';
 import { getFormat } from './RadarChart/WrangleRadarData';
@@ -88,7 +88,7 @@ const TopStatesOverTimeMultiLineChart = ({
       ])
       .range([0, innerWidth]);
 
-    const colorSeries = ['#329fff', '#a87efd', '#00e7ff'];
+    const colorSeries = COLOR_SERIES_TOP_3;
     colorScale.current = d3.scaleOrdinal().range(colorSeries);
 
     // yscale for density of metric
