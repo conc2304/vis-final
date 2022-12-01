@@ -156,7 +156,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         style={{
           width: innerDimensions.width + 5,
           height: innerDimensions.height + 2,
-          left: margin.right,
+          left: margin.left + 4,
           top: margin.top - 2,
         }}
       >
@@ -195,7 +195,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         style={{
           width: innerDimensions.width + 5,
           height: innerDimensions.height + 2,
-          left: margin.right,
+          left: margin.left,
           top: margin.top - 2,
         }}
       >

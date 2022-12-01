@@ -100,7 +100,8 @@ const RadarChart = ({
       .domain([0, domainMax === 0 ? 100 : domainMax]);
 
     const colorSeries = COLOR_SERIES_TOP_3;
-    colorScale.current = d3.scaleOrdinal().range([colorSeries[2], colorSeries[0], colorSeries[1] ]);
+    // not sure why it has to be in this order
+    colorScale.current = d3.scaleOrdinal().range([colorSeries[2], colorSeries[0], colorSeries[1]]);
 
     const numberOfTopStates = 3;
     const colorDomain = [...data]

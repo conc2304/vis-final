@@ -35,8 +35,8 @@ const ResourcesPage = () => {
             <Navigation />
           </Col>
           <Col md={8} className="d-flex align-items-center">
-            <div className="p-4">
-              <h2 className="pb-3">More Resources</h2>
+            <div className="">
+              <h2 className="">More Resources</h2>
               <p className="text-white">
                 Explore more climate-related data and discover more information about how to help
                 with climate change.

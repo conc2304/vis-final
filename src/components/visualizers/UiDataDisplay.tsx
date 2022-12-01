@@ -33,7 +33,7 @@ const UiDataDisplay = ({
   const displayLocation = locationSelected === 'ALL' ? 'U.S.A' : locationSelected;
 
   return (
-    <div className="p-2">
+    <div>
       <div className="d-flex justify-content-between align-items-center">
         <h3 style={{}}>{displayLocation}</h3>
         <h5>
@@ -42,7 +42,7 @@ const UiDataDisplay = ({
       </div>
       {metrics && (
         <div className="d-flex justify-content-between" style={{ marginTop: '0.5em' }}>
-          <p>
+          <p className='mb-0'>
             <strong>Storm Events:</strong> <br />
             <animated.span>
               {propsEvents.val.to((val) => {
@@ -50,7 +50,7 @@ const UiDataDisplay = ({
               })}
             </animated.span>
           </p>
-          <p>
+          <p className='mb-0'>
             <strong>Deaths: </strong>
             <br />
             <animated.span>
@@ -59,7 +59,7 @@ const UiDataDisplay = ({
               })}
             </animated.span>
           </p>
-          <p>
+          <p className='mb-0'>
             <strong>Property Damage: </strong>
             <br />
             <animated.span>
