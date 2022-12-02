@@ -23,7 +23,7 @@ type Props = {
   lineType?: 'curved' | 'linear';
   areValuesNormalized?: boolean;
   selectedState?: GeoRegionUSType | 'ALL';
-  title: string;
+  title: string | JSX.Element;
 };
 
 const RadarChart = ({
@@ -89,7 +89,10 @@ const RadarChart = ({
     const axisScaleMap: Record<string, d3.ScaleLinear<number, number, never>> = {};
     axisNames.forEach((axisName) => {
       const axisMax = getMaxByAxis(axisName, data);
-      const axisScale = d3.scaleLinear().range([0, radius]).domain([0, axisMax === 0 ? 100 : axisMax]);
+      const axisScale = d3
+        .scaleLinear()
+        .range([0, radius])
+        .domain([0, axisMax === 0 ? 100 : axisMax]);
       set(axisScaleMap, axisName, axisScale);
     });
 
@@ -239,7 +242,7 @@ const RadarChart = ({
         tooltip.style.width = '240px';
 
         const tWidth = tooltip.getBoundingClientRect().width;
-        console.log(tWidth)
+        console.log(tWidth);
         const tooltipXPos = innerWidth - 240 / 4;
         // const tooltipXPos = innerWidth - tWidth / 2;
 
@@ -333,7 +336,6 @@ const RadarChart = ({
         tooltip.style.top = `${newY + svgHeight / 2}px`;
         tooltip.style.width = '150px';
         tooltip.classList.add('active');
-
       })
       .on('mouseout', function () {
         tooltip.classList.remove('active');
@@ -346,7 +348,7 @@ const RadarChart = ({
       <strong>${entry.axis}:</strong>
       <span>${entry.formatFn(entry.value)}</span>
     </div>`;
-
+    ``;
     const tableData = data.map(lineItem).toString().replaceAll('</div>,', '');
     return (
       `
@@ -396,34 +398,39 @@ const RadarChart = ({
 
   return (
     <div
-      ref={wrapperRef}
       style={{ width: '100%', height: '100%', position: 'relative' }}
-      className={`${id}-wrapper event-by-storm-chart position-relative`}
+      className={`${id}-wrapper event-by-storm-chart position-relative d-flex flex-column justify-content-center`}
     >
       <div
         className="radar-title"
-        style={{ position: 'absolute', top: 0, left: 10, width: '200px', fontSize: '14px' }}
+        style={{ position: 'relative', top: 0, left: 10, fontSize: '14px' }}
       >
         {title}
       </div>
-      <svg ref={svgRef}>
-        <defs>
-          <clipPath id={`${id}`}>
-            <rect x="0" y="0" width={innerDimension.w} height="100%" />
-          </clipPath>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-        <g className="content" clipPath={`url(#${id})`}>
-          <g className="axis-grid" />
-        </g>
-      </svg>
-      <div ref={tooltipRef} className="tooltip-ui"></div>
+      <div
+        ref={wrapperRef}
+        style={{ width: '100%', height: '80%', position: 'relative' }}
+        className={`${id}-wrapper event-by-storm-chart position-relative`}
+      >
+        <svg ref={svgRef}>
+          <defs>
+            <clipPath id={`${id}`}>
+              <rect x="0" y="0" width={innerDimension.w} height="100%" />
+            </clipPath>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <g className="content" clipPath={`url(#${id})`}>
+            <g className="axis-grid" />
+          </g>
+        </svg>
+        <div ref={tooltipRef} className="tooltip-ui"></div>
+      </div>
     </div>
   );
 };

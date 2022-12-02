@@ -148,6 +148,14 @@ const StormsPage = () => {
     }
   }, [selectedGeoRegion, stormData]);
 
+  const RadarTitle = ({qualifier}): JSX.Element => (
+    <div>
+      Top 3 Most Impacted States {!!qualifier ? `(${qualifier})` : ''}: <br />
+      {selectedDimensionTitle} by{' '}
+      {selectedStormType === 'ALL' ? 'All Storms' : selectedStormType + 's'}
+    </div>
+  );
+
   return (
     <Layout>
       <header className="w-100 d-flex justify-content-center">
@@ -247,9 +255,9 @@ const StormsPage = () => {
                 areValuesNormalized={false}
                 lineType="curved"
                 labelFactor={1.29}
-                margin={{ top: 90, right: 0, bottom: 80, left: 0 }}
+                margin={{ top: 80, right: 0, bottom: 50, left: 0 }}
                 selectedState={selectedGeoRegion}
-                title="Top 3 Most Impacted States (Metrics)"
+                title={<RadarTitle qualifier='Metrics'/>}
               />
             </div>
             <div className="h-50">
@@ -260,9 +268,9 @@ const StormsPage = () => {
                 lineType="curved"
                 labelFactor={1.18}
                 wrapWidth={120}
-                margin={{ top: 90, right: 0, bottom: 100, left: 0 }}
+                margin={{ top: 50, right: 0, bottom: 90, left: 0 }}
                 selectedState={selectedGeoRegion}
-                title="Top 3 Most Impacted States (Storms)"
+                title={<RadarTitle qualifier='Storms'/>}
               />
             </div>
           </Col>
