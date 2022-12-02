@@ -109,7 +109,10 @@ path.state {
   border-bottom: none;
   z-index: 100;
 
-  transition: opacity 500ms 200ms ease-in;
+  transition-property: opacity, z-index;
+  transition-delay: 500ms;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in;
   &.inactive {
     opacity: 0;
     z-index: -1;
