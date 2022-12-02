@@ -24,19 +24,24 @@ const HomePage = () => {
     <Layout>
       <main className="p-4 flex-grow-1 d-flex flex-column">
         <Row className="flex-grow-1 p-2">
-          <Col md={7} className="h-100 d-flex flex-column">
+          <Col md={6} xl={7} className="h-100 d-flex flex-column">
             <Row className="flex-grow-1">
               <CircleBarChart stormData={stormData} id="hurricane-chart" />
             </Row>
           </Col>
-          <Col md={5} className="d-flex justify-content-center flex-column">
-            <h1 className="pb-3">Is Earth Fighting Back?</h1>
+          <Col
+            md={6}
+            xl={5}
+            className="d-flex justify-content-center flex-column"
+            style={{ paddingBottom: 100 }}
+          >
+            <h1 className="pb-3 fs-2">Is Earth Fighting Back?</h1>
             <p className="pb-2 text-white">
               As time progresses, Earth is getting warmer and we are seeing more storms every year.
               The graphic on the left shows the change in the number of storm events over the last
               71 years (since 1950) in each US state and how it relates to that year's global
               temperature anomaly (in red). Nineteen of the hottest years have occurred since 2000,
-              and as temperatures increase so do the occurrences of severe weather.
+              and as temperatures increase, so do the occurrences of severe weather.
             </p>
 
             <p>
@@ -44,21 +49,19 @@ const HomePage = () => {
             </p>
             <p className="text-white">
               In climate change studies, temperature anomalies are more important than absolute
-              temperature. A temperature anomaly is the difference from an average, or baseline,
-              temperature. The baseline temperature is typically computed by averaging 30 or more
-              years of temperature data. Using anomalies, the departure from an “average,” allows
-              more accurate descriptions over larger areas than actual temperatures and provides a
-              frame of reference that allows for easier analysis. Here we see that our
+              temperature. A temperature anomaly is the difference from a baseline temperature,
+              typically computed by averaging 30 or more years of data. Using anomalies, the
+              departure from an “average” allows more accurate descriptions over larger areas and
+              provides a frame of reference for easier analysis. Here we see that our
               <span className="text-ui-primary"> baseline</span> is
-              <span className="text-ui-primary"> 0 degrees Celsius</span> which we quickly surpass
+              <span className="text-ui-primary"> 0 degrees Celsius</span> which is quickly surpassed
               around 1970.
             </p>
 
-            <h2 className="pb-2">Are we running out of time?</h2>
-
+            <h2 className="pb-2 fs-3">Are we running out of time?</h2>
             <p className="text-white">
               As temperatures change, what does that mean for the state of severe weather in the US?
-              On the next page you can explore how changes in temperature have had effects not only
+              On the next page, you can explore how changes in temperature have had effects not only
               on different types of weather events in the US, but also how these storms distinctly
               impact particular regions over time.
             </p>
@@ -76,9 +79,9 @@ const HomePage = () => {
       >
         <Link
           to={Routes.storms}
-          className="btn btn-primary btn-lg border-radius-0 d-block p-4 pb-3 custom-footer home-page"
+          className="btn btn-primary btn-lg border-radius-0 d-block p-3 pb-2 custom-footer home-page"
         >
-          <strong style={{width: '200px'}}>Explore &#9661;</strong>
+          <strong style={{ width: '200px' }}>Explore &#9661;</strong>
         </Link>
       </footer>
     </Layout>
