@@ -401,15 +401,12 @@ const HeatMap = ({
     const { width, height } = tooltip.getBoundingClientRect();
     tooltip.style.left = `${xPos - width - 25}px`;
     tooltip.style.top = `${yPos - height}px`;
-    tooltip.style.zIndex = 220;
-    tooltip.style.opacity = 1;
+    tooltip.classList.add('active');
   };
 
   const hideTooltipData = () => {
     const tooltip = tooltipRef.current;
-
-    tooltip.style.zIndex = -1;
-    tooltip.style.opacity = 0;
+    tooltip.classList.remove('active');
   };
 
   function onStateExit(e: MouseEvent, d: GeoJsonFeatureType) {

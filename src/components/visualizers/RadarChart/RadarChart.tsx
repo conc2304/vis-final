@@ -239,7 +239,9 @@ const RadarChart = ({
         tooltip.style.width = '240px';
 
         const tWidth = tooltip.getBoundingClientRect().width;
-        const tooltipXPos = innerWidth - tWidth / 2;
+        console.log(tWidth)
+        const tooltipXPos = innerWidth - 240 / 4;
+        // const tooltipXPos = innerWidth - tWidth / 2;
 
         tooltip.style.left = `${tooltipXPos}px`;
         tooltip.style.top = `${0}px`;
