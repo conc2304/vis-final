@@ -267,7 +267,7 @@ const StormsPage = () => {
             </div>
           </Col>
           <Col xs={6} className="d-flex flex-column h-100" style={{ paddingBottom: '100px' }}>
-            <div className="w-100 mb-3" style={{ height: '20%' }}>
+            <div className="w-100 mb-3" style={{ height: '20%', minHeight: 100 }}>
               <LineChart
                 data={GlobalTempData}
                 margin={{

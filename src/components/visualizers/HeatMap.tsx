@@ -214,10 +214,11 @@ const HeatMap = ({
       ? [920, svgHeight]
       : [svgWidth / 2 + 20, svgHeight / 2 - 35];
     const projectionFn = isHexGrid ? d3.geoMercator : d3.geoAlbersUsa;
+    const scale = svgHeight * 1.5;
     const projection = projectionFn()
       .translate([920, svgHeight])
       .translate(translationValues)
-      .scale(isHexGrid ? 350 : 500);
+      .scale(isHexGrid ? 350 : scale);
 
     // Map Legend
     const linearGradient = d3.select('#linear-gradient');
