@@ -436,18 +436,16 @@ const HeatMap = ({
     >
       <div
         className={`map-cover ${coverIsActive && !!stormData ? 'active' : 'inactive'}`}
+        onMouseEnter={() => {
+          setCoverIsActive(false);
+        }}
         style={{
           width: innerDimensions.width,
           height: innerDimensions.height,
           left: margin.right - 2,
         }}
       >
-        <div
-          className="cover-text"
-          onMouseEnter={(event) => {
-            setCoverIsActive(false);
-          }}
-        >
+        <div className="cover-text">
           <p className="welcome">
             <strong>WELCOME</strong>
           </p>
