@@ -217,7 +217,7 @@ const HeatMap = ({
     const projection = projectionFn()
       .translate([920, svgHeight])
       .translate(translationValues)
-      .scale(isHexGrid ? 350 : 600);
+      .scale(isHexGrid ? 350 : 500);
 
     // Map Legend
     const linearGradient = d3.select('#linear-gradient');
