@@ -213,14 +213,12 @@ export const getTopStatesByDimension = ({
 
 export const getFormat = ({ value, isMoney = false, maxLength = 5 }) => {
   try {
-
     const prefix = isMoney ? '$' : '';
     
     return value.toString().length > maxLength
     ? d3.format(`${prefix},.3s`)
     : d3.format(`${prefix},.0f`);
   } catch(e) {
-    
     console.warn(`value: ${value}`, e )
   }
 };
@@ -405,6 +403,7 @@ const formatStormEventsForRadar = ({ data, selectedDimension }: FormatFnProps): 
       if (!ourMetrics[eventName]) ourMetrics[eventName] = 0;
     });
 
+    const isMoney = selectedDimension === 'DAMAGE_PROPERTY_EVENT_SUM'
     return Object.entries(d[pathMap])
       .filter(([eventName, metric]) =>
         (STORM_EVENT_CATEGORIES as readonly string[]).includes(eventName)
@@ -414,7 +413,7 @@ const formatStormEventsForRadar = ({ data, selectedDimension }: FormatFnProps): 
           axis: eventName,
           value: metric as number,
           state: d.STATE,
-          formatFn: getFormat({ value: metric }),
+          formatFn: getFormat({ value: metric, isMoney }),
         };
       })
       .sort((a, b) => {
