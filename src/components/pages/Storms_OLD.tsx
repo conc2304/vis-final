@@ -255,6 +255,8 @@ const StormsPage = () => {
               <Col xs={12} lg={6} xl={7} className="justify-content-start d-flex flex-column">
                 <div style={{ height: '20%' }}>
                   <UiDataDisplay
+                  selectedDimensionTitle={selectedDimensionTitle}
+                    stormEventSelected={selectedStormType}
                     timeRangeSelected={selectedBrushYears}
                     locationSelected={selectedGeoRegion}
                     metrics={uiMetrics}

@@ -197,6 +197,8 @@ const StormsPage = () => {
                   <div className="w-50">
                     <div style={{ width: '80%', margin: '0 auto' }}>
                       <UiDataDisplay
+                        selectedDimensionTitle={selectedDimensionTitle}
+                        stormEventSelected={selectedStormType}
                         timeRangeSelected={selectedBrushYears}
                         locationSelected={selectedGeoRegion}
                         metrics={uiMetrics}
