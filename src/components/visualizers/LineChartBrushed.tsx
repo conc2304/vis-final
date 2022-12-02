@@ -80,7 +80,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
 
     d3.select('.baseline-label')
       .attr('y', yScale(0) - 3)
-      .attr('x', xScale(2022) - 5)
+      .attr('x', xScale(2022) - 10)
       .style('fill', COLOR_UI_PRIMARY)
       .style('font-size', 13)
       .attr('text-anchor', 'end');
@@ -109,8 +109,6 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       .attr('transform', `translate(${margin.left}, ${innerHeight + margin.top})`)
       // @ts-ignore
       .call(xAxis);
-
-
 
     svg
       .select('.y-axis')
@@ -178,7 +176,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
           </div>
         </div>
       </div>
-      <div className="title" style={{ position: 'absolute', top: -10, left: margin.left + 20 }}>
+      <div className="title" style={{ position: 'absolute', top: -12, left: margin.left + 4 }}>
         <p className="m-0">
           {title}
           <span
