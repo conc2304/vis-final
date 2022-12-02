@@ -24,16 +24,16 @@ const HomePage = () => {
     <Layout>
       <main className="p-4 flex-grow-1 d-flex flex-column">
         <Row className="flex-grow-1 p-2">
-          <Col md={6} xl={7} className="h-100 d-flex flex-column">
+          <Col lg={6} xl={7} className="h-100 d-flex flex-column">
             <Row className="flex-grow-1">
               <CircleBarChart stormData={stormData} id="hurricane-chart" />
             </Row>
           </Col>
           <Col
-            md={6}
+            lg={6}
             xl={5}
             className="d-flex justify-content-center flex-column"
-            style={{ paddingBottom: 100 }}
+            style={{ paddingBottom: 60 }}
           >
             <h1 className="pb-3 fs-2">Is Earth Fighting Back?</h1>
             <p className="pb-2 text-white">

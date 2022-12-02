@@ -38,7 +38,6 @@ h6 {
   font-family: 'Glitch';
 }
 
-
 p,
 span,
 text,
@@ -56,7 +55,6 @@ html,
 #root {
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
   position: relative;
 }
 
@@ -73,7 +71,7 @@ body {
 
 footer {
   width: 20%;
-  margin: 0 auto;;
+  margin: 0 auto;
 }
 .custom-footer {
   border-top-left-radius: 50px;
@@ -86,7 +84,6 @@ footer {
   opacity: 0.4;
   width: 100%;
   margin: 0 auto;
-
 
   transition: all 300ms ease-in-out;
   transition-property: opacity, background-color;
@@ -239,15 +236,14 @@ footer {
   opacity: 0;
 }
 
-
 @keyframes pulse {
   0% {
-    transform: scale(0.97);
-    opacity: 0.8;
+    transform: scale(0.98);
+    opacity: 0.4;
   }
 
   100% {
     transform: scale(1);
-    opacity: 1;
+    opacity: 0.6;
   }
 }
