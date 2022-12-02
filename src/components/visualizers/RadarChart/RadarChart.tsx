@@ -89,7 +89,7 @@ const RadarChart = ({
     const axisScaleMap: Record<string, d3.ScaleLinear<number, number, never>> = {};
     axisNames.forEach((axisName) => {
       const axisMax = getMaxByAxis(axisName, data);
-      const axisScale = d3.scaleLinear().range([0, radius]).domain([0, axisMax]);
+      const axisScale = d3.scaleLinear().range([0, radius]).domain([0, axisMax === 0 ? 100 : axisMax]);
       set(axisScaleMap, axisName, axisScale);
     });
 
@@ -243,14 +243,12 @@ const RadarChart = ({
 
         tooltip.style.left = `${tooltipXPos}px`;
         tooltip.style.top = `${0}px`;
-        tooltip.style.opacity = 1;
-        tooltip.style.zIndex = 110;
+        tooltip.classList.add('active');
       })
       .on('mouseout', function () {
         //Bring back all blobs
         d3.selectAll('.radar-area').transition().duration(200).style('fill-opacity', opacityArea);
-        tooltip.style.opacity = 0;
-        tooltip.style.zIndex = -10;
+        tooltip.classList.remove('active');
       });
 
     //  add outline of shape
@@ -332,12 +330,11 @@ const RadarChart = ({
         tooltip.style.left = `${newX + svgWidth / 2}px`;
         tooltip.style.top = `${newY + svgHeight / 2}px`;
         tooltip.style.width = '150px';
-        tooltip.style.zIndex = 110;
-        tooltip.style.opacity = 1;
+        tooltip.classList.add('active');
+
       })
       .on('mouseout', function () {
-        tooltip.style.zIndex = -1;
-        tooltip.style.opacity = 0;
+        tooltip.classList.remove('active');
       });
   }, [data, selectedState]);
 
@@ -398,7 +395,7 @@ const RadarChart = ({
   return (
     <div
       ref={wrapperRef}
-      style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}
+      style={{ width: '100%', height: '100%', position: 'relative' }}
       className={`${id}-wrapper event-by-storm-chart position-relative`}
     >
       <div

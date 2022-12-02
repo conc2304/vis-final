@@ -1,6 +1,7 @@
 @import 'src/variables';
 
 .event-by-storm-chart {
+  z-index: 1000;
   .storm-selected {
     font-size: 14px;
   }
@@ -28,7 +29,7 @@
 
 .storm-legend {
   width: 90%;
-  height: 20%;
+  // height: 20%;
   position: relative;
   font-size: 14px;
 

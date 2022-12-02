@@ -33,6 +33,7 @@ type RadarWrangleProps = {
   yearFilter: [number, number] | null;
   eventFilter: StormEventCategoryType | 'ALL';
 };
+
 export const wrangleDataByTopXStates = ({
   data,
   numberOfStates = 3,
@@ -43,22 +44,26 @@ export const wrangleDataByTopXStates = ({
 }: RadarWrangleProps) => {
   // get the top states by selected metric
 
-  const filteredData = [...filterData({ stormData: data, yearFilter, eventFilter })];
+  try {
+    const filteredData = [...filterData({ stormData: data, yearFilter, eventFilter })];
 
-  const dataGroupedByState = Array.from(
-    d3.group(filteredData, (d) => d.STATE),
-    ([key, value]) => ({ key, value })
-  );
+    const dataGroupedByState = Array.from(
+      d3.group(filteredData, (d) => d.STATE),
+      ([key, value]) => ({ key, value })
+    );
 
-  const topStatesAggregateValues = getTopStatesByDimension({
-    dataGroupedByState,
-    selectedDimension,
-    stateSelected,
-    numberOfStates,
-  });
+    const topStatesAggregateValues = getTopStatesByDimension({
+      dataGroupedByState,
+      selectedDimension,
+      stateSelected,
+      numberOfStates,
+    });
 
-  const radarData = formatStatesCountDataForRadarDisplay(topStatesAggregateValues);
-  return radarData;
+    const radarData = formatStatesCountDataForRadarDisplay(topStatesAggregateValues);
+    return radarData;
+  } catch (e) {
+    console.warn(e);
+  }
 };
 
 type FilterFnProps = {
@@ -207,10 +212,17 @@ export const getTopStatesByDimension = ({
 };
 
 export const getFormat = ({ value, isMoney = false, maxLength = 5 }) => {
-  const prefix = isMoney ? '$' : '';
-  return value.toString().length > maxLength
+  try {
+
+    const prefix = isMoney ? '$' : '';
+    
+    return value.toString().length > maxLength
     ? d3.format(`${prefix},.3s`)
     : d3.format(`${prefix},.0f`);
+  } catch(e) {
+    
+    console.warn(`value: ${value}`, e )
+  }
 };
 
 export const formatStatesCountDataForRadarDisplay = (data: StateDataDimensions[]): RadarData => {

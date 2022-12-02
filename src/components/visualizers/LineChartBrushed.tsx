@@ -110,8 +110,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       // @ts-ignore
       .call(xAxis);
 
-      svg.select(".selection")
-      .style('filter', 'url(#glow-line-temp)')
+
 
     svg
       .select('.y-axis')

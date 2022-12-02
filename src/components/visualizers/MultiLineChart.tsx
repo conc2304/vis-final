@@ -10,11 +10,7 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import {
-  COLOR_ACCCENT,
-  STORM_EVENT_CATEGORIES,
-  YEAR_RANGE,
-} from './data/constants';
+import { COLOR_ACCCENT, STORM_EVENT_CATEGORIES, YEAR_RANGE } from './data/constants';
 
 import './MultiLineChart.scss';
 import { getFormat } from './RadarChart/WrangleRadarData';
@@ -317,12 +313,7 @@ const MultiLineChart = ({
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-      <div
-        ref={wrapperRef}
-        style={{ width: '100%', height: '80%', position: 'relative' }}
-        className={`${id}-wrapper event-by-storm-chart`}
-      >
-        <div className="title" style={{ position: 'absolute', top: 0, left: margin.left + 20 }}>
+      <div className="title" style={{  position: 'absolute', top: 0, left: margin.left + 20 }}>
           {title} by Storm Type{' '}
           <strong className="storm-selected">
             {filteredStormEvent ? `- ${filteredStormEvent}s` : ''}
@@ -333,7 +324,11 @@ const MultiLineChart = ({
               : (regionSelected as string).replace('(United States)', '').trim().toUpperCase()}
           </p>
         </div>
-
+      <div
+        ref={wrapperRef}
+        style={{ width: '100%', height: '65%', position: 'relative' }}
+        className={`${id}-wrapper event-by-storm-chart`}
+      >
         <svg ref={svgRef}>
           <defs>
             <clipPath id={`${id}`}>
@@ -346,9 +341,10 @@ const MultiLineChart = ({
         </svg>
       </div>
 
+      {/* legend */}
       <div
         className="storm-legend d-flex justify-content-between flex-wrap"
-        style={{ left: margin.left / 2, bottom: margin.bottom - 24}}
+        style={{ height: "25%", left: margin.left / 2, bottom: -10 }}
       >
         {STORM_EVENT_CATEGORIES.map((stormName) => {
           const color = isSelectedStorm(stormName) ? COLOR_ACCCENT : stormColorMap[stormName];

@@ -315,14 +315,14 @@ const StormsPage = () => {
                 stateSelected={selectedGeoRegion}
               />
             </div>
-            <div className="h-50">
+            <div className="h-50" style={{paddingBottom: '0'}}>
               <StormsTypesOverTimeSeries
                 id="storm-data-events-by-selection"
                 yearFilter={selectedBrushYears}
                 stormData={stormData}
                 margin={{
                   top: 10,
-                  bottom: 50,
+                  bottom: 20,
                   right: 30,
                   left: 60,
                 }}
