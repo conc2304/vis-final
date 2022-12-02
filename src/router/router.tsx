@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { createHashRouter } from 'react-router-dom';
 import Home from '../components/pages/Home';
-import Storms from '../components/pages/Storms_OLD';
+import Storms from '../components/pages/Storms';
 import Resources from '../components/pages/Resources';
 
 enum Routes {

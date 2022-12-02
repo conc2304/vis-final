@@ -13,7 +13,6 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 
-import { margin } from '@mui/system';
 import { Routes } from '../../router/router';
 import Layout from '../ui/Layout';
 import HeatMap from '../visualizers/HeatMap';
@@ -160,100 +159,83 @@ const StormsPage = () => {
         </Link>
       </header>
       <main className="p-2 flex-grow-1 d-flex flex-column">
-        {/* TITLE BAR */}
-        <Row className="d-flex justify-content-center">
-          <div className="d-flex align-items-center justify-content-center">
-            <img
-              style={{
-                height: '40px',
-                width: '40px',
-                marginRight: '15px',
-                marginBottom: '15px',
-                opacity: 0.8,
-              }}
-              src={SevereWeatherSvg}
-            />
-            <h1 className="p-2 pb-4 fs-2">Severe Weather Events in the USA</h1>
-            <img
-              style={{
-                height: '40px',
-                width: '40px',
-                marginLeft: '15px',
-                marginBottom: '15px',
-                opacity: 0.8,
-                transform: `scaleX(-1)`,
-              }}
-              src={SevereWeatherSvg}
-            />
+        <Row className="">
+          {/* TITLE BAR */}
+          <div className="d-inline-block" style={{ width: '' }}>
+            <Row className="d-flex justify-content-center">
+              <div className="d-flex align-items-center justify-content-center">
+                <img className="storm-icon" src={SevereWeatherSvg} />
+                <h1 className="p-2 pb-4 fs-2">Severe Weather Events in the USA</h1>
+                <img className="storm-icon flip-x" src={SevereWeatherSvg} />
+              </div>
+            </Row>
+
+            {/* FORM ROW */}
+            <Row className=" flex-grow-1">
+              <FormGroup className="form-group">
+                <div className=" d-flex justify-content-around">
+                  <div className="w-25 p-2">
+                    <FormControl className="ui-select">
+                      <InputLabel id="label-for-dimension-select">Data to view...</InputLabel>
+                      <Select
+                        labelId="label-for-dimension-select"
+                        placeholder="Data to view"
+                        label="Data to view..."
+                        value={selectedDimension}
+                        onChange={onDataDimensionChange}
+                      >
+                        {STORM_UI_SELECT_VALUES.map((uiValue) => {
+                          return (
+                            <MenuItem value={uiValue.value} key={uiValue.value}>
+                              {uiValue.label}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+                  </div>
+                  <div className="w-50">
+                    <div style={{ width: '80%', margin: '0 auto' }}>
+                      <UiDataDisplay
+                        timeRangeSelected={selectedBrushYears}
+                        locationSelected={selectedGeoRegion}
+                        metrics={uiMetrics}
+                      />
+                    </div>
+                  </div>
+                  <div className="w-25 p-2">
+                    <FormControl className="ui-select">
+                      <InputLabel id="label-for-event-select">Severe Weather Type</InputLabel>
+                      <Select
+                        labelId="label-for-event-select"
+                        placeholder="Dat"
+                        label="Severe Weather Type"
+                        value={selectedStormType}
+                        onChange={onEventTypeChanged}
+                      >
+                        <MenuItem value={'ALL'} key={0}>
+                          All Severe Weather
+                        </MenuItem>
+                        {STORM_EVENT_CATEGORIES.map((stormType) => {
+                          return (
+                            <MenuItem value={stormType} key={stormType}>
+                              {stormType}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+                  </div>
+                </div>
+              </FormGroup>
+            </Row>
           </div>
         </Row>
 
-        {/* FORM ROW */}
-        <Row className=" flex-grow-1" style={{ height: "10%", border: '1px solid red'}}>
-          <FormGroup className="form-group">
-            <div className="d-flex align-items-center">
-              {/* SELECT METRICS */}
-              <Col>
-                <FormControl className="ui-select">
-                  <InputLabel id="label-for-dimension-select">Data to view...</InputLabel>
-                  <Select
-                    labelId="label-for-dimension-select"
-                    placeholder="Data to view"
-                    label="Data to view..."
-                    value={selectedDimension}
-                    onChange={onDataDimensionChange}
-                  >
-                    {STORM_UI_SELECT_VALUES.map((uiValue) => {
-                      return (
-                        <MenuItem value={uiValue.value} key={uiValue.value}>
-                          {uiValue.label}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Col>
-              {/* DATA DISPLAY */}
-              <Col>
-                <UiDataDisplay
-                  timeRangeSelected={selectedBrushYears}
-                  locationSelected={selectedGeoRegion}
-                  metrics={uiMetrics}
-                />
-              </Col>
-              {/* SELECT STORMS */}
-              <Col>
-                <FormControl className="ui-select">
-                  <InputLabel id="label-for-event-select">Severe Weather Type</InputLabel>
-                  <Select
-                    labelId="label-for-event-select"
-                    placeholder="Dat"
-                    label="Severe Weather Type"
-                    value={selectedStormType}
-                    onChange={onEventTypeChanged}
-                  >
-                    <MenuItem value={'ALL'} key={0}>
-                      All Severe Weather
-                    </MenuItem>
-                    {STORM_EVENT_CATEGORIES.map((stormType) => {
-                      return (
-                        <MenuItem value={stormType} key={stormType}>
-                          {stormType}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Col>
-            </div>
-          </FormGroup>
-        </Row>
-
         {/* MAIN CONTENT */}
-        <Row className="flex-grow-1" >
-          {/* LEFT RADAR */}
-          <Col xs={3} md={3} lg={3} className="mb-5">
-            <Col className="h-50">
+        <div className="d-flex flex-grow-1" style={{}}>
+          <div className="d-inline-block h-100" style={{ width: '25%' }}>
+            <div className="h-50">
               <RadarChart
                 id="radar-chart-top-states"
                 data={radarDataTopStates}
@@ -264,8 +246,8 @@ const StormsPage = () => {
                 selectedState={selectedGeoRegion}
                 title="Top 3 Most Impacted States (Metrics)"
               />
-            </Col>
-            <Col className="h-50">
+            </div>
+            <div className="h-50">
               <RadarChart
                 id="radar-chart-state-storms"
                 data={radarDataStormEvents}
@@ -277,12 +259,10 @@ const StormsPage = () => {
                 selectedState={selectedGeoRegion}
                 title="Top 3 Most Impacted States (Storms)"
               />
-            </Col>
-          </Col>
-          {/* CENTER MAIN */}
-          <Col xs={6} md={6} lg={6} className="d-flex flex-column justify-content-start">
-            {/* HEAT MAP */}
-            <Row style={{ height: '60%', marginBottom: '35px' }}>
+            </div>
+          </div>
+          <div className="d-inline-block h-100" style={{ width: '50%' }}>
+            <div className="d-inline-block w-100" style={{ height: '60%', marginBottom: '40px' }}>
               <HeatMap
                 yearFilter={selectedBrushYears}
                 stormData={stormData}
@@ -299,15 +279,14 @@ const StormsPage = () => {
                 colorsRange={COLOR_RANGE}
                 handleOnStateSelect={handleOnStateSelect}
               />
-            </Row>
-            {/* BRUSH */}
-            <Row style={{ height: '20%' }}>
+            </div>
+            <div style={{ height: '20%' }}>
               <LineChart
                 data={GlobalTempData}
                 margin={{
                   top: 10,
                   bottom: 30,
-                  right: 0,
+                  right: 10,
                   left: 30,
                 }}
                 onBrush={handleOnBrush}
@@ -315,11 +294,10 @@ const StormsPage = () => {
                 id="global-temp-chart"
                 title="Global Temperature Anomaly"
               />
-            </Row>
-          </Col>
-          {/* RIGHT LINES */}
-          <Col xs={3} md={3} lg={3} className="d-flex flex-column justify-content-around">
-            <Row className="data-display-wrapper">
+            </div>
+          </div>
+          <div className="d-inline-block" style={{ width: '25%' }}>
+            <div className="h-50">
               <TopStatesOverTimeMultiLineChart
                 id="storm-data-top-states"
                 yearFilter={selectedBrushYears}
@@ -336,15 +314,15 @@ const StormsPage = () => {
                 colorsRange={COLOR_RANGE}
                 stateSelected={selectedGeoRegion}
               />
-            </Row>
-            <Row className="data-display-wrapper mb-5">
+            </div>
+            <div className="h-50">
               <StormsTypesOverTimeSeries
                 id="storm-data-events-by-selection"
                 yearFilter={selectedBrushYears}
                 stormData={stormData}
                 margin={{
                   top: 10,
-                  bottom: 30,
+                  bottom: 50,
                   right: 30,
                   left: 60,
                 }}
@@ -353,9 +331,9 @@ const StormsPage = () => {
                 regionSelected={selectedGeoRegion}
                 stormTypeSelected={selectedStormType}
               />
-            </Row>
-          </Col>
-        </Row>
+            </div>
+          </div>
+        </div>
       </main>
       <footer
         className="d-flex justify-content-center"

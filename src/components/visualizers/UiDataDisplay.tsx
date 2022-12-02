@@ -33,7 +33,7 @@ const UiDataDisplay = ({
   const displayLocation = locationSelected === 'ALL' ? 'U.S.A' : locationSelected;
 
   return (
-    <div>
+    <div className='mr-1'>
       <div className="d-flex justify-content-between align-items-center">
         <h3 style={{}}>{displayLocation}</h3>
         <h5>
@@ -43,7 +43,7 @@ const UiDataDisplay = ({
       {metrics && (
         <div className="d-flex justify-content-between" style={{ marginTop: '0.5em' }}>
           <p className='mb-0'>
-            <strong>Storm Events:</strong> <br />
+            <strong className='me-1'>Storm Events:</strong> 
             <animated.span>
               {propsEvents.val.to((val) => {
                 return getFormat({ value: val, maxLength: 5 })(val);
@@ -51,17 +51,15 @@ const UiDataDisplay = ({
             </animated.span>
           </p>
           <p className='mb-0'>
-            <strong>Deaths: </strong>
-            <br />
+            <strong className='me-1'>Deaths: </strong>
             <animated.span>
               {propsDeaths.val.to((val) => {
                 return getFormat({ value: Math.floor(val), maxLength: 5 })(val);
               })}
             </animated.span>
           </p>
-          <p className='mb-0'>
-            <strong>Property Damage: </strong>
-            <br />
+          <p className='mb-0 mr-1'>
+            <strong className='me-1'>Property Damage: </strong>
             <animated.span>
               {propsDamages.val.to((val) => {
                 return getFormat({ value: val, maxLength: 5, isMoney: true })(val);

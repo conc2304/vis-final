@@ -71,10 +71,17 @@ body {
   color: $color-ui-primary;
 }
 
+
 footer {
   width: 20%;
-  margin: 0 auto;;
+  height: $footer-height;
+  margin: 0 auto;
 }
+
+.flip-x {
+  transform: scaleX(-1);
+}
+
 .custom-footer {
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;

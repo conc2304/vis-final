@@ -348,7 +348,7 @@ const MultiLineChart = ({
 
       <div
         className="storm-legend d-flex justify-content-between flex-wrap"
-        style={{ left: margin.left / 2 }}
+        style={{ left: margin.left / 2, bottom: margin.bottom - 24}}
       >
         {STORM_EVENT_CATEGORIES.map((stormName) => {
           const color = isSelectedStorm(stormName) ? COLOR_ACCCENT : stormColorMap[stormName];
