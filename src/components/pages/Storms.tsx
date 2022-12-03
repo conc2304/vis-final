@@ -60,7 +60,7 @@ const StormsPage = () => {
     STORM_UI_SELECT_VALUES[0].value
   );
   const [stormData, setStormData] = useState<StormDataType[]>(null);
-  const [topStatesList, setTopStatesList] = useState<GeoRegionUSType[]>([])
+  const [topStatesList, setTopStatesList] = useState<GeoRegionUSType[]>([]);
   const [radarDataTopStates, setRadarDataTopStates] = useState<RadarData>(null);
   const [radarDataStormEvents, setRadarDataStormEvents] = useState<RadarData>(null);
   const [uiMetrics, setUiMetrics] = useState<{
@@ -142,7 +142,7 @@ const StormsPage = () => {
       .map((entry) => entry[0].state)
       .filter((entry) => !!entry);
 
-      console.log(topStatesArr)
+    console.log(topStatesArr);
     setTopStatesList(topStatesArr);
     setRadarDataTopStates(radarChartDataTopStates);
     setRadarDataStormEvents(radarChartDataStateByStorms);
@@ -281,23 +281,11 @@ const StormsPage = () => {
               />
             </div>
           </Col>
-          <Col xs={6} className="d-flex flex-column h-100" style={{ paddingBottom: '100px' }}>
-            <div className="w-100 mb-3" style={{ height: '20%', minHeight: 100 }}>
-              <LineChart
-                data={GlobalTempData}
-                margin={{
-                  top: 10,
-                  bottom: 30,
-                  right: 0,
-                  left: 20,
-                }}
-                onBrush={handleOnBrush}
-                lineColor="blue"
-                id="global-temp-chart"
-                title="Global Temperature Anomaly"
-              />
-            </div>
+          <Col xs={6} className="d-flex flex-column h-100" style={{ paddingBottom: '80px' }}>
             <div className="w-100 d-flex flex-column" style={{ height: '80%' }}>
+              <div className="px-4">
+                <UiDataDisplay metrics={uiMetrics} />
+              </div>
               <div className="flex-grow-1">
                 <HeatMap
                   yearFilter={selectedBrushYears}
@@ -318,9 +306,21 @@ const StormsPage = () => {
                   handleOnStateSelect={handleOnStateSelect}
                 />
               </div>
-              <div className="px-4">
-                <UiDataDisplay metrics={uiMetrics} />
-              </div>
+            </div>
+            <div className="w-100 pt-2 mt-4" style={{ height: '20%', minHeight: 100 }}>
+              <LineChart
+                data={GlobalTempData}
+                margin={{
+                  top: 10,
+                  bottom: 30,
+                  right: 0,
+                  left: 20,
+                }}
+                onBrush={handleOnBrush}
+                lineColor="blue"
+                id="global-temp-chart"
+                title="Global Temperature Anomaly"
+              />
             </div>
           </Col>
           <Col xs={3} className="d-inline-block">
