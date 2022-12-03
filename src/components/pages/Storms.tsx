@@ -344,6 +344,7 @@ const StormsPage = () => {
                 eventFilter={selectedStormType}
                 colorsRange={COLOR_RANGE}
                 stateSelected={selectedGeoRegion}
+                topXStates={topStatesList}
               />
             </div>
             <div className="pb-1" style={{ height: '58%' }}>

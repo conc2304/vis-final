@@ -33,6 +33,7 @@ type Props = {
   colorsRange?: string[];
   eventFilter?: StormEventCategoryType | 'ALL';
   stateSelected?: GeoRegionUSType | 'ALL';
+  topXStates?: GeoRegionUSType[];
 };
 
 const TopStatesOverTimeMultiLineChart = ({
@@ -45,6 +46,7 @@ const TopStatesOverTimeMultiLineChart = ({
   id,
   title,
   eventFilter = 'ALL',
+  topXStates = [],
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
@@ -99,7 +101,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .range([0, innerWidth]);
 
     const colorSeries = COLOR_SERIES_TOP_3;
-    colorScale.current = d3.scaleOrdinal().range(colorSeries);
+    colorScale.current = d3.scaleOrdinal().domain(topXStates).range(colorSeries);
 
     // yscale for density of metric
     let dimensionMax = 0;
@@ -135,17 +137,17 @@ const TopStatesOverTimeMultiLineChart = ({
     };
 
     // color domain should not include the selected state since it is always accent orange
-    colorScale.current.domain(
-      displayData
-        .filter((entry) => {
-          // filter out the selectected state if its not one of the top 3
-          if (displayData.length > numberOfTopStates && isSelectedState(entry.key)) {
-            return false;
-          }
-          return true;
-        })
-        .map((entry) => entry.key)
-    );
+    // colorScale.current.domain(
+    //   displayData
+    //     .filter((entry) => {
+    //       // filter out the selectected state if its not one of the top 3
+    //       if (displayData.length > numberOfTopStates && isSelectedState(entry.key)) {
+    //         return false;
+    //       }
+    //       return true;
+    //     })
+    //     .map((entry) => entry.key)
+    // );
     // Render the Area Paths for each of the storm events
 
     // plot the path
