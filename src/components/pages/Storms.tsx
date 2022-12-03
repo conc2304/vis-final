@@ -180,7 +180,11 @@ const StormsPage = () => {
             <Row className="d-flex justify-content-center">
               <div className="d-flex align-items-center justify-content-center">
                 <img className="storm-icon" src={SevereWeatherSvg} />
-                <h1 className="p-2 pb-4 fs-2">Severe Weather Events in the USA</h1>
+                <h1 className="flicker-container p-2 pb-4 fs-2">
+                  <span>Severe</span> <span>Weather </span>
+                  <span>in the </span>
+                  <span>USA</span>
+                </h1>
                 <img className="storm-icon flip-x" src={SevereWeatherSvg} />
               </div>
             </Row>
