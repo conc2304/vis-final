@@ -128,7 +128,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .y0(innerHeight)
       // @ts-ignore
       .y1((d: StateDataDimensions) => yScale(d[selectedDimension]))
-      .curve(d3.curveBasis);
+      .curve(d3.curveCardinal);
 
     const isSelectedState = (state: GeoRegionUSType) => {
       return stateSelected.toLowerCase() === state.toLowerCase();
@@ -217,7 +217,6 @@ const TopStatesOverTimeMultiLineChart = ({
 
     svg.select('.y-axis text').attr('text-anchor', 'end');
 
-
     // if we are filtered on a state then lets add a crosshair and values, otherwise its too noisey
     const bisect = (mouseX) => {
       // using mouseX get the value of Y on the line
@@ -259,7 +258,8 @@ const TopStatesOverTimeMultiLineChart = ({
         .attr('x1', targetX)
         .attr('y1', innerHeight + margin.top)
         .attr('x2', targetX)
-        .attr('y2', targetY - circleR - linePadding + margin.top + 1)
+        .attr('y2', targetY + circleR + linePadding)
+        // .attr('y2', targetY - circleR - linePadding + margin.top + 1)
         .attr('stroke', COLOR_UI_PRIMARY)
         .attr('stroke-width', 1)
         .style('opacity', 0.5);
