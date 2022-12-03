@@ -122,7 +122,7 @@ const MultiLineChart = ({
       .y0(innerHeight)
       // @ts-ignore
       .y1((d: StateDataDimensions) => yScale(d[selectedDimension]))
-      .curve(d3.curveCardinal);
+      .curve(d3.curveCatmullRom);
 
     // Render the Area Paths for each of the storm events
     const lines = svgContent.selectAll('path').data(displayData, (d: DisplayData) => d.key);

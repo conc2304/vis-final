@@ -130,7 +130,7 @@ const TopStatesOverTimeMultiLineChart = ({
       .y0(innerHeight)
       // @ts-ignore
       .y1((d: StateDataDimensions) => yScale(d[selectedDimension]))
-      .curve(d3.curveCardinal);
+      .curve(d3.curveCatmullRom);
 
     const isSelectedState = (state: GeoRegionUSType) => {
       return stateSelected.toLowerCase() === state.toLowerCase();
