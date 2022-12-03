@@ -9,8 +9,13 @@ import {
 } from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
-import { fillMissingYears } from './helpers';
-import { COLOR_ACCCENT, COLOR_SERIES_TOP_3, STORM_EVENT_REGIONS, YEAR_RANGE } from './data/constants';
+import { fillMissingYears, ucFirst } from './helpers';
+import {
+  COLOR_ACCCENT,
+  COLOR_SERIES_TOP_3,
+  STORM_EVENT_REGIONS,
+  YEAR_RANGE,
+} from './data/constants';
 
 import './MultiLineChartTop.scss';
 import { getFormat } from './RadarChart/WrangleRadarData';
@@ -390,9 +395,10 @@ const TopStatesOverTimeMultiLineChart = ({
 
   return (
     <>
-      <div ref={wrapperRef} className={`${id}-wrapper top-states-chart`}
-      style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}
-      
+      <div
+        ref={wrapperRef}
+        className={`${id}-wrapper top-states-chart`}
+        style={{ width: '100%', height: '100%', position: 'relative', zIndex: 10 }}
       >
         <div className="title" style={{ position: 'absolute', top: 8, left: margin.left + 20 }}>
           Top {numberOfTopStates} Most Impacted States:
@@ -404,18 +410,25 @@ const TopStatesOverTimeMultiLineChart = ({
         >
           <div>
             {topStateAsNameList.map((stateName, i) => (
-              <small
-                className={`d-block ${stateNamesMatch(stateName, stateSelected) ? 'active' : ''}`}
-                key={stateName}
-                style={{
-                  fontWeight: 'bold',
-                  color: stateNamesMatch(stateName, stateSelected)
-                    ? COLOR_ACCCENT
-                    : (colorScale.current(stateName) as string),
-                }}
-              >
-                {i + 1}. {stateName}
-              </small>
+              <div className="d-flex justify-content-start align-items-center">
+                <div
+                  className="legend-color"
+                  style={{
+                    backgroundColor: stateNamesMatch(stateName, stateSelected)
+                      ? COLOR_ACCCENT
+                      : (colorScale.current(stateName) as string),
+                  }}
+                ></div>
+                <span
+                  className={`d-block ${stateNamesMatch(stateName, stateSelected) ? 'active' : ''}`}
+                  key={stateName}
+                  style={{
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {ucFirst(stateName)}
+                </span>
+              </div>
             ))}
             {stateSelected !== 'ALL' && !isSelectedStateIncluded ? (
               <small className="d-block active">{stateSelected.toUpperCase()}</small>
@@ -424,7 +437,7 @@ const TopStatesOverTimeMultiLineChart = ({
             )}
           </div>
         </div>
-        <svg ref={svgRef} >
+        <svg ref={svgRef}>
           <defs>
             <clipPath id={`${id}`}>
               <rect x="0" y="0" width={innerDimension.w} height="100%" />

@@ -259,6 +259,14 @@ footer {
   }
 }
 
+.legend-color {
+  width: 9px;
+  height: 9px;
+  margin-right: 5px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
 @keyframes pulse {
   0% {
     transform: scale(0.98);

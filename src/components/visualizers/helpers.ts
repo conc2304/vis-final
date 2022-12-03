@@ -34,3 +34,5 @@ export const fillMissingYears = (
   }
   return yearData;
 };
+
+export const ucFirst = (string: string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
