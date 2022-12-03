@@ -3,7 +3,7 @@
 ## Getting Started
 
 Do you have node installed on your computer? No?
-Follow these instructions: 
+Follow these instructions:
 Mac Terminal: [How to install NodeJS and NPM on Mac using Homebrew](https://medium.com/@hayasnc/how-to-install-nodejs-and-npm-on-mac-using-homebrew-b33780287d8f)
 or
 Download the the os specific NodeJs [installer](https://nodejs.org/en/download/)
@@ -11,10 +11,12 @@ Download the the os specific NodeJs [installer](https://nodejs.org/en/download/)
 Once you have NodeJs installed on your computer you will be able to run this React Application locally.
 
 In a terminal window go to the root folder of the project (aka the project directory)
-Run this command once:  
+Run this command once:
+
 - `npm install` - installs the project dependencies
 
 Run everytime you want to relaunch the application locally on your computer:
+
 - `npm start` - starts the application and launches it in the browser
 - If it doesnt open it in your browser : Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
@@ -27,7 +29,7 @@ In the project directory, you can run:
 ### `npm install`
 
 Installs all of the project dependencies from the package.json file.
-You only have to run this once before running `npm start` to launch the application. 
+You only have to run this once before running `npm start` to launch the application.
 
 ### `npm start`
 
@@ -52,11 +54,13 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-
 ## Project Directory Structure
 
 - src/App.tsx - the entry file of the project, think of it like index.html
-- src/components/visualizers/*.tsx -  the d3 charts written as React Components ie HeatMap.tsx
-- public - the public directory that serves any non web specific asses (images, csv files, json files, etc...)
-- public/data - public directory that is serving the locally hosted data that is driving the application
-
+- src/components/pages/\*.tsx - the React Components comprising the various pages of the application
+- src/components/ui/\*.tsx - UI components shared between pages such as navigation and layout
+- src/components/visualizers/\*.tsx - the d3 charts written as React Components ie HeatMap.tsx
+- src/fonts/ - files for custom UI fonts
+- src/router/ - configuration of the React router
+- public/ - the public directory that serves any non web specific asses (images, csv files, json files, etc...)
+- public/data/ - public directory that is serving the locally hosted data that is driving the application
