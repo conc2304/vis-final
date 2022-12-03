@@ -60,6 +60,7 @@ const StormsPage = () => {
     STORM_UI_SELECT_VALUES[0].value
   );
   const [stormData, setStormData] = useState<StormDataType[]>(null);
+  const [topStatesList, setTopStatesList] = useState<GeoRegionUSType[]>([])
   const [radarDataTopStates, setRadarDataTopStates] = useState<RadarData>(null);
   const [radarDataStormEvents, setRadarDataStormEvents] = useState<RadarData>(null);
   const [uiMetrics, setUiMetrics] = useState<{
@@ -137,6 +138,12 @@ const StormsPage = () => {
       numberOfStates: 3,
     });
 
+    const topStatesArr = radarChartDataTopStates
+      .map((entry) => entry[0].state)
+      .filter((entry) => !!entry);
+
+      console.log(topStatesArr)
+    setTopStatesList(topStatesArr);
     setRadarDataTopStates(radarChartDataTopStates);
     setRadarDataStormEvents(radarChartDataStateByStorms);
   }, [stormData, selectedGeoRegion, selectedBrushYears, selectedStormType, selectedDimension]);
@@ -148,7 +155,7 @@ const StormsPage = () => {
     }
   }, [selectedGeoRegion, stormData]);
 
-  const RadarTitle = ({qualifier}): JSX.Element => (
+  const RadarTitle = ({ qualifier }): JSX.Element => (
     <div>
       Top 3 Most Impacted States {!!qualifier ? `(${qualifier})` : ''}: <br />
       {selectedDimensionTitle} by{' '}
@@ -257,7 +264,7 @@ const StormsPage = () => {
                 labelFactor={1.29}
                 margin={{ top: 80, right: 0, bottom: 50, left: 0 }}
                 selectedState={selectedGeoRegion}
-                title={<RadarTitle qualifier='Metrics'/>}
+                title={<RadarTitle qualifier="Metrics" />}
               />
             </div>
             <div className="h-50">
@@ -270,7 +277,7 @@ const StormsPage = () => {
                 wrapWidth={120}
                 margin={{ top: 50, right: 0, bottom: 90, left: 0 }}
                 selectedState={selectedGeoRegion}
-                title={<RadarTitle qualifier='Storms'/>}
+                title={<RadarTitle qualifier="Storms" />}
               />
             </div>
           </Col>
@@ -302,7 +309,9 @@ const StormsPage = () => {
                     right: 0,
                     left: -5,
                   }}
+                  // listOfTopXStates={}
                   id="storm-data-heatmap"
+                  topStatesList={topStatesList}
                   selectedDimension={selectedDimension}
                   eventFilter={selectedStormType}
                   colorsRange={COLOR_RANGE}

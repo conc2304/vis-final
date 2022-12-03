@@ -97,6 +97,7 @@ const TopStatesOverTimeMultiLineChart = ({
       ])
       .range([0, innerWidth]);
 
+      
     const colorSeries = COLOR_SERIES_TOP_3;
     colorScale.current = d3.scaleOrdinal().range(colorSeries);
 

@@ -258,6 +258,7 @@ const StormsPage = () => {
                 </div>
                 <div style={{ height: '60%' }}>
                   <HeatMap
+                  topStatesList={[]}
                     yearFilter={selectedBrushYears}
                     stormData={stormData}
                     regionSelected={selectedGeoRegion}

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, MutableRefObject } from 'react';
 import { geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import { Feature, Geometry, FeatureCollection } from 'geojson';
@@ -16,6 +16,7 @@ import { Margin } from './types';
 import {
   COLOR_GREY,
   COLOR_RANGE,
+  COLOR_SERIES_TOP_3,
   COLOR_UI_PRIMARY,
   STORM_EVENT_REGIONS,
   STORM_UI_SELECT_VALUES,
@@ -38,6 +39,7 @@ type Props = {
   selectedDimension: SelectedDimensionsType;
   handleOnStateSelect?: (selectedRegion: GeoRegionUSType | 'ALL') => void;
   regionSelected: GeoRegionUSType | 'ALL';
+  topStatesList: GeoRegionUSType[];
   hideHex?: boolean;
 };
 
@@ -51,6 +53,7 @@ const HeatMap = ({
   eventFilter = null,
   regionSelected = 'ALL',
   handleOnStateSelect,
+  topStatesList = [],
 }: Props) => {
   const svgRef = useRef(null);
   const wrapperRef = useRef(null); // Parent of SVG
@@ -66,6 +69,10 @@ const HeatMap = ({
   const [stateIsSelected, setStateIsSelected] = useState(false);
   const [coverIsActive, setCoverIsActive] = useState(true);
   const [userHasInteracted, setUserHasInteracted] = useState(false);
+
+  const topStatesColorScale: MutableRefObject<d3.ScaleOrdinal<string, unknown, never>> = useRef();
+
+  console.log('here', topStatesList);
 
   const wrangleData = (): StateDataDimensions[] => {
     // first, filter according to selectedTimeRange, init empty array
@@ -198,6 +205,11 @@ const HeatMap = ({
       // @ts-ignore
       .range(colorsRange);
 
+    const colorSeries = COLOR_SERIES_TOP_3;
+    topStatesColorScale.current = !!topStatesList
+      ? d3.scaleOrdinal().range(colorSeries).domain(topStatesList)
+      : null;
+
     const innerWidth = svgWidth - margin.left - margin.right;
     const innerHeight = svgHeight - margin.top - margin.bottom;
     setInnerDimensions({
@@ -276,15 +288,18 @@ const HeatMap = ({
     const pathGenerator = geoPath().projection(projection);
 
     const statePaths = svgContent
+
       .selectAll('.state')
       // @ts-ignore
       .data(geographies)
       .join('path')
       .classed('state', true)
-      .attr('stroke-width', '0.5px')
-      .attr('stroke', 'white')
-      .classed('invalid-state', (feature) => getFillColor(feature, stateDataDisplay) === COLOR_GREY)
-      .attr('data', (feature) => getFillColor(feature, stateDataDisplay));
+      .classed('top-state',(d) =>{
+        const stateName: GeoRegionUSType = d.properties.name.toUpperCase() || '';
+        const isTopState = topStatesList.includes(stateName);
+        return isTopState
+      } )
+      .classed('invalid-state', (feature) => getFillColor(feature, stateDataDisplay) === COLOR_GREY);
 
     statePaths
       .transition()
@@ -321,7 +336,15 @@ const HeatMap = ({
       }
       return null;
     }
-  }, [yearFilter, eventFilter, selectedDimension, regionSelected, stormData, geographies]);
+  }, [
+    yearFilter,
+    eventFilter,
+    selectedDimension,
+    regionSelected,
+    stormData,
+    geographies,
+    topStatesList,
+  ]);
 
   const handleOnMapViewToggle = () => {
     setIsHexGrid(!isHexGrid);

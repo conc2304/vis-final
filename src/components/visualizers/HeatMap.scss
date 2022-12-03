@@ -42,7 +42,7 @@ svg.heatmap {
 
 path.state {
   stroke: $color-ui-primary;
-  stroke-opacity: 0.65;
+  stroke-opacity: 0.3;
   opacity: 1;
   z-index: 10;
 
@@ -54,6 +54,12 @@ path.state {
     stroke-width: 2px;
     stroke-opacity: 1;
     z-index: 100;
+  }
+
+  &.top-state {
+    stroke-opacity: 0.5;
+    stroke:#ff6961;
+    stroke-width: 4px;
   }
 
   &.selected {
