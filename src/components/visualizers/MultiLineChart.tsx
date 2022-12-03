@@ -10,7 +10,12 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import { COLOR_ACCCENT, COLOR_UI_PRIMARY, STORM_EVENT_CATEGORIES, YEAR_RANGE } from './data/constants';
+import {
+  COLOR_ACCCENT,
+  COLOR_UI_PRIMARY,
+  STORM_EVENT_CATEGORIES,
+  YEAR_RANGE,
+} from './data/constants';
 
 import './MultiLineChart.scss';
 import { getFormat } from './RadarChart/WrangleRadarData';
@@ -185,7 +190,6 @@ const MultiLineChart = ({
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // if we are filtered on a state then lets add a crosshair and values, otherwise its too noisey
-    console.log(displayData);
     const bisect = (mouseX) => {
       // using mouseX get the value of Y on the line
       const year = Math.round(xScale.invert(mouseX - margin.left));
@@ -193,13 +197,23 @@ const MultiLineChart = ({
         selectedDimension
       ];
 
+      if (!valueAtYear) {
+        svg.select('circle.focus-point').style('opacity', 0);
+        svg.selectAll('line.cross-hairs').style('opacity', 0);
+        return;
+      }
+
       const targetX = mouseX;
       const targetY = yScale(valueAtYear) + margin.top;
       const circleR = 6;
-      const linePadding = 0;
+      const linePadding = 3;
       // draw
-      svg.select('circle.focus-point').attr("r", circleR).attr('cx', targetX).attr('cy', targetY).style('opacity', 1);
-
+      svg
+        .select('circle.focus-point')
+        .attr('r', circleR)
+        .attr('cx', targetX)
+        .attr('cy', targetY)
+        .style('opacity', 1);
 
       svg
         .select('line.ch-y')
@@ -207,33 +221,41 @@ const MultiLineChart = ({
         .attr('y1', targetY)
         .attr('x2', targetX - circleR - linePadding)
         .attr('y2', targetY)
-        .attr("stroke", COLOR_UI_PRIMARY)
-        .attr("stroke-width", 1)
+        .attr('stroke', COLOR_UI_PRIMARY)
+        .attr('stroke-width', 1)
         .style('opacity', 0.5);
 
-        svg
+      svg
         .select('line.ch-x')
         .attr('x1', targetX)
         .attr('y1', innerHeight + margin.top)
         .attr('x2', targetX)
         .attr('y2', targetY - circleR - linePadding + margin.top + 1)
-        .attr("stroke", COLOR_UI_PRIMARY)
-        .attr("stroke-width", 1)
+        .attr('stroke', COLOR_UI_PRIMARY)
+        .attr('stroke-width', 1)
         .style('opacity', 0.5);
     };
 
     const renderCrossHairs = (e: MouseEvent, d: DisplayData) => {
       if (!filteredStormEvent) {
-        svg.select('circle.focus-point').style('opacity', 0);
         return;
+      } else {
+        const [mX] = d3.pointer(e, this);
+        bisect(mX);
       }
-      console.log('CROSS START');
-      console.log(e, d);
-      const [mX, mY] = d3.pointer(e, this);
-      bisect(mX);
     };
 
+    if (!filteredStormEvent) {
+      svg.select('circle.focus-point').style('opacity', 0);
+      svg.selectAll('line.cross-hairs').style('opacity', 0);
+    }
+
     svg.on('mousemove', renderCrossHairs);
+    svgContent.on('mouseleave', () => {
+      console.log('LEAVING');
+      svg.select('circle.focus-point').style('opacity', 0);
+      svg.selectAll('line.cross-hairs').style('opacity', 0);
+    });
 
     // done
   }, [
@@ -386,6 +408,8 @@ const MultiLineChart = ({
               <rect x="0" y="0" width={innerDimension.w} height="100%" />
             </clipPath>
           </defs>
+          <line className="cross-hairs ch-x"></line>
+          <line className="cross-hairs ch-y"></line>
           <g className="content" clipPath={`url(#${id})`}></g>
           <g className="x-axis axis" />
           <g className="y-axis axis" />
@@ -396,8 +420,6 @@ const MultiLineChart = ({
             fill="none"
             stroke-width={0.5}
           />
-          <line className="cross-hairs ch-x"></line>
-          <line className="cross-hairs ch-y"></line>
         </svg>
       </div>
 

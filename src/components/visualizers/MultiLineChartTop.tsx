@@ -13,6 +13,7 @@ import { fillMissingYears, ucFirst } from './helpers';
 import {
   COLOR_ACCCENT,
   COLOR_SERIES_TOP_3,
+  COLOR_UI_PRIMARY,
   STORM_EVENT_REGIONS,
   YEAR_RANGE,
 } from './data/constants';
@@ -97,7 +98,6 @@ const TopStatesOverTimeMultiLineChart = ({
       ])
       .range([0, innerWidth]);
 
-      
     const colorSeries = COLOR_SERIES_TOP_3;
     colorScale.current = d3.scaleOrdinal().range(colorSeries);
 
@@ -217,6 +217,74 @@ const TopStatesOverTimeMultiLineChart = ({
 
     svg.select('.y-axis text').attr('text-anchor', 'end');
 
+
+    // if we are filtered on a state then lets add a crosshair and values, otherwise its too noisey
+    const bisect = (mouseX) => {
+      // using mouseX get the value of Y on the line
+      const year = Math.round(xScale.invert(mouseX - margin.left));
+      const valueAtYear = displayData[0].values.find((entry) => entry.YEAR === year)[
+        selectedDimension
+      ];
+
+      if (!valueAtYear) {
+        svg.select('circle.focus-point').style('opacity', 0);
+        svg.selectAll('line.cross-hairs').style('opacity', 0);
+        return;
+      }
+
+      const targetX = mouseX;
+      const targetY = yScale(valueAtYear) + margin.top;
+      const circleR = 6;
+      const linePadding = 3;
+      // draw
+      svg
+        .select('circle.focus-point')
+        .attr('r', circleR)
+        .attr('cx', targetX)
+        .attr('cy', targetY)
+        .style('opacity', 1);
+
+      svg
+        .select('line.ch-y')
+        .attr('x1', margin.left)
+        .attr('y1', targetY)
+        .attr('x2', targetX - circleR - linePadding)
+        .attr('y2', targetY)
+        .attr('stroke', COLOR_UI_PRIMARY)
+        .attr('stroke-width', 1)
+        .style('opacity', 0.5);
+
+      svg
+        .select('line.ch-x')
+        .attr('x1', targetX)
+        .attr('y1', innerHeight + margin.top)
+        .attr('x2', targetX)
+        .attr('y2', targetY - circleR - linePadding + margin.top + 1)
+        .attr('stroke', COLOR_UI_PRIMARY)
+        .attr('stroke-width', 1)
+        .style('opacity', 0.5);
+    };
+
+    const renderCrossHairs = (e: MouseEvent, d: DisplayData) => {
+      if (!filteredState) {
+        return;
+      } else {
+        const [mX] = d3.pointer(e, this);
+        bisect(mX);
+      }
+    };
+
+    if (!filteredState) {
+      svg.select('circle.focus-point').style('opacity', 0);
+      svg.selectAll('line.cross-hairs').style('opacity', 0);
+    }
+
+    svg.on('mousemove', renderCrossHairs);
+    svgContent.on('mouseleave', () => {
+      console.log('LEAVING');
+      svg.select('circle.focus-point').style('opacity', 0);
+      svg.selectAll('line.cross-hairs').style('opacity', 0);
+    });
     // done
   }, [
     stormData,
@@ -524,9 +592,18 @@ const TopStatesOverTimeMultiLineChart = ({
               </feMerge>
             </filter>
           </defs>
+          <line className="cross-hairs ch-x"></line>
+          <line className="cross-hairs ch-y"></line>
           <g className="content" clipPath={`url(#${id})`}></g>
           <g className="x-axis axis" />
           <g className="y-axis axis" />
+          <circle
+            className="focus-point"
+            stroke={COLOR_ACCCENT}
+            stroke-opacity="1"
+            fill="none"
+            stroke-width={0.5}
+          />
         </svg>
       </div>
     </>
