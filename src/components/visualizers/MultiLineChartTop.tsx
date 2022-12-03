@@ -136,20 +136,7 @@ const TopStatesOverTimeMultiLineChart = ({
       return stateSelected.toLowerCase() === state.toLowerCase();
     };
 
-    // color domain should not include the selected state since it is always accent orange
-    // colorScale.current.domain(
-    //   displayData
-    //     .filter((entry) => {
-    //       // filter out the selectected state if its not one of the top 3
-    //       if (displayData.length > numberOfTopStates && isSelectedState(entry.key)) {
-    //         return false;
-    //       }
-    //       return true;
-    //     })
-    //     .map((entry) => entry.key)
-    // );
     // Render the Area Paths for each of the storm events
-
     // plot the path
     const lines = svgContent.selectAll('path').data(displayData, (d: DisplayData) => d.key);
     lines

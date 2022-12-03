@@ -142,7 +142,6 @@ const StormsPage = () => {
       .map((entry) => entry[0].state)
       .filter((entry) => !!entry);
 
-    console.log(topStatesArr);
     setTopStatesList(topStatesArr);
     setRadarDataTopStates(radarChartDataTopStates);
     setRadarDataStormEvents(radarChartDataStateByStorms);
