@@ -220,16 +220,17 @@ const TopStatesOverTimeMultiLineChart = ({
     // if we are filtered on a state then lets add a crosshair and values, otherwise its too noisey
     const bisect = (mouseX) => {
       // using mouseX get the value of Y on the line
-      const year = Math.round(xScale.invert(mouseX - margin.left));
-      const valueAtYear = displayData[0].values.find((entry) => entry.YEAR === year)[
-        selectedDimension
-      ];
 
-      if (!valueAtYear) {
+      if (mouseX < margin.left || mouseX > innerWidth + margin.left) {
         svg.select('circle.focus-point').style('opacity', 0);
         svg.selectAll('line.cross-hairs').style('opacity', 0);
         return;
       }
+
+      const year = Math.round(xScale.invert(mouseX - margin.left));
+      const valueAtYear = displayData[0].values.find((entry) => entry.YEAR === year)[
+        selectedDimension
+      ];
 
       const targetX = mouseX;
       const targetY = yScale(valueAtYear) + margin.top;
@@ -259,7 +260,6 @@ const TopStatesOverTimeMultiLineChart = ({
         .attr('y1', innerHeight + margin.top)
         .attr('x2', targetX)
         .attr('y2', targetY + circleR + linePadding)
-        // .attr('y2', targetY - circleR - linePadding + margin.top + 1)
         .attr('stroke', COLOR_UI_PRIMARY)
         .attr('stroke-width', 1)
         .style('opacity', 0.5);
@@ -281,7 +281,6 @@ const TopStatesOverTimeMultiLineChart = ({
 
     svg.on('mousemove', renderCrossHairs);
     svgContent.on('mouseleave', () => {
-      console.log('LEAVING');
       svg.select('circle.focus-point').style('opacity', 0);
       svg.selectAll('line.cross-hairs').style('opacity', 0);
     });
