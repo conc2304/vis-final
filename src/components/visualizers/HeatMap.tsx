@@ -72,8 +72,6 @@ const HeatMap = ({
 
   const topStatesColorScale: MutableRefObject<d3.ScaleOrdinal<string, unknown, never>> = useRef();
 
-  console.log('here', topStatesList);
-
   const wrangleData = (): StateDataDimensions[] => {
     // first, filter according to selectedTimeRange, init empty array
     let filteredData: StormDataType[] = [];

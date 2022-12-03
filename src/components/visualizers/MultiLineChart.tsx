@@ -10,7 +10,7 @@ import {
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
 import { fillMissingYears } from './helpers';
-import { COLOR_ACCCENT, STORM_EVENT_CATEGORIES, YEAR_RANGE } from './data/constants';
+import { COLOR_ACCCENT, COLOR_UI_PRIMARY, STORM_EVENT_CATEGORIES, YEAR_RANGE } from './data/constants';
 
 import './MultiLineChart.scss';
 import { getFormat } from './RadarChart/WrangleRadarData';
@@ -117,7 +117,7 @@ const MultiLineChart = ({
       .y0(innerHeight)
       // @ts-ignore
       .y1((d: StateDataDimensions) => yScale(d[selectedDimension]))
-      .curve(d3.curveBasis);
+      .curve(d3.curveCardinal);
 
     // Render the Area Paths for each of the storm events
     const lines = svgContent.selectAll('path').data(displayData, (d: DisplayData) => d.key);
@@ -183,6 +183,57 @@ const MultiLineChart = ({
       // @ts-ignore
       .call(yAxis)
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    // if we are filtered on a state then lets add a crosshair and values, otherwise its too noisey
+    console.log(displayData);
+    const bisect = (mouseX) => {
+      // using mouseX get the value of Y on the line
+      const year = Math.round(xScale.invert(mouseX - margin.left));
+      const valueAtYear = displayData[0].values.find((entry) => entry.YEAR === year)[
+        selectedDimension
+      ];
+
+      const targetX = mouseX;
+      const targetY = yScale(valueAtYear) + margin.top;
+      const circleR = 6;
+      const linePadding = 0;
+      // draw
+      svg.select('circle.focus-point').attr("r", circleR).attr('cx', targetX).attr('cy', targetY).style('opacity', 1);
+
+
+      svg
+        .select('line.ch-y')
+        .attr('x1', margin.left)
+        .attr('y1', targetY)
+        .attr('x2', targetX - circleR - linePadding)
+        .attr('y2', targetY)
+        .attr("stroke", COLOR_UI_PRIMARY)
+        .attr("stroke-width", 1)
+        .style('opacity', 0.5);
+
+        svg
+        .select('line.ch-x')
+        .attr('x1', targetX)
+        .attr('y1', innerHeight + margin.top)
+        .attr('x2', targetX)
+        .attr('y2', targetY - circleR - linePadding + margin.top + 1)
+        .attr("stroke", COLOR_UI_PRIMARY)
+        .attr("stroke-width", 1)
+        .style('opacity', 0.5);
+    };
+
+    const renderCrossHairs = (e: MouseEvent, d: DisplayData) => {
+      if (!filteredStormEvent) {
+        svg.select('circle.focus-point').style('opacity', 0);
+        return;
+      }
+      console.log('CROSS START');
+      console.log(e, d);
+      const [mX, mY] = d3.pointer(e, this);
+      bisect(mX);
+    };
+
+    svg.on('mousemove', renderCrossHairs);
 
     // done
   }, [
@@ -313,17 +364,17 @@ const MultiLineChart = ({
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-      <div className="title" style={{  position: 'absolute', top: 0, left: margin.left + 20 }}>
-          {title} by Storm Type{' '}
-          <strong className="storm-selected">
-            {filteredStormEvent ? `- ${filteredStormEvent}s` : ''}
-          </strong>
-          <p className="mt-1" style={{ color: COLOR_ACCCENT }}>
-            {regionSelected === 'ALL'
-              ? 'USA'
-              : (regionSelected as string).replace('(United States)', '').trim().toUpperCase()}
-          </p>
-        </div>
+      <div className="title" style={{ position: 'absolute', top: 0, left: margin.left + 20 }}>
+        {title} by Storm Type{' '}
+        <strong className="storm-selected">
+          {filteredStormEvent ? `- ${filteredStormEvent}s` : ''}
+        </strong>
+        <p className="mt-1" style={{ color: COLOR_ACCCENT }}>
+          {regionSelected === 'ALL'
+            ? 'USA'
+            : (regionSelected as string).replace('(United States)', '').trim().toUpperCase()}
+        </p>
+      </div>
       <div
         ref={wrapperRef}
         style={{ width: '100%', height: '65%', position: 'relative' }}
@@ -338,13 +389,22 @@ const MultiLineChart = ({
           <g className="content" clipPath={`url(#${id})`}></g>
           <g className="x-axis axis" />
           <g className="y-axis axis" />
+          <circle
+            className="focus-point"
+            stroke={COLOR_ACCCENT}
+            stroke-opacity="1"
+            fill="none"
+            stroke-width={0.5}
+          />
+          <line className="cross-hairs ch-x"></line>
+          <line className="cross-hairs ch-y"></line>
         </svg>
       </div>
 
       {/* legend */}
       <div
         className="storm-legend d-flex justify-content-between flex-wrap"
-        style={{ height: "25%", left: margin.left / 2, bottom: -10 }}
+        style={{ height: '25%', left: margin.left / 2, bottom: -10 }}
       >
         {STORM_EVENT_CATEGORIES.map((stormName) => {
           const color = isSelectedStorm(stormName) ? COLOR_ACCCENT : stormColorMap[stormName];
