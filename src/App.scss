@@ -71,10 +71,19 @@ body {
   color: $color-ui-primary;
 }
 
+.text-ui-accent {
+  color: $color-ui-accent;
+}
+
 footer {
   width: 20%;
   margin: 0 auto;
 }
+
+.flip-x {
+  transform: scaleX(-1);
+}
+
 .custom-footer {
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
@@ -240,10 +249,18 @@ footer {
   background-color: #000;
   border-radius: 8px;
   border: 0.5px solid $color-ui-primary;
-  z-index: -1;
+  z-index: 1000;
   box-shadow: 0px 0px 10px 2px rgb(66 168 162 / 65%);
   padding: 2px 8px;
+
+  display: none;
   opacity: 0;
+  transition: opacity 300ms ease-in, display 0s 100ms;
+
+  &.active {
+    display: block;
+    opacity: 1;
+  }
 }
 
 @keyframes pulse {
