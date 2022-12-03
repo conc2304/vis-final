@@ -218,10 +218,12 @@ const TopStatesOverTimeMultiLineChart = ({
     svg.select('.y-axis text').attr('text-anchor', 'end');
 
     // if we are filtered on a state then lets add a crosshair and values, otherwise its too noisey
-    const bisect = (mouseX) => {
+    const bisect = (mouseX: number, mouseY: number) => {
       // using mouseX get the value of Y on the line
 
-      if (mouseX < margin.left || mouseX > innerWidth + margin.left) {
+      const xIsOutOfRange = mouseX < margin.left || mouseX > innerWidth + margin.left;
+      const yIsOutOfRange = mouseY > innerHeight + margin.top || mouseY < margin.top;
+      if (xIsOutOfRange || yIsOutOfRange) {
         svg.select('circle.focus-point').style('opacity', 0);
         svg.selectAll('line.cross-hairs').style('opacity', 0);
         return;
@@ -269,8 +271,8 @@ const TopStatesOverTimeMultiLineChart = ({
       if (!filteredState) {
         return;
       } else {
-        const [mX] = d3.pointer(e, this);
-        bisect(mX);
+        const [mX, my] = d3.pointer(e, this);
+        bisect(mX, my);
       }
     };
 
