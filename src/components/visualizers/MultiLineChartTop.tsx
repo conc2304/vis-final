@@ -178,9 +178,8 @@ const TopStatesOverTimeMultiLineChart = ({
 
     lines.on('mouseenter', lineEnter);
     lines.on('click', (e, d) => {
-      const value = !filteredState ? d.key : null;
-      console.log(value);
-      setFilteredState(value);
+      const nextState = !filteredState ? d.key : null;
+      setFilteredState(nextState);
     });
 
     lines.on('mouseleave', lineLeave);
@@ -470,7 +469,6 @@ const TopStatesOverTimeMultiLineChart = ({
               const isStateSelected = stateNamesMatch(stateName, stateSelected);
               const isHoveredState = stateNamesMatch(stateName, hoveredState);
               const isFilteredState = stateNamesMatch(stateName, filteredState);
-              console.log(hoveredState);
               const color = isStateSelected
                 ? COLOR_ACCCENT
                 : (colorScale.current(stateName) as string);

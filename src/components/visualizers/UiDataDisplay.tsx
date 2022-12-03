@@ -28,7 +28,8 @@ const UiDataDisplay = ({
         <strong className="me-1">Storm Events:</strong>
         <animated.span>
           {propsEvents.val.to((val) => {
-            return getFormat({ value: val, maxLength: 5 })(val);
+            const roundedVal = Math.round(val);
+            return getFormat({ value: roundedVal, maxLength: 5 })(roundedVal);
           })}
         </animated.span>
       </p>
