@@ -372,7 +372,6 @@ const MultiLineChart = ({
                 className="legend-color"
                 style={{
                   backgroundColor: `${color}`,
-                  fontWeight: hoveredStormEvent === stormName ? 'bold' : 'normal',
                 }}
               ></div>
               <span

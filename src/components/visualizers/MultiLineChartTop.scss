@@ -8,6 +8,18 @@
   text-align: left;
   color: $color-ui-primary;
 
+  .area-path {
+    cursor: pointer;
+  }
+
+  .legend-elem {
+    margin-right: 10px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
   .state-list-container {
     color: $color-ui-primary;
     font-weight: 700;

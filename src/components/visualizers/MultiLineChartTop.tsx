@@ -50,6 +50,10 @@ const TopStatesOverTimeMultiLineChart = ({
   const dimensions = useResizeObserver(wrapperRef);
 
   const [topStateAsNameList, setTopStatesAsNameList] = useState<GeoRegionUSType[]>([]);
+
+  const [hoveredState, setHoveredState] = useState<GeoRegionUSType>(null);
+  const [filteredState, setFilteredState] = useState<GeoRegionUSType>(null);
+
   const [innerDimension, setInnerDimensions] = useState({ w: 0, h: 0 });
 
   const colorScale: MutableRefObject<d3.ScaleOrdinal<string, unknown, never>> = useRef();
@@ -152,6 +156,10 @@ const TopStatesOverTimeMultiLineChart = ({
       // @ts-ignore
       .merge(lines)
       .attr('fill-opacity', 0.05)
+      .attr('fill-opacity', (d) => {
+        if (!isSelectedState(d.key) && hoveredState === d.key) return 0.3;
+        return isSelectedState(d.key) ? 0.1 : 0.05;
+      })
       .style('mix-blend-mode', 'multiply')
       .style('filter', 'url(#glow-line)')
       .attr('stroke-linejoin', 'round')
@@ -167,7 +175,25 @@ const TopStatesOverTimeMultiLineChart = ({
       .attr('stroke-width', (d) => (isSelectedState(d.key) ? 2 : 1))
       // @ts-ignore
       .attr('d', (d) => generator(d.values));
+
+    lines.on('mouseenter', lineEnter);
+    lines.on('click', (e, d) => {
+      const value = !filteredState ? d.key : null;
+      console.log(value);
+      setFilteredState(value);
+    });
+
+    lines.on('mouseleave', lineLeave);
+
     lines.exit().remove();
+
+    function lineEnter(event: MouseEvent, d: DisplayData) {
+      setHoveredState(d.key);
+    }
+
+    function lineLeave(event: MouseEvent, d: DisplayData) {
+      setHoveredState(null);
+    }
 
     // axes
     const xAxis = d3
@@ -192,7 +218,15 @@ const TopStatesOverTimeMultiLineChart = ({
     svg.select('.y-axis text').attr('text-anchor', 'end');
 
     // done
-  }, [stormData, yearFilter, eventFilter, selectedDimension, stateSelected]);
+  }, [
+    stormData,
+    yearFilter,
+    eventFilter,
+    selectedDimension,
+    stateSelected,
+    hoveredState,
+    filteredState,
+  ]);
 
   /**
    * Get the sum of the counts for each event and aggregate them per year
@@ -211,8 +245,11 @@ const TopStatesOverTimeMultiLineChart = ({
 
         const eventConditionIsTrue = eventFilter === 'ALL' ? true : row.EVENT === eventFilter;
         const yearConditionIsTrue = yearMin <= row.YEAR && row.YEAR <= yearMax;
+        const filterByStateIsTrue = !filteredState
+          ? true
+          : filteredState.toLowerCase() === row.STATE.toLowerCase();
 
-        if (yearConditionIsTrue && eventConditionIsTrue) {
+        if (yearConditionIsTrue && eventConditionIsTrue && filterByStateIsTrue) {
           filteredData.push(row);
         }
       });
@@ -233,7 +270,7 @@ const TopStatesOverTimeMultiLineChart = ({
       if (!stateData) return;
       return stateData.STATE;
     });
-    setTopStatesAsNameList(topStatesNameArr.slice(0, numberOfTopStates));
+    setTopStatesAsNameList(topStatesNameArr.filter((entry) => !!entry));
     // get the yearly values for each state in our time period
     const topStatesData = getStormDataPerStatePerYear(stormDataByState, topStatesNameArr);
 
@@ -305,7 +342,24 @@ const TopStatesOverTimeMultiLineChart = ({
       });
     });
 
-    return displayData;
+    // sort by the average metric value
+    // selectedDimension
+    const displayDataWithAverages = [...displayData].map((eventData) => {
+      const sum = eventData.values.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue[selectedDimension];
+      }, 0);
+      return {
+        ...eventData,
+        averageValue: sum / eventData.values.length,
+      };
+    });
+
+    // sort so that we render them from biggest to smallest so we can hover on them more easily
+    const sortedByAvgValue = [...displayDataWithAverages].sort((a, b) => {
+      return b.averageValue - a.averageValue;
+    });
+
+    return sortedByAvgValue;
   }
 
   /**
@@ -391,8 +445,11 @@ const TopStatesOverTimeMultiLineChart = ({
   const isSelectedStateIncluded =
     stateSelected !== 'ALL' &&
     topStateAsNameList.includes(stateSelected.toUpperCase() as GeoRegionUSType);
-  const stateNamesMatch = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
 
+  const stateNamesMatch = (a: string, b: string) => {
+    if (!a || !b) return false;
+    return a.toLowerCase() === b.toLowerCase();
+  };
   return (
     <>
       <div
@@ -409,32 +466,50 @@ const TopStatesOverTimeMultiLineChart = ({
           style={{ position: 'absolute', top: margin.top, left: margin.left + 20 }}
         >
           <div>
-            {topStateAsNameList.map((stateName, i) => (
-              <div className="d-flex justify-content-start align-items-center">
+            {topStateAsNameList.map((stateName, i) => {
+              const isStateSelected = stateNamesMatch(stateName, stateSelected);
+              const isHoveredState = stateNamesMatch(stateName, hoveredState);
+              const isFilteredState = stateNamesMatch(stateName, filteredState);
+              console.log(hoveredState);
+              const color = isStateSelected
+                ? COLOR_ACCCENT
+                : (colorScale.current(stateName) as string);
+
+              return (
                 <div
-                  className="legend-color"
-                  style={{
-                    backgroundColor: stateNamesMatch(stateName, stateSelected)
-                      ? COLOR_ACCCENT
-                      : (colorScale.current(stateName) as string),
-                  }}
-                ></div>
-                <span
-                  className={`d-block ${stateNamesMatch(stateName, stateSelected) ? 'active' : ''}`}
+                  className="legend-elem d-flex justify-content-start align-items-center"
                   key={stateName}
-                  style={{
-                    fontWeight: 'bold',
+                  onMouseEnter={() => {
+                    setHoveredState(stateName);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredState(null);
+                  }}
+                  onClick={() => {
+                    // when clicking on a new event choose that
+                    // when reclicking on the same one turn it off
+                    const nextState = isFilteredState ? null : stateName;
+                    setFilteredState(nextState);
                   }}
                 >
-                  {ucFirst(stateName)}
-                </span>
-              </div>
-            ))}
-            {stateSelected !== 'ALL' && !isSelectedStateIncluded ? (
-              <small className="d-block active">{stateSelected.toUpperCase()}</small>
-            ) : (
-              ''
-            )}
+                  <div
+                    className="legend-color"
+                    style={{
+                      backgroundColor: color,
+                    }}
+                  ></div>
+                  <span
+                    className={isStateSelected ? 'active' : ''}
+                    key={stateName}
+                    style={{
+                      fontWeight: isHoveredState ? 'bold' : 'normal',
+                    }}
+                  >
+                    {ucFirst(stateName)}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
         <svg ref={svgRef}>
