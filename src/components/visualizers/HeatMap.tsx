@@ -292,12 +292,15 @@ const HeatMap = ({
       .data(geographies)
       .join('path')
       .classed('state', true)
-      .classed('top-state',(d) =>{
+      .classed('top-state', (d) => {
         const stateName: GeoRegionUSType = d.properties.name.toUpperCase() || '';
         const isTopState = topStatesList.includes(stateName);
-        return isTopState
-      } )
-      .classed('invalid-state', (feature) => getFillColor(feature, stateDataDisplay) === COLOR_GREY);
+        return isTopState;
+      })
+      .classed(
+        'invalid-state',
+        (feature) => getFillColor(feature, stateDataDisplay) === COLOR_GREY
+      );
 
     statePaths
       .transition()
@@ -459,6 +462,9 @@ const HeatMap = ({
       <div
         className={`map-cover ${coverIsActive && !!stormData ? 'active' : 'inactive'}`}
         onMouseEnter={() => {
+          setCoverIsActive(false);
+        }}
+        onMouseMove={() => {
           setCoverIsActive(false);
         }}
         style={{

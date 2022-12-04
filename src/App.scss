@@ -50,7 +50,6 @@ h6 {
   font-family: 'Glitch';
 }
 
-
 body,
 html,
 #root {
@@ -148,6 +147,39 @@ footer {
   font-size: 1.5rem;
 }
 
+.info {
+  font-family: 'Times New Roman', Times, serif;
+  font-style: italic;
+  border: 0.5px solid rgba($color: $color-ui-primary, $alpha: 0.8);
+  border-radius: 50%;
+  width: 10px;
+  padding: 3px 9px 3px 9px;
+  margin-left: 10px;
+  height: 10px;
+  align-self: baseline;
+  cursor: pointer;
+
+  transition: border-color 300ms ease-in-out;
+
+  &.active {
+    border: 1px solid rgba($color: magenta, $alpha: 0.8);
+  }
+
+  &:hover {
+    border: 1px solid rgba($color: $color-ui-accent, $alpha: 1);
+  }
+}
+
+.action-text {
+  opacity: 1;
+  transition: all 300ms ease-in-out;
+
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
 .title {
   font-size: 12px;
   line-height: 1.2;
@@ -242,6 +274,25 @@ footer {
   margin-right: 5px;
   display: inline-block;
   border-radius: 50%;
+}
+
+.custom-modal .modal-content {
+  background-color: #000;
+  border: 1px solid $color-ui-primary;
+
+  .modal-header {
+    border-bottom: 1px solid rgba($color: $color-ui-primary, $alpha: 0.4);
+  }
+
+  .btn-close {
+    color: $color-ui-primary;
+    background-color: $color-ui-primary;
+    border-radius: 50%;
+
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
 .tooltip-ui {

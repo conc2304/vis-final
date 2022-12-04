@@ -59,6 +59,7 @@ const CircleBarChart = ({
   const thermoArc: MutableRefObject<any> = useRef();
   const thermoRadius: MutableRefObject<number> = useRef();
   const thermoThickness = 2;
+  const thermoDomain = [-3, 3];
 
   useEffect(() => {
     // INIT
@@ -149,7 +150,7 @@ const CircleBarChart = ({
     const endAngle = (3 * Math.PI) / 4;
     thermoRadius.current = radiusMax * 1.05;
 
-    tempArcScale.current = d3.scaleLinear().domain([-1, 1]).range([startAngle, endAngle]);
+    tempArcScale.current = d3.scaleLinear().domain([thermoDomain[0], thermoDomain[1]]).range([startAngle, endAngle]);
 
     thermoArc.current = d3
       .arc()
@@ -441,13 +442,13 @@ const CircleBarChart = ({
 
           <g className="thermometer-ticks-labels">
             <text className="thermo-tick-high-label" fill={COLOR_UI_PRIMARY}>
-              +1°
+            +{thermoDomain[1]}°
             </text>
             <text className="thermo-tick-mid-label" fill={COLOR_UI_PRIMARY}>
               0°
             </text>
             <text className="thermo-tick-low-label" fill={COLOR_UI_PRIMARY}>
-              -1°
+              {thermoDomain[0]}°
             </text>
           </g>
           <g className="thermometer-values">

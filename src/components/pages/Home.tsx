@@ -2,7 +2,9 @@ import * as d3 from 'd3';
 import React, { useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 import { Routes } from '../../router/router';
 import Layout from '../ui/Layout';
@@ -11,6 +13,11 @@ import CircleBarChart from '../visualizers/CircleBarChart';
 
 const HomePage = () => {
   const [stormData, setStormData] = useState<StormDataType[]>(null);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     const promises = [d3.json('/vis-final/data/Storm_Data_Sums.json')];
@@ -44,26 +51,16 @@ const HomePage = () => {
               and as temperatures increase, so do the occurrences of severe weather.
             </p>
 
-            <p>
-              <strong className="pb-2 text-white">About Temperature Anomalies</strong>
-            </p>
-            <p className="text-white">
-              In climate change studies, temperature anomalies are more important than absolute
-              temperature. A temperature anomaly is the difference from a baseline temperature,
-              typically computed by averaging 30 or more years of data. Using anomalies, the
-              departure from an “average” allows more accurate descriptions over larger areas and
-              provides a frame of reference for easier analysis. Here we see that our
-              <span className="text-ui-primary"> baseline</span> is
-              <span className="text-ui-primary"> 0 degrees Celsius</span> which is quickly surpassed
-              around 1970.
-            </p>
-
             <h2 className="pb-2 fs-3">Are we running out of time?</h2>
             <p className="text-white">
               As temperatures change, what does that mean for the state of severe weather in the US?
               On the next page, you can explore how changes in temperature have had effects not only
               on different types of weather events in the US, but also how these storms distinctly
               impact particular regions over time.
+            </p>
+            <p onClick={handleShow}>
+              <strong className="pb-2 text-white action-text">About Temperature Anomalies</strong>
+              <span className="info">i</span>
             </p>
           </Col>
         </Row>
@@ -84,6 +81,24 @@ const HomePage = () => {
           <strong style={{ width: '200px' }}>Explore &#9661;</strong>
         </Link>
       </footer>
+      <Modal show={show} onHide={handleClose} dialogClassName="custom-modal" centered>
+        <Modal.Header closeButton>
+          <Modal.Title><strong>About Temperature Anomalies</strong></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="text-white">
+            In climate change studies, temperature anomalies are more important than absolute
+            temperature. A temperature anomaly is the difference from a baseline temperature,
+            typically computed by averaging 30 or more years of data. Using anomalies, the departure
+            from an “average” allows more accurate descriptions over larger areas and provides a
+            frame of reference for easier analysis. Here we see that our
+            <span className="text-ui-primary"> baseline</span> is
+            <span className="text-ui-primary"> 0 degrees Celsius</span>. The starting point for
+            measuring temperature was in the late 1800, when reliable recording became available.
+            Today, the planet has already warmed a little more than 1 degree Celsius
+          </p>
+        </Modal.Body>
+      </Modal>
     </Layout>
   );
 };
