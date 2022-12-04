@@ -36,17 +36,22 @@ const ResourcesPage = () => {
           </Col>
           <Col md={8} className="d-flex align-items-center">
             <div className="">
-              <div className='w-75 pb-3'>
-                <h1 className="pb-2">The Future of Climate</h1>
+              <div className="w-75 pb-3">
+                <h1 className="pb-2 flicker-container">
+                  <span className="text-glitch">The Future </span>
+                  <span className="text-glitch">of Climate</span>
+                </h1>
                 <p className="text-white">
                   A rise of 3°C in global temperatures above pre-industrial levels by 2100 would be
                   disastrous. Its effects would be felt differently around the world, but nowhere
                   would be immune. Prolonged heatwaves, droughts and extreme weather events could
                   all become increasingly common and severe.
-                  </p>
-                  <p className='text-white'> In such a brutally hot world,
-                  scientists agree, deadly heat waves, massive wildfires, and damaging downpours
-                  will come far more often and hit much harder than they do today.
+                </p>
+                <p className="text-white">
+                  {' '}
+                  In such a brutally hot world, scientists agree, deadly heat waves, massive
+                  wildfires, and damaging downpours will come far more often and hit much harder
+                  than they do today.
                 </p>
               </div>
               <h3 className="">More Resources</h3>

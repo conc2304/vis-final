@@ -4,7 +4,6 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
 
 import { Routes } from '../../router/router';
 import Layout from '../ui/Layout';
@@ -42,7 +41,13 @@ const HomePage = () => {
             className="d-flex justify-content-center flex-column"
             style={{ paddingBottom: 60 }}
           >
-            <h1 className="pb-3 fs-2">Is Earth Fighting Back?</h1>
+            <h1 className="pb-3 fs-2 flicker-container">
+              <span className="text-glitch">Is </span>
+              <span className="text-glitch">Earth </span>
+              <span className="text-glitch">Fighting </span>
+              <span className="text-glitch">Back?</span>
+            </h1>
+
             <p className="pb-2 text-white">
               As time progresses, Earth is getting warmer and we are seeing more storms every year.
               The graphic on the left shows the change in the number of storm events over the last
@@ -51,7 +56,12 @@ const HomePage = () => {
               and as temperatures increase, so do the occurrences of severe weather.
             </p>
 
-            <h2 className="pb-2 fs-3">Are we running out of time?</h2>
+            <h2 className="pb-2 fs-3 flicker-container alt-flicker">
+              <span className="text-glitch"> Are we </span>
+              <span className="text-glitch">running </span>
+              <span className="text-glitch">out of </span>
+              <span className="text-glitch">time?</span>
+            </h2>
             <p className="text-white">
               As temperatures change, what does that mean for the state of severe weather in the US?
               On the next page, you can explore how changes in temperature have had effects not only
@@ -84,7 +94,11 @@ const HomePage = () => {
       <Modal show={show} onHide={handleClose} dialogClassName="custom-modal" centered>
         <Modal.Header closeButton>
           <Modal.Title>
-            <strong>About Temperature Anomalies</strong>
+            <div className="flicker-container">
+              <strong>About </strong>
+              <strong>Temperature</strong>
+              <strong> Anomalies</strong>
+            </div>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

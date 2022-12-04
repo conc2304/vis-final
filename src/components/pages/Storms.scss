@@ -7,7 +7,7 @@
   width: 40px;
   margin-right: 15px;
   margin-bottom: 15px;
-  opacity: 0.6; 
+  opacity: 0.6;
 }
 
 :root {
@@ -16,44 +16,63 @@
   --base: #4d70c7;
   --c1: #21c2f5;
   --c2: #9c63c7;
+}
+.text-glitch {
+  font-family: 'Glitch' !important;
+}
 
-  .flicker-container {
-    span {
-      font-family: 'Glitch';
-
-      // make them all last 2.5 seconds
-      &:nth-child(1) {
-        animation: flicker1 0.8s 3 alternate ease-in-out;
-      }
-      &:nth-child(2) {
-        animation: flicker1 0.72s 4 alternate ease-in-out;
-      }
-      &:nth-child(3) {
-        animation: flicker1 0.47s 5 alternate ease-in-out;
-      }
-      &:nth-child(4) {
-        animation: flicker2 0.2s 0.6s 7 alternate ease-in-out;
-      }
+.flicker-container {
+  & > * {
+    // make them all last 2.5 seconds
+    &:nth-child(1) {
+      animation: flicker1 0.8s 3 alternate ease-in-out;
+    }
+    &:nth-child(2) {
+      animation: flicker1 0.72s 4 alternate ease-in-out;
+    }
+    &:nth-child(3) {
+      animation: flicker1 0.47s 5 alternate ease-in-out;
+    }
+    &:nth-child(4) {
+      animation: flicker2 0.2s 0.6s 7 alternate ease-in-out;
     }
   }
+}
 
-  @keyframes flicker1 {
-    95% {
-      text-shadow: 0 0 0.05em var(--c1), 0 0 0.1em var(--base),
-        calc(var(--shift) * 1) calc(var(--shift) * 1) calc(var(--spread) / 50) var(--c1),
-        calc(var(--shift) * -1) calc(var(--shift) * -1) calc(var(--spread) / 50) var(--c1),
-        calc(var(--shift) * 1) calc(var(--shift) * -1) calc(var(--spread) / 50) var(--c1),
-        calc(var(--shift) * -1) calc(var(--shift) * 1) calc(var(--spread) / 50) var(--c1),
-        0 0 var(--spread) var(--base), 0 0 calc(var(--spread) / 1.5) var(--base);
+.alt-flicker {
+  & > * {
+    // make them all last 2.5 seconds
+    &:nth-child(2) {
+      animation: flicker1 0.8s 4 alternate ease-in-out;
     }
-    98% {
-      text-shadow: 0 0 0.05em var(--c1), 0 0 0.1em var(--c2),
-        calc(var(--shift) * 1) calc(var(--shift) * 1) calc(var(--spread) / 50) var(--c1),
-        calc(var(--shift) * -1) calc(var(--shift) * -1) calc(var(--spread) / 50) var(--c1),
-        calc(var(--shift) * 1) calc(var(--shift) * -1) calc(var(--spread) / 50) var(--c1),
-        calc(var(--shift) * -1) calc(var(--shift) * 1) calc(var(--spread) / 50) var(--c1),
-        0 0 0 var(--base), 0 0 0 var(--base);
+    &:nth-child(1) {
+      animation: flicker1 0.78s 4 alternate ease-in-out;
     }
+    &:nth-child(4) {
+      animation: flicker1 0.5s 5 alternate ease-in-out;
+    }
+    &:nth-child(3) {
+      animation: flicker2 0.3s 0.2s 6 alternate ease-in-out;
+    }
+  }
+}
+
+@keyframes flicker1 {
+  95% {
+    text-shadow: 0 0 0.05em var(--c1), 0 0 0.1em var(--base),
+      calc(var(--shift) * 1) calc(var(--shift) * 1) calc(var(--spread) / 50) var(--c1),
+      calc(var(--shift) * -1) calc(var(--shift) * -1) calc(var(--spread) / 50) var(--c1),
+      calc(var(--shift) * 1) calc(var(--shift) * -1) calc(var(--spread) / 50) var(--c1),
+      calc(var(--shift) * -1) calc(var(--shift) * 1) calc(var(--spread) / 50) var(--c1),
+      0 0 var(--spread) var(--base), 0 0 calc(var(--spread) / 1.5) var(--base);
+  }
+  98% {
+    text-shadow: 0 0 0.05em var(--c1), 0 0 0.1em var(--c2),
+      calc(var(--shift) * 1) calc(var(--shift) * 1) calc(var(--spread) / 50) var(--c1),
+      calc(var(--shift) * -1) calc(var(--shift) * -1) calc(var(--spread) / 50) var(--c1),
+      calc(var(--shift) * 1) calc(var(--shift) * -1) calc(var(--spread) / 50) var(--c1),
+      calc(var(--shift) * -1) calc(var(--shift) * 1) calc(var(--spread) / 50) var(--c1),
+      0 0 0 var(--base), 0 0 0 var(--base);
   }
 }
 
