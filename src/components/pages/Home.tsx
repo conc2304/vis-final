@@ -83,19 +83,23 @@ const HomePage = () => {
       </footer>
       <Modal show={show} onHide={handleClose} dialogClassName="custom-modal" centered>
         <Modal.Header closeButton>
-          <Modal.Title><strong>About Temperature Anomalies</strong></Modal.Title>
+          <Modal.Title>
+            <strong>About Temperature Anomalies</strong>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p className="text-white">
             In climate change studies, temperature anomalies are more important than absolute
             temperature. A temperature anomaly is the difference from a baseline temperature,
-            typically computed by averaging 30 or more years of data. Using anomalies, the departure
-            from an “average” allows more accurate descriptions over larger areas and provides a
-            frame of reference for easier analysis. Here we see that our
+            typically computed by averaging 30 or more years of data.
+          </p>
+          <p className="text-white">
+            Using anomalies, the departure from an “average” allows more accurate descriptions over
+            larger areas and provides a frame of reference for easier analysis. Here we see that our
             <span className="text-ui-primary"> baseline</span> is
             <span className="text-ui-primary"> 0 degrees Celsius</span>. The starting point for
             measuring temperature was in the late 1800, when reliable recording became available.
-            Today, the planet has already warmed a little more than 1 degree Celsius
+            Today, the planet has already warmed a little more than 1 degree Celsius.
           </p>
         </Modal.Body>
       </Modal>
