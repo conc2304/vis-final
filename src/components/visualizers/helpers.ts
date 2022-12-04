@@ -42,14 +42,12 @@ export const ucFirst = (string: string) => {
 };
 
 export function wrap(text, width: number) {
-  console.log("wrap", text)
   text.each(function () {
     const text = d3.select(this);
     const words = text.text().split(/\s+/).reverse();
     const lineHeight = 1.4; // ems
     const y = text.attr('y');
     const x = text.attr('x');
-    console.log(x, y)
     const dy = parseFloat(text.attr('dy'));
     let tspan = text
       .text(null)
