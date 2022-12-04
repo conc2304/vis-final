@@ -22,8 +22,8 @@ type Props = {
   roundStrokes?: boolean; //If true the area and stroke will follow a round path (cardinal-closed)
   color?: readonly string[]; //Color array
   lineType?: 'curved' | 'linear';
-  areValuesNormalized?: boolean;
-  selectedState?: GeoRegionUSType | 'ALL';
+  areValuesNormalized?: boolean; // If true, all of the values for the different metrics are on the same scale, if false they each have a different scale on their axis
+  selectedState?: GeoRegionUSType | 'ALL'; 
   title: string | JSX.Element;
 };
 
