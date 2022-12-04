@@ -102,7 +102,8 @@ const HomePage = () => {
             Today, the planet has already warmed a little more than 1 degree Celsius.
           </p>
           <p className="text-white">
-            Scientists agree that at an increase of +3° globaly we will reach an irreversible
+            Scientists agree that at an increase of{' '}
+            <strong className="text-ui-primary">+3° </strong> globaly, we will reach an irreversible
             tipping point.
           </p>
         </Modal.Body>
