@@ -64,3 +64,21 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 - src/router/ - configuration of the React router
 - public/ - the public directory that serves any non web specific asses (images, csv files, json files, etc...)
 - public/data/ - public directory that is serving the locally hosted data that is driving the application
+
+## Packages/ Dependencies
+
+*Take note: The list below only includes the main packages used in this application.  For a complete list of dependencies refer to `package.json`*
+
+- [Bootstrap](https://getbootstrap.com/)
+- [D3](https://d3js.org/)
+- [D3-geo](https://github.com/d3/d3-geo)
+- [Material UI](https://mui.com/material-ui/getting-started/overview/)
+- [React](https://reactjs.org/)
+- [React Bootstrap](https://react-bootstrap.github.io/)
+- [Typescript](https://www.typescriptlang.org/)
+
+## Data Description
+
+*Please refer to the link below for a complete description of the data used in this project*
+
+[Data Description](DataDiscription.md)
