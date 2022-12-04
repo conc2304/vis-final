@@ -266,7 +266,7 @@ const StormsPage = () => {
                 lineType="curved"
                 labelFactor={1.2}
                 wrapWidth={80}
-                margin={{ top: 100, right: 0, bottom: 50, left: 0 }}
+                margin={{ top: 10, right: 0, bottom: 0, left: 0 }}
                 selectedState={selectedGeoRegion}
                 title={<RadarTitle qualifier="Metrics" />}
               />
@@ -277,9 +277,9 @@ const StormsPage = () => {
                 data={radarDataStormEvents}
                 areValuesNormalized={false}
                 lineType="curved"
-                labelFactor={1.18}
+                labelFactor={1.2}
                 wrapWidth={120}
-                margin={{ top: 80, right: 0, bottom: 90, left: 0 }}
+                margin={{ top: 10, right: 0, bottom: 0, left: 0 }}
                 selectedState={selectedGeoRegion}
                 title={<RadarTitle qualifier="Storms" />}
               />

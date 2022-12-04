@@ -73,7 +73,9 @@ const RadarChart = ({
     // Configure the Chart
     const axisNames = data[0].map((d) => d.axis);
     const axisQty = axisNames.length;
-    const radius = Math.min(innerWidth, innerHeight) / (labelFactor * 1.2);
+    const diameter = Math.min(innerWidth, innerHeight);
+    const radius = diameter / 2 / (labelFactor * 1.2);
+
     const angleSize = (Math.PI * 2) / axisQty;
 
     const getMaxByAxis = (axisName: string, data: RadarData) => {
