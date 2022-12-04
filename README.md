@@ -132,7 +132,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ## Packages/ Dependencies
 
 *Take note: The list below only includes the main packages used in this application.  For a complete list of dependencies refer to `package.json`*.
-In this project, libraries and their features are `imported` on an a-la cart basis as top-level imports in individual files rather than made globally available like in vanilla javascript development.
+In this project, libraries and their features are `imported` on an a-la cart basis as top-level imports in individual files rather than made globally available like in vanilla javascript development. These libraries are imported as packages from the node_modules folder which gets dynamically built when running npm install.
 
 - [Bootstrap](https://getbootstrap.com/) - Bootstrap provides a collection of syntax for template designs.
 - [D3](https://d3js.org/) - JavaScript library for visualizing data using web standards
