@@ -3,18 +3,12 @@ import { useRef, useEffect, useState, MutableRefObject } from 'react';
 import { GeoRegionUSType, StormDataType } from './data/types';
 import useResizeObserver from './useResizeObserver';
 import { Margin } from './types';
-import {
-  COLOR_RANGE,
-  COLOR_UI_ERROR,
-  COLOR_UI_PRIMARY,
-  COLOR_UI_SUCESS,
-  YEAR_RANGE,
-} from './data/constants';
+import { COLOR_RANGE, COLOR_UI_ERROR, COLOR_UI_PRIMARY, YEAR_RANGE } from './data/constants';
 import GlobalTempData from './data/Global_Temp_Data';
 import { allStates, stateNameToAbbreviation } from './data/states';
 
 import './CircleBarChart.scss';
-import { arc } from 'd3';
+import { wrap } from './helpers';
 
 interface DisplayData {
   state: GeoRegionUSType;
@@ -186,6 +180,12 @@ const CircleBarChart = ({
       .attr('x', thermoRadius.current * 1.05 * Math.cos(startAngle))
       .attr('y', thermoRadius.current * 1.05 * Math.sin(startAngle));
 
+    d3.select('.thermo-title')
+      .attr('x', thermoRadius.current * 1 * Math.cos(startAngle))
+      .attr('y', thermoRadius.current * 0.8)
+      .text('Global Temperature Anomaly')
+      .call(wrap, 120);
+
     d3.select('.thermometer-values circle.thermo-value')
       .attr('cx', (d) => {
         const tempForYear = getTempForYear(YEAR_RANGE.min);
@@ -319,14 +319,13 @@ const CircleBarChart = ({
 
     // add thermometer guage
 
-
     d3.select('path.thermometer')
       .datum(yearFilter)
       .transition()
       //@ts-ignore
       .attrTween('d', function (d, i) {
-
-        const arc = d3.arc()
+        const arc = d3
+          .arc()
           .startAngle(Math.PI - tempArcScale.current(getTempForYear(yearFilter)))
           .endAngle(tempArcScale.current.range()[1])
           .innerRadius(thermoRadius.current)
@@ -456,7 +455,16 @@ const CircleBarChart = ({
             <circle className="thermo-tick-high" r="5" stroke={COLOR_UI_PRIMARY} />
             <circle className="thermo-tick-mid" r="5" stroke={COLOR_UI_PRIMARY} />
             <circle className="thermo-tick-low" r="5" stroke={COLOR_UI_PRIMARY} />
-            <circle className='thermo-value'
+            <text
+              className="thermo-title"
+              style={{
+                fill: '#fff',
+                textAnchor: 'middle',
+              }}
+              dy="0.35em"
+            />
+            <circle
+              className="thermo-value"
               r="27"
               style={{
                 fill: '#000',
@@ -464,7 +472,7 @@ const CircleBarChart = ({
                 stroke: COLOR_UI_ERROR,
                 strokeWidth: 1.5,
               }}
-            ></circle>
+            />
             <text
               className="temp-anomaly-value"
               y="0"

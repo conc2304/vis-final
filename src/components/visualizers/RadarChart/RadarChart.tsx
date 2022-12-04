@@ -5,6 +5,7 @@ import { Margin } from '../types';
 import useResizeObserver from '../useResizeObserver';
 import { COLOR_ACCCENT, COLOR_SERIES_TOP_3, COLOR_UI_PRIMARY } from '../data/constants';
 import { GeoRegionUSType } from '../data/types';
+import { wrap } from '../helpers';
 import { RadarData, RadarDataEntry } from './WrangleRadarData';
 
 type Props = {
@@ -239,7 +240,7 @@ const RadarChart = ({
         const state = d[0].state;
 
         tooltip.innerHTML = backgroundAreaTooltip(state, d);
-        const tWidth = 240
+        const tWidth = 240;
         tooltip.style.width = `${tWidth}px`;
         const tooltipXPos = innerWidth - tWidth / 4;
 
@@ -355,43 +356,6 @@ const RadarChart = ({
       `</div>`
     );
   }
-
-  function wrap(text, width: number) {
-    text.each(function () {
-      const text = d3.select(this);
-      const words = text.text().split(/\s+/).reverse();
-      const lineHeight = 1.4; // ems
-      const y = text.attr('y');
-      const x = text.attr('x');
-      const dy = parseFloat(text.attr('dy'));
-      let tspan = text
-        .text(null)
-        .append('tspan')
-        .attr('x', x)
-        .attr('y', y)
-        .attr('dy', dy + 'em');
-
-      let word;
-      let line = [];
-      let lineNumber = 0;
-
-      while ((word = words.pop())) {
-        line.push(word);
-        tspan.text(line.join(' '));
-        if (tspan.node().getComputedTextLength() > width) {
-          line.pop();
-          tspan.text(line.join(' '));
-          line = [word];
-          tspan = text
-            .append('tspan')
-            .attr('x', x)
-            .attr('y', y)
-            .attr('dy', ++lineNumber * lineHeight + dy + 'em')
-            .text(word);
-        }
-      }
-    });
-  } //wrap
 
   return (
     <div
