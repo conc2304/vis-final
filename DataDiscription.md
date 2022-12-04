@@ -3,7 +3,7 @@
 
 __1. Global Temperature Anomaly__
 
-[Like to Global Temperature Anomaly Data](https://data.giss.nasa.gov/gistemp/graphs/graph_data/Global_Mean_Estimates_based_on_Land_and_Ocean_Data/graph.txt)
+[Link to Global Temperature Anomaly Data](https://data.giss.nasa.gov/gistemp/graphs/graph_data/Global_Mean_Estimates_based_on_Land_and_Ocean_Data/graph.txt)
 
 This dataset contains global temperature anomaly data from 1880 to 2021. We only used the data from 1950 to 2021 in our visualizations.
 
