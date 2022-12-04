@@ -28,7 +28,6 @@ import clickIcon from './svg/click-icon.svg';
 import './HeatMap.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// const uuid = require('react-uuid');
 type Props = {
   stormData: StormDataType[];
   margin: Margin;
