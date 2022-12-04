@@ -151,9 +151,9 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
       <div
         className={`cover ${coverIsActive ? 'active' : 'inactive'}`}
         style={{
-          width: innerDimensions.width + 5,
-          height: innerDimensions.height + 2,
-          left: margin.left + 4,
+          width: innerDimensions.width + 2,
+          height: innerDimensions.height,
+          left: margin.left + 1,
           top: margin.top - 2,
         }}
       >
@@ -192,7 +192,7 @@ const LineChart = ({ data, margin, id, title, onBrush }: Props) => {
         style={{
           width: innerDimensions.width + 5,
           height: innerDimensions.height + 2,
-          left: margin.left,
+          left: margin.left + 1,
           top: margin.top - 2,
         }}
       >
