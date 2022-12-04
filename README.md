@@ -19,7 +19,7 @@ Source code: 		https://github.com/conc2304/vis-final
 
 Screencast:		https://www.youtube.com/watch?v=29FGDYg1OEY   
 
-Process Book PDF: 
+Process Book PDF: https://github.com/conc2304/vis-final/blob/final_docs/Process%20Book%20-%20CS%20171%20-%20Planet%20Habitability%20.pdf 
 <br>
 <br>
 
