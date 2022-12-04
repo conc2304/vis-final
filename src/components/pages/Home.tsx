@@ -101,6 +101,10 @@ const HomePage = () => {
             measuring temperature was in the late 1800, when reliable recording became available.
             Today, the planet has already warmed a little more than 1 degree Celsius.
           </p>
+          <p className="text-white">
+            Scientists agree that at an increase of +3° globaly we will reach an irreversible
+            tipping point.
+          </p>
         </Modal.Body>
       </Modal>
     </Layout>
